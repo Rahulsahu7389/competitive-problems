@@ -25,18 +25,40 @@ int modl(int a){
 
 void solve(){
   //your code starts from here
-  string s;
-  cin>>s;
-  if(is_sorted(s.begin(),s.end())){
-    cout<<"YES"<<endl;
+  ll n;
+  cin>>n;
+  vector <ll> v(n-1);
+  for (ll i = 0; i < n-1; i++)
+  {
+    cin>>v[i];
   }
-  else{
-    cout<<"NO"<<endl;
+  if(n==2){
+    if(v[0]==2){
+
+        cout<<1<<endl;
+        return;
+    }
+    else{
+        cout<<2<<endl;
+        return;
+    }
+    return;
   }
+  sort(v.begin(),v.end());
+  for (ll i = 1; i <n-1 ; i++) 
+  {
+    if(v[i]!= (v[i-1]+1)){
+        cout<<(v[i-1]+1)<<endl;
+        return;
+    }
+  }
+  cout<<n<<endl;
   
+  
+
 }
 int main() 
-{  
+{ 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
     // ll T; 

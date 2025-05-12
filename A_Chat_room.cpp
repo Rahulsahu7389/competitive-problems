@@ -27,16 +27,24 @@ void solve(){
   //your code starts from here
   string s;
   cin>>s;
-  if(is_sorted(s.begin(),s.end())){
+  string t = "hello";
+  ll idx = 0;
+  for (ll i = 0; i < s.length(); i++)
+  {
+    if(s[i] == t[idx]){
+        idx++;
+    }
+  }
+  if(idx == t.length()){
     cout<<"YES"<<endl;
+    return;
   }
-  else{
-    cout<<"NO"<<endl;
-  }
+  cout<<"NO"<<endl;
   
+
 }
 int main() 
-{  
+{ 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
     // ll T; 

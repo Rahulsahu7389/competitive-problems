@@ -25,18 +25,29 @@ int modl(int a){
 
 void solve(){
   //your code starts from here
-  string s;
-  cin>>s;
-  if(is_sorted(s.begin(),s.end())){
-    cout<<"YES"<<endl;
+  ll n;
+  cin>>n;
+  vector <ll> s(n);
+  for (ll i = 0; i < n; i++)
+  {
+    cin>>s[i];
   }
-  else{
-    cout<<"NO"<<endl;
+  ll ans = 0;
+  for (ll i = 1; i < n; i++)
+  {
+    if(s[i]<s[i-1]){
+        ll sum = modl(s[i]-s[i-1]);
+        ans += sum;
+        s[i] += sum;
+    }
   }
+  cout<<ans<<endl;
   
+  
+
 }
 int main() 
-{  
+{ 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
     // ll T; 
