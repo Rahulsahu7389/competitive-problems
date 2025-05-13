@@ -25,14 +25,15 @@ int modl(int a){
 
 void solve(){
   //your code starts from here
-  string s;
-  cin>>s;
-  if(is_sorted(s.begin(),s.end())){
-    cout<<"YES"<<endl;
+  vector <pair<int,int>> v = {{0,2},{1,1},{0,1}};
+  for(auto i : v){
+    cout<<i.first<<endl;
   }
-  else{
-    cout<<"NO"<<endl;
+  sort(v.begin(),v.end());
+  for(auto i : v){
+    cout<<i.first<<" "<<i.second<<endl;
   }
+
   
 }
 int main() 
