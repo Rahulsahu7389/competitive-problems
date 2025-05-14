@@ -49,24 +49,25 @@ void solve(){
         cout<<1<<endl;
         return;
     }
-    ll ans = -1;
-    for(auto val : v){
-        if(val == (cnt -1)){
-            ans =max(ans,val);
-        }
-        else if((val -1) == (cnt)){
-            ans = max(ans,val -1);
-        }
-        else if((val - 1)>= cnt){
-            ans = max(ans, cnt);
-        }
-        else{
-            //got bigger first test case
-            ans = max(ans,val-1);
-        }
-        
+
+    //a==b
+    if(cnt == v[0]){
+        //one is virtually not present
+        cout<<(cnt-1)<<endl;
+        return;
     }
-    cout<<ans<<endl;
+    else if(cnt>v[0]){
+        cout<<min(cnt,v[0])<<endl;
+        return;
+    }
+    else{
+        cout<<min(cnt,v[0])<<endl;
+        return;
+    }
+    
+
+        
+    
 
     
 
