@@ -25,19 +25,71 @@ int modl(int a){
 
 void solve(){
   //your code starts from here
-  ll n = 1000000000;
-  cout<<(n-4);
-
+  ll n;
+  cin>>n;
+  vector <ll> v(n);
+  vector <ll> arr;
+  for (ll i = 0; i < n; i++)
+  {
+    cin>>v[i];
+  }
   
+  for (ll i = 0; i <n; i++)
+  {
+    if(i == n-1){
+        arr.pb(v[i]);
+        break;
+    }
+    ll x = v[i];
+    if(x<0){
+        ll sum = x;
+        i++;
+        x = v[i];
+        while(x<0){
+
+            sum = max(sum,x);
+            i++;
+            x = v[i];
+        }
+        arr.pb(sum);
+        i--;
+    }
+    else{
+        ll sum = x;
+        i++;
+        x = v[i];
+        while(x>0){
+
+            sum = max(sum,x);
+            i++;
+            x = v[i];
+        }
+        arr.pb(sum);
+        i--;
+    }
+  }
+  ll ans = 0;
+  for (auto val: arr){
+    // cout<<val<<endl;
+    ans+= val;
+}
+cout<<ans<<endl;
+//   ll ans = accumulate(arr.begin(),arr.end(),0);
+  
+  
+//   cout<<accumulate(arr.begin(),arr.end(),0)<<endl;
+  
+  
+
 }
 int main() 
-{  
+{ 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 } 
