@@ -1,5 +1,3 @@
-
-
 #include "bits/stdc++.h"
 using namespace std;
 
@@ -16,43 +14,59 @@ typedef pair<int, int> pi;
 #define pob pop_back
 long long modl(ll a)
 {
-    if (a < 0)
-    {
-        return -a;
-    }
-    return a;
+  if (a < 0)
+  {
+    return -a;
+  }
+  return a;
 }
 
 int modl(int a)
 {
-    if (a < 0)
-    {
-        return -a;
-    }
-    return a;
+  if (a < 0)
+  {
+    return -a;
+  }
+  return a;
 }
 
-vector<ll> v(10001, 1);
-// unordered_map <ll , vector<ll>> m;
+bool isInteger(float n)
+{
+  // cout<<(floor(n))<<endl;
+  float fractional_part = ceil(n)-(int)n ;
+  cout << fractional_part << endl;
+  if (fractional_part == 0)
+  {
+    return true;
+  }
+  return false;
+}
+bool isPowerOfTwo(int n)
+{
+  float sum = (float)(log(n)) / log(2);
+  cout << (sum) << endl;
+  if (isInteger(sum) && sum >= 0)
+  {
+    return true;
+  }
+  return false;
+}
 
 void solve()
 {
-    // your code starts from here
-    cout<<(7|4)<<endl;
+  int n;
+  cin>>n;
+  cout<<isPowerOfTwo(n);
 }
 int main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  // ll T;
+  // cin >> T;
+  // while (T--) {
+  solve();
 
-    
-
-    // ll T;
-    // cin >> T;
-    // while (T--)
-    // {
-        solve();
-    // }
-    return 0;
+  // }
+  return 0;
 }
-
