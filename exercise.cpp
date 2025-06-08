@@ -51,12 +51,21 @@ bool isPowerOfTwo(int n)
   }
   return false;
 }
+bool com(pair<int,int> a , pair<int,int> b){
+  return a.second<b.second;
+}
 
 void solve()
 {
-  int n;
-  cin>>n;
-  cout<<isPowerOfTwo(n);
+  vector<pair<int,int>> m = {{4,2},{3,2},{5,1},{1,0}};
+  vector<int> v = {3,2,1,5,8,0};
+  sort(m.begin(),m.end(),com);
+  for (auto val : m)
+  {
+    cout<<val.first<<" "<<val.second<<endl;
+  }
+  
+
 }
 int main()
 {
