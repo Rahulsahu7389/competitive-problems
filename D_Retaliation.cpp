@@ -32,28 +32,31 @@ void solve(){
   {
     cin>>v[i];
   }
-  ll grpCnt = 1;
-  ll u = 1;
-  set<ll> s1;
-  set<ll> s2;
-  s1.insert(v[0]);
-  s2.insert(v[0]);
-  for (ll i = 1; i < n; i++)
-  {
-
-    if(s2.count(v[i])>0){
-      s2.erase(v[i]);
-    }
-    if(s2.size()==0){
-      grpCnt++;
-      s2 = s1;
-      
-    }
-    // s2.insert(v[i]);
-    s1.insert(v[i]);
-  }
-  cout<<grpCnt<<endl;
   
+  ll x2 = (2*v[0] - v[1]);
+  
+  if(x2<0 || ((x2%(n+1))!=0)){
+    cout<<"NO"<<endl;
+    return;
+  }
+  x2 = x2/(n+1);
+//   cout<<x2<<endl;
+  ll x1 = (v[0] - (n*x2));
+  if(x1<0){
+    cout<<"NO"<<endl;
+    return;
+  }
+//   cout<<"x1 and x2 "<<x1<<" "<<x2<<endl;
+  for (ll i = 1; i <=n; i++)
+  {
+    // cout<<(v[i-1] - x1*i - x2*(n - i +1))<<endl;
+    if((v[i-1] - x1*i - x2*(n - i +1))!=0){
+        cout<<"NO"<<endl;
+        return;
+    }
+
+  }
+  cout<<"YES"<<endl;
   
   
 
@@ -69,5 +72,3 @@ int main()
     } 
     return 0; 
 } 
-
-//note we can assign a set to another set thus prevent us from going to insert all the element again till the i 
