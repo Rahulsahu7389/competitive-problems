@@ -24,35 +24,51 @@ int modl(int a){
 
 
 
-void solve(ll T){
+void solve(){
   //your code starts from here
   ll n,x;
   cin>>n>>x;
   vector<ll> a(n);
   vector<ll> b(n);
+  stack <ll> st;
   ll maxy = -1;
   for (ll i = 0; i < n; i++)
   {
-    cin>>a[n];
-    maxy = max(maxy,a[i]);
+    cin>>a[i];
+    
 
   }
   for (ll j = 0; j < n; j++)
   {
-    cin>>b[n];
+    cin>>b[j];
+    maxy = max(maxy,a[n-j-1]);
+    st.push(maxy);
   }
-  if(T == 1 || T == 2){
-    cout<<3<<endl;
-    return;
+  ll m = 0;
+  // cout<<maxy<<endl;
+  // while(!st.empty()){
+  //   cout<<st.top()<<endl;
+  //   st.pop();
+  // }
+  
+  for (ll i = 0; i < n; i++)
+  {
+    st.pop();
+    if(i == n-1){
+      if((x>=b[i])){
+        m++;
+      }
+      continue;
+    }
+    if((x-1>=st.top()) && (x>=b[i])){
+      m++;
+      x--;
+      
+    }
+    // st.pop();
   }
-  else if(T == 3){
-    cout<<0<<endl;
-    return;
-  }
-  else{
-    cout<<1<<endl;
-    return;
-  }
+  cout<<m<<endl;
+  
   
   
   
@@ -64,9 +80,8 @@ int main()
     cin.tie(0); 
     ll T;
     cin >> T;
-    for (ll i = 1; i <=T; i++)
-    {
-        solve(i);
+    while(T--){
+      solve();
     }
     
     
