@@ -36,8 +36,9 @@ void solve()
     // your code starts from here
     ll n, k;
     cin >> n >> k;
-    ll curr = -1;
+    ll x = -2;
     bool flag = true;
+    // ll bwala = -2;
     ll cntnegone = 0;
     vector<ll> a(n);
     vector<ll> b(n);
@@ -48,47 +49,40 @@ void solve()
     for (ll i = 0; i < n; i++)
     {
         cin >> b[i];
-        // cout<<"curr "<<curr<<endl;
-        if (b[i] == -1)
-        {
+        if(b[i] == -1){
             cntnegone++;
         }
-        if (b[i] != -1 && curr == -1)
-        {
-            curr = b[i] + a[i];
+        if(b[i]!=-1 && x == -2){
+            x = a[i] + b[i];
             continue;
         }
-        if (b[i] != -1 && curr != (a[i] + b[i]))
-        {
-            flag = false;
-        }
+        
+        
     }
-   
-    if (flag == false)
-    {
-        cout << 0 << endl;
+    //now check if you know bi or you dont
+    if(cntnegone!=n){//mil gya hoga x then
+        for (ll i = 0; i < n; i++)
+        {
+            if(((a[i]+b[i])!=x) && b[i]!=-1){//if you know the bi
+                cout<<0<<endl;
+                return;
+            }
+            if(((x - a[i] )<0 || (x - a[i])>k) && b[i]==-1){//you dont know bi
+                cout<<0<<endl;
+                return;
+            }
+        }
+        cout<<1<<endl;
         return;
-    }
-    ll mini = *min_element(a.begin(), a.end());
-    ll maxy = *max_element(a.begin(), a.end());
-    if (flag == true && cntnegone != n)
-    {
-        if (curr > k || curr<maxy)
-        {
-
-            cout << 0 << endl;
-            return;
-        }
-        else if (curr <= k && curr>=maxy )
-        {
-            cout << 1 << endl;
-            return;
-        }
         
     }
     
-    cout << ((mini + k) - maxy + 1) << endl;
+    cout<<((*min_element(a.begin(),a.end()) + k) - *max_element(a.begin(),a.end()) + 1)<<endl;
+
+   
+    
 }
+
 int main()
 {
     ios::sync_with_stdio(0);
