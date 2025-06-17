@@ -25,41 +25,32 @@ int modl(int a){
 
 void solve(){
   //your code starts from here
-  int numRows;
-  cin>>numRows;
-  vector<vector<int>> ans = {{1},{1,1}};
-  int idx = 1;
-  for (ll i = 0; i < (numRows - 2); i++)
+  ll n;
+  cin>>n;
+  string s;
+  cin>>s;
+  vector<ll> freq(26,0);
+//   ll n = s.length();
+  char a = s[0];
+  char c = s[n - 1];
+  for (ll i = 1; i <=n-2; i++)
   {
-    vector<int> temp ;
-    temp.pb(1);
-    for (int j = 1; j < ans[idx].size(); j++)
-    {
-      temp.pb(ans[idx][j]+ans[idx][j-1]);
-    }
-    temp.pb(1);
-    ans.pb(temp);
-    idx++;
-    
+    // cout<<"ran\n";
+    freq[s[i] - 'a']++;
   }
-  return ans;
-
-  // for (ll i = 0; i < ans.size(); i++)
-  // {
-  //   for (ll k = 1; k <=(n-i-1); k++)
-  //   {
-  //     cout<<"   ";
-  //   }
-    
-  //   for (ll j = 0; j < ans[i].size(); j++)
-  //   {
-  //     cout<<ans[i][j]<<"   ";
-  //   }
-  //   cout<<endl;
-    
-  // }
+//   cout<<freq[0]<<endl;
+  if(freq[a - 'a']>0 || freq[c - 'a']>0){
+    cout<<"Yes"<<endl;
+    return;
+  }
+  ll maxi = *max_element(freq.begin(),freq.end());
+  if(maxi>1){
+    cout<<"Yes"<<endl;
+    return;
+  }
+  cout<<"No"<<endl;
   
-
+  
 
 
 }
@@ -67,10 +58,10 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 } 
