@@ -3,6 +3,8 @@
         "cmath": "cpp",
         "vector": "cpp",
         "iostream": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "limits": "cpp",
+        "utility": "cpp"
     }
 }

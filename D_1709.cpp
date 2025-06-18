@@ -88,10 +88,34 @@
 //     return 0; 
 // } 
 
-#include "bits/stdc++.h"
-using namespace std;
+// #include "bits/stdc++.h"
+// using namespace std;
 
-typedef long long ll;
+// typedef long long ll;
+
+#include "bits/stdc++.h" 
+using namespace std; 
+
+#define FOR(a, c) for (int(a) = 0; (a) < (c); (a)++) 
+#define FORLL(a, c) for (long long(a) = 0; (a) < (c); (a)++) 
+#define FORR(a, b, c) for (int(a) = (b); (a) >= (c); (a)--) 
+#define INF 1000000000000000003 
+typedef long long int ll; 
+typedef vector<int> vi; 
+typedef pair<int, int> pi; 
+#define F first 
+#define S second 
+#define pb push_back 
+#define pob pop_back 
+long long modl(ll a){
+  if(a<0){return -a;}
+  return a;
+}
+
+int modl(int a){
+  if(a<0){return -a;}
+  return a;
+}
 
 ll noswap(vector<ll>& v, vector<pair<ll, ll>>& ops, ll op_type) {
     ll count = 0;
@@ -116,17 +140,20 @@ void solve() {
     for (ll i = 0; i < n; i++) cin >> a[i];
     for (ll i = 0; i < n; i++) cin >> b[i];
 
-    // First ensure a[i] >= b[i]
-    for (ll i = 0; i < n; i++) {
-        while (a[i] < b[i]) {
-            a[i]++;
-            ops.push_back({3, i + 1});
-        }
-    }
+    
 
     // Then sort both arrays
     noswap(a, ops, 1); // sort a
-    noswap(b, ops, 2); // sort b
+    ll t1 = noswap(b, ops, 2); // sort b
+    // cout<<t1<<endl;
+
+    for (ll i = 0; i < n ; i++)
+    {
+        if(a[i]>b[i]){
+            ops.push_back({3,i+1});
+        }
+    }
+    
 
     cout << ops.size() << '\n';
     for (auto t : ops) {
