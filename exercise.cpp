@@ -1,76 +1,51 @@
-#include "bits/stdc++.h" 
-using namespace std; 
+#include<iostream>
+#include<vector>
+using namespace std;
 
-#define FOR(a, c) for (int(a) = 0; (a) < (c); (a)++) 
-#define FORLL(a, c) for (long long(a) = 0; (a) < (c); (a)++) 
-#define FORR(a, b, c) for (int(a) = (b); (a) >= (c); (a)--) 
-#define INF 1000000000000000003 
-typedef long long int ll; 
-typedef vector<int> vi; 
-typedef pair<int, int> pi; 
-#define F first 
-#define S second 
-#define pb push_back 
-#define pob pop_back 
-long long modl(ll a){
-  if(a<0){return -a;}
-  return a;
-}
-
-int modl(int a){
-  if(a<0){return -a;}
-  return a;
-}
-
-
-void solve(){
-  //your code starts from here
-  int numRows;
-  cin>>numRows;
-  vector<vector<int>> ans = {{1},{1,1}};
-  int idx = 1;
-  for (ll i = 0; i < (numRows - 2); i++)
-  {
-    vector<int> temp ;
-    temp.pb(1);
-    for (int j = 1; j < ans[idx].size(); j++)
-    {
-      temp.pb(ans[idx][j]+ans[idx][j-1]);
+void merge(vector<int>&arr, int st ,int mid , int end){
+  vector<int> temp ;
+  int i = st;
+  int j = mid +1;
+  while(i<=mid && j<=end){
+    if(arr[i]>=arr[j]){
+      temp.push_back(arr[j]);
+      j++;
     }
-    temp.pb(1);
-    ans.pb(temp);
-    idx++;
-    
+    else{
+      temp.push_back(arr[i]);
+      i++;
+    }
   }
-  return ans;
-
-  // for (ll i = 0; i < ans.size(); i++)
-  // {
-  //   for (ll k = 1; k <=(n-i-1); k++)
-  //   {
-  //     cout<<"   ";
-  //   }
-    
-  //   for (ll j = 0; j < ans[i].size(); j++)
-  //   {
-  //     cout<<ans[i][j]<<"   ";
-  //   }
-  //   cout<<endl;
-    
-  // }
+  while(i<=mid){
+    temp.push_back(arr[i]);
+      i++;
+  }
+  while(j<=end){
+    temp.push_back(arr[j]);
+      j++;
+  }
+  for (int t = 0; t <temp.size() ; t++)
+  {
+    arr[t + st] = temp[t];
+  }
   
-
-
-
 }
-int main() 
-{ 
-    ios::sync_with_stdio(0); 
-    cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
-        solve(); 
-    // } 
-    return 0; 
-} 
+
+void mergesort(vector<int>&v, int st , int end){
+  if(st<end){
+    int mid = st + (end - st)/2;
+    mergesort(v,st,mid);
+    mergesort(v,mid+1,end);
+    merge(v , st, mid,end);
+  }
+}
+
+int main(){
+  vector<int> v = {12 ,31,35,8,32,17};
+  mergesort(v,0 , v.size()-1);
+  for(auto val: v){
+    cout<<val<<endl;
+  }
+
+  return 0;
+}
