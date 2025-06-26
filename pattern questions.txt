@@ -1,0 +1,2 @@
+binary search:
+1.https://www.codechef.com/problems/SUB12 - (second function was tricky to make as we considered whether possible to make 1 2 ... 5 6 7 if spaces > ops then yes.
