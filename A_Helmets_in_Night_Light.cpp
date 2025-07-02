@@ -22,66 +22,60 @@ int modl(int a){
   return a;
 }
 
-ll power(ll x,ll n){
-    ll pro = 1;
-    while(n!=0){
-        if(n%2==1){
-            pro *= x;
-        }
-        x *= x;
-        n /= 2;
-    }
-    return pro;
-}
-
 
 void solve(){
   //your code starts from here
-  ll n,k;
-  cin>>n>>k;
-  bool flag = false;
-  ll ans = 2e9;
-  ll pro = 1;
-  ll cnteven = 0;
-  // unordered_map<ll,ll> m;
-  vector<ll> v(n);
+  ll n , p;
+  cin>>n>>p;
+  vector<pair<ll,ll>> v;
+  vector<ll> pre(n);
+  ll cnt = 0;
   for (ll i = 0; i < n; i++)
   {
-    cin>>v[i];
-    if(v[i]%2==0){
-      cnteven++;
-    }
-    pro = ((pro%k)*( v[i]%k))%k;
-    if(pro%k==0){
-        flag = true;
-    }
-    ans = min(ans,(k - (v[i]%k)));
+    ll a;
+    cin>>a;
+    cnt += a;
+   
+    v.pb({-1,a});
   }
-  if(flag){
-    cout<<0<<endl;
-    return;
+  for (ll i = 0; i < n; i++)
+  {
+    ll a;
+    cin>>a;
+    v[i].first = a;
   }
-  if(k == 4){
-    ll t ;
-    
-    if(cnteven==0){
-      t = 2;
-      ans= min(ans,t);
-    }
-    else if(cnteven==1){
-      t = 1;
-      ans= min(ans,t);
-    }
-    else{
-      t = 0;
-      ans= min(ans,t);
-    }
-    cout<<ans<<endl;
-    return;
+//   cout<<"here\n";
+  sort(v.begin(),v.end());
+  pre[0] = v[0].second;
+  for (ll i = 1; i < n; i++)
+  {
+    pre[i] = v[i].second + pre[i-1];
   }
   
   
+  
+  ll ans = 2e9;
+  for (ll i = 0; i < n; i++)
+  {
+    if(pre[i]>=(n - (i+1))){
+        ll sum = (i + 1)*p ;
+        ll cnt = i+1;
+        ll idx = 0;
+        while(cnt<n){
+            sum += (v[idx].first*v[idx].second);
+            cnt += v[idx].second;
+            idx++;
+        }
+        
+        ans = min(sum,ans);
+    }
+  }
   cout<<ans<<endl;
+
+  
+  
+
+  
   
 
 }

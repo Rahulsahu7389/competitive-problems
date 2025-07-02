@@ -33,33 +33,30 @@ int modl(int a)
 void solve()
 {
     // your code starts from here
-    ll n, k, j;
-    cin >> n >> j >> k;
-    vector<ll> v(n);
-    ll cnt = 0;
-    for (ll i = 0; i < n; i++)
-    {
-        cin >> v[i];
-    }
-    ll target = v[j-1];
-    sort(v.begin(),v.end());
-    ll idx = distance(v.begin(),find(v.begin(),v.end(),target));
-    ll ans = 0;
-    if(target == v[n-1]){
-        ans += n - idx -1;
-    }
-    else{
-        ans += n - idx - 2;
-    }
-    ans += idx;
-    ll remain = n - ans;
-    if(remain <=k){
-        cout<<"YES\n";
-        return;
-    }
-    cout<<"NO\n";
+    ll n, k;
+    cin >> n >> k;
     
+        
+        vector<int> p;
 
+        for (int i = n - k + 1; i >= 1; i--)
+        {
+            p.push_back(i);
+        }
+        
+
+        for (int i = n - k + 2; i <= n; i++)
+        {
+            p.push_back(i);
+        }
+        
+
+        for (int x : p)
+        {
+            cout << x << " ";
+        }
+        cout << endl;
+    
 }
 int main()
 {
