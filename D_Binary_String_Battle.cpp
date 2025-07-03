@@ -36,6 +36,31 @@ T power(T x,T n){
 
 void solve(){
   //your code starts from here
+  ll n,k;
+  cin>>n>>k;
+  string s;
+  cin>>s;
+  ll cntone = 0;
+  for (ll i = 0; i < n; i++)
+  {
+    if(s[i]=='1'){
+        cntone++;
+    }
+  }
+  if(cntone==0){
+    cout<<"Alice\n";return;
+  }
+  if(k>=cntone){
+    cout<<"Alice\n";
+    return;
+  }
+  if((k>(n/2))){
+    cout<<"Alice\n";
+  }
+  else{
+    cout<<"Bob\n";
+  }
+  
 
   
 }
