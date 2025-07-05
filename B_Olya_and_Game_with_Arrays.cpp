@@ -33,62 +33,35 @@ T power(T x,T n){
   return pro;
 }
 
-bool comp(pair<ll,ll> a , pair<ll,ll> b){
-  if(a.second != b.second){
-    return (a.second<b.second);
-  }
-  return (a.first>b.first);
-
-}
-
 
 void solve(){
   //your code starts from here
-  ll n,p;
-  cin>>n>>p;
-  // vector<ll> pre(n);
-  vector<pair<ll,ll>> v;//{no of people,cost of notify}
-  // ll ans = 2e9;
+  ll n;
+  cin>>n;
+  vector<ll> f;
+  vector<ll> s;
   for (ll i = 0; i < n; i++)
   {
-    ll a;
-    cin>>a;
-    v.pb({-1,a});
-  }
-  
-  for (ll i = 0; i < n; i++)
-  {
-    ll b;
-    cin>>b;
-    v[i].first = b;
+    ll m;
+    cin>>m;
+    vector<ll> temp;
+    for (ll j = 0; j < m; j++)
+    {
+        ll a;
+        cin>>a;
+        temp.pb(a);
+    }
+    sort(all(temp));
+    f.pb(temp[0]);
+    s.pb(temp[1]);
     
   }
-  sort(v.begin(),v.end());
-  ll alreadyShared = 1;
-  ll cost = p;
-  for(auto val:v){
-    ll canbeshared = val.second;
-    ll sharingCost = val.first;
-
-    if(sharingCost >= p){
-      break;
-    }
-
-    if(alreadyShared + canbeshared > n){
-      cost += (n  - alreadyShared)*sharingCost;
-      alreadyShared = n;
-      break;
-    }
-    else{
-      cost += canbeshared * sharingCost;
-      alreadyShared += canbeshared;
-    }
-  }
-
-  cost += (n - alreadyShared)*p;//chief
-  cout<<cost<<endl;
-  
-  
+  sort(all(s));
+  f.pb(s[0]);
+  s[0] = 0;
+  ll sum = accumulate(all(s),0LL);
+  ll mini = *min_element(all(f));
+  cout<<(mini + sum)<<endl;
   
 
   
