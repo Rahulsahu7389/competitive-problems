@@ -44,46 +44,46 @@ void solve()
     ll n, k;
     cin >> n >> k;
     vector<ll> v(n);
-    vector<ll> diff;
+    vector<ll> d;
     for (ll i = 0; i < n; i++)
     {
         cin >> v[i];
     }
     ll val = v[k-1];
     sort(all(v));
-    diff.pb(v[0]);
+    d.pb(v[0]);
     for (ll i = 1; i < n; i++)
     {
         if(v[i]==v[i-1]){
-            i++;
             continue;
         }
-        
-        diff.pb(v[i]);
-        
-    }
-    // ll var
-    ll idx = distance(diff.begin(),find(all(diff) , val));
-    // cout<<idx<<endl;
-    ll level = 1;
-    for (ll i = idx+1; i < diff.size(); i++)
-    {
-        /* code */
-        ll d = diff[i] - diff[i-1];
-        if(level + d - 1 > diff[i-1]){
-            cout<<"NO\n";
-            return;
-        }
-        else if((level + d)>diff[i]){
-            cout<<"NO\n";
-            return;
-        }
         else{
-            level += d;
+            d.pb(v[i]);
+        }
+    }
+
+    ll idx = distance(d.begin(),find(all(d),val));
+    // for (auto &&i : d)
+    // {
+    //     cout<<i<<endl;
+    // }
+    
+    ll prev = val;
+    if(d.size()>=2){
+        for (ll i = idx; i < d.size(); i++)
+        {
+            if((d[i] -prev)>val){
+                cout<<"NO\n";
+                return;
+            }
+            prev = d[i];
+
         }
         
     }
     cout<<"YES\n";
+    
+    
     
     
 }
