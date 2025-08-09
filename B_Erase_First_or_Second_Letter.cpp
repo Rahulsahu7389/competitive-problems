@@ -46,38 +46,60 @@ T power(T x,T n){
   return pro;
 }
 
+void fun(string s , unordered_set<string>& st){
+    if(st.count(s)>0){
+        return;
+    }
+    if(s.length() == 1){
+        st.insert(s);
+        return;
+    }
+    st.insert(s);
+    ll n = s.length();
+    if(n>1){
+
+        string t = s.substr(1,n);
+        fun(t , st);
+    }
+    if(n>1){
+        string t = s.substr(2,n);
+        t = s[0] + t;
+        fun(t , st);
+    }
+}
+
 void solve(){
    //your code starts from here
-   ll a ,b,c,d;
-   cin>>a>>b>>c>>d;
-   if(a>=c){
-    ll s = b + (a - c)*5;
-    if(s == d){
-      cout<<"Yes"<<endl;
-      return;
+   ll n;
+    cin >> n;
+    string s;
+    cin >> s;
+
+    if(n == 1){
+        cout<<1<<endl;
+        return;
     }
-    else if(s>0 && s>d && (s - d)%6 ==0){
-      cout<<"Yes"<<endl;
-      return;
+
+    unordered_set<char> st;
+    vector<int> dp(n, 0);
+    // dp[0] = 1;
+    for (ll i = 0; i < n; i++)
+    {
+        st.insert(s[i]);
+        dp[i] = st.size();
     }
-    else{
-      cout<<"No"<<endl;
+    ll ans = 0;
+    for (ll i = 0; i < n; i++)
+    {
+        ans += dp[i];
     }
-   }
-   else{
-    ll s = b - (c - a)*5;
-    if(s == d){
-      cout<<"Yes"<<endl;
-      return;
-    }
-    else if(s>0 && s>d && (s - d)%6 ==0){
-      cout<<"Yes"<<endl;
-      return;
-    }//here we dont take the case when the s < d as it wont be good as we first converted silver to gold and why should we convert it back
-    else{
-      cout<<"No"<<endl;
-    }
-   }
+    cout<<ans<<endl;
+    
+    
+    
+    
+    
+    
 }
 
 int main() 

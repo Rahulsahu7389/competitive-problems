@@ -48,36 +48,45 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll a ,b,c,d;
-   cin>>a>>b>>c>>d;
-   if(a>=c){
-    ll s = b + (a - c)*5;
-    if(s == d){
-      cout<<"Yes"<<endl;
-      return;
-    }
-    else if(s>0 && s>d && (s - d)%6 ==0){
-      cout<<"Yes"<<endl;
-      return;
-    }
+   ll n;
+   cin>>n;
+   vector<ll> a(n);
+   vector<ll> b(n);
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>a[i];
+   }
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>b[i];
+   }
+   unordered_set<ll> one;
+   unordered_set<ll> both;
+   for (ll i = 0; i < n; i++)
+   {
+    if(a[i] == b[i]) both.insert(a[i]);
     else{
-      cout<<"No"<<endl;
+        one.insert(a[i]);
+        one.insert(b[i]);
     }
    }
-   else{
-    ll s = b - (c - a)*5;
-    if(s == d){
-      cout<<"Yes"<<endl;
-      return;
+
+   int mex = 0;
+   bool first = true;
+   while(true){
+    if(both.count(mex)){
+        mex++;
     }
-    else if(s>0 && s>d && (s - d)%6 ==0){
-      cout<<"Yes"<<endl;
-      return;
-    }//here we dont take the case when the s < d as it wont be good as we first converted silver to gold and why should we convert it back
-    else{
-      cout<<"No"<<endl;
+    else if(first && one.count(mex)){
+        mex++;
+        first = false;
     }
+    else break;
    }
+   cout<<mex<<endl;
+   
+   
+   
 }
 
 int main() 
