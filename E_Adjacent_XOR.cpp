@@ -48,44 +48,48 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n , k;
-   cin>>n>>k;
-   unordered_map<ll,ll> m;
+   ll n;
+   cin>>n;
+   vector<ll> a(n);
+   vector<ll> b(n);
+   vector<ll> ans(n,0);
+   vector<ll> vis(n , 0);
    for (ll i = 0; i < n; i++)
    {
-    ll a;
-    cin>>a;
-    m[(a%k)]++;
-    m[k - (a%k)]++;
+    cin>>a[i];
    }
-
    for (ll i = 0; i < n; i++)
    {
-    ll a;
-    cin>>a;
-    if(m.find((a%k))!=m.end()){
-        m[(a%k)]--;
-    }
-    if(m.find(k - (a%k))!=m.end()){
-        m[k - (a%k)]--;
+    cin>>b[i];
+    if(a[i] == b[i]){
+        vis[i] = 1;
+        ans[i] = a[i];
     }
    }
-
-   for(auto val :m){
-    if(val.second !=0){
-        cout<<"NO"<<endl;
-        return;
+   ans[n-1] = a[n-1];
+   for (ll i = 0; i < n-1; i++)
+   {
+    if(vis[i] == 0){
+        ll sum = a[i]^a[i+1];
+        if(sum == b[i]){
+            ans[i] = sum;
+            vis[i] = 1;
+        }
     }
    }
-   cout<<"YES\n";
-   
-   
+   if(ans == b){
+    cout<<"YES\n";
+   }
+   else{
+    cout<<"NO\n";
+   }
+
    
 
-
    
    
-
+   
+   
 }
 
 int main() 
