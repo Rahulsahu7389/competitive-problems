@@ -50,30 +50,42 @@ void solve(){
    //your code starts from here
    ll n , k;
    cin>>n>>k;
-   unordered_map<ll,ll> m;
+   vector<ll> b1(n);
+   vector<ll> b2(n);
+   map<ll,ll> m;
+//    unordered_map<ll,ll> temp;
    for (ll i = 0; i < n; i++)
    {
     ll a;
     cin>>a;
+    b1[i] = a;
     m[(a%k)]++;
     m[k - (a%k)]++;
+    
    }
 
    for (ll i = 0; i < n; i++)
    {
     ll a;
     cin>>a;
-    if(m.find((a%k))!=m.end()){
-        m[(a%k)]--;
-    }
-    if(m.find(k - (a%k))!=m.end()){
-        m[k - (a%k)]--;
-    }
+    b2[i] = a;
+    // if(m.find((a%k))!=m.end()){
+    m[(a%k)]--;
+    m[k - (a%k)]--;
+    // }
+    // if(m.find(k - (a%k))!=m.end()){
+        
+    // }
    }
+//    if(b2 == b1){
+//     cout<<"YES\n";
+//     return;
+//    }
 
-   for(auto val :m){
-    if(val.second !=0){
-        cout<<"NO"<<endl;
+
+   for(auto val:m){
+    if(val.second){
+        cout<<"NO\n";
         return;
     }
    }

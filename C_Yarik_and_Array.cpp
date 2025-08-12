@@ -50,42 +50,22 @@ void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   vector<ll> a(n);
-   vector<ll> b(n);
-   vector<ll> ans(n,0);
-   vector<ll> vis(n , 0);
+   vector<ll> v(n);
    for (ll i = 0; i < n; i++)
    {
-    cin>>a[i];
+    cin>>v[i];
    }
-   for (ll i = 0; i < n; i++)
+   ll l = 0;
+   ll r = 0;
+   vector<ll> pre(n,0);
+   pre[0] = v[0];
+   for (ll i = 1; i < n; i++)
    {
-    cin>>b[i];
-    
+    pre[i] += pre[i-1] + v[i];
    }
-   for (int i = n-2 ; i >= 0; i--)
-   {
-    if((a[i]^a[i+1])==b[i]){
-        a[i] = b[i];
-    }
-   }
-   dbg(a);
-
-
-   bool flag = true;
-   for (ll i = 0; i < n; i++)
-   {
-    if(a[i]!=b[i]){
-        flag = false;
-        break;
-    }
-   }
-   if(flag){
-    cout<<"YES\n";
-   }
-   else{
-    cout<<"NO\n";
-   }
+   dbg(pre);
+   ll ans = pre[0];
+   
    
    
    
