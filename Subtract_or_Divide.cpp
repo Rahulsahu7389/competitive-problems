@@ -46,47 +46,44 @@ T power(T x,T n){
   return pro;
 }
 
+ll fun(ll n ,vector<ll> &dp){
+    if(n == 0){
+        return 0;
+    }
+    if(n ==1){
+        // s.insert(n);
+        return 1;
+    }
+    if(dp[n]!=0){
+        return 0;
+    }
+    
+    ll l = 0;
+    ll r = 0;
+    if(n>2){
+        l = fun(n-2 ,dp);
+    }
+    if(n>1 && (n%2==0)){
+       r =  fun((n/2),dp);
+    }
+    dp[n] = (l + r + 1);
+    return (l + r + 1);
+}
+
 void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   vector<ll> v(n);
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>v[i];
+   vector<ll> dp(100000001,0);
+   dp[0] = 0;
+   dp[1] = 1;
+   if(n%2 !=0){
+    cout<<((n+1)/2)<<endl;
+    return;
    }
-   ll j = 0;
-   ll i = 0;
-   ll sum = 0;
-   ll ans = -1e9;
-   while(j<n){
-      if(sum<0){
-        sum = 0;
-        i = j;
-      }
-      if(i<j){
-        if((v[j]^v[j-1])&1){
-          sum += v[j];
-        }
-        else{
-          sum = v[j];
-          i = j;
-        }
-      }
-      else{//both i = j
-        sum = v[j];
-
-      }
-      ans = max(sum , ans);
-      j++;
-   }
-   cout<<ans<<endl;
-  
    
    
-   
-   
-   
+   cout<<fun(n,dp)<<endl;
 }
 
 int main() 

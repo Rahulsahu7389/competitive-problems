@@ -55,38 +55,19 @@ void solve(){
    {
     cin>>v[i];
    }
-   ll j = 0;
-   ll i = 0;
-   ll sum = 0;
-   ll ans = -1e9;
-   while(j<n){
-      if(sum<0){
-        sum = 0;
-        i = j;
-      }
-      if(i<j){
-        if((v[j]^v[j-1])&1){
-          sum += v[j];
-        }
-        else{
-          sum = v[j];
-          i = j;
-        }
-      }
-      else{//both i = j
-        sum = v[j];
-
-      }
-      ans = max(sum , ans);
-      j++;
+   ll ans = v[0];
+   ll idx = 0;
+   for (ll i = 0; i < n; i++)
+   {
+    if(v[i]>ans){
+        ans = v[i];
+        idx = max(idx , i);
+    }
    }
-   cout<<ans<<endl;
-  
+   cout<<(idx + 1)<<endl;
    
    
-   
-   
-   
+
 }
 
 int main() 

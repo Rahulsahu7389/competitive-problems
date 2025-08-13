@@ -29,9 +29,9 @@ void dbg_out() { cerr << "\n"; }
 template<typename Head, typename... Tail>
 void dbg_out(Head H, Tail... T) { _print(H); if(sizeof...(T)) cerr << " | "; dbg_out(T...); }
 
-#define dbg(...) if(DEBUG_MODE){ cerr << "[" << __LINE__ << "] " << #__VA_ARGS__ << " = "; dbg_out(__VA_ARGS__); }
+#define dbg(...) if(DEBUG_MODE){ cerr << "[" << __LInE__ << "] " << #__VA_ARGS__ << " = "; dbg_out(__VA_ARGS__); }
 
-// ======== UTILITY FUNCTIONS ========
+// ======== UTILITY FUnCTIOnS ========
 template<typename T>
 T mod(T a){ return (a<0)? -a : a; }
 
@@ -46,47 +46,29 @@ T power(T x,T n){
   return pro;
 }
 
-void solve(){
-   //your code starts from here
-   ll n;
-   cin>>n;
-   vector<ll> v(n);
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>v[i];
-   }
-   ll j = 0;
-   ll i = 0;
-   ll sum = 0;
-   ll ans = -1e9;
-   while(j<n){
-      if(sum<0){
-        sum = 0;
-        i = j;
-      }
-      if(i<j){
-        if((v[j]^v[j-1])&1){
-          sum += v[j];
-        }
-        else{
-          sum = v[j];
-          i = j;
-        }
-      }
-      else{//both i = j
-        sum = v[j];
+void solve() {
+    int n; 
+        cin >> n;
+        vector<int> arr(n);
+        for (int i = 0; i < n; ++i) cin >> arr[i];
 
-      }
-      ans = max(sum , ans);
-      j++;
-   }
-   cout<<ans<<endl;
-  
-   
-   
-   
-   
-   
+        
+        vector<int> freq(n + 1, 0);
+        for (int x : arr) freq[x]++;
+
+        int f1 = freq[1];
+        int fmax = 0;
+        for (int c = 1; c <= n; ++c) {
+            fmax = max(fmax, freq[c]);
+        }
+
+        
+        int already = n - f1;
+
+       
+        int others = 1 + (n - fmax);
+
+        cout << min(already, others) <<endl;
 }
 
 int main() 

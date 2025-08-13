@@ -48,55 +48,19 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   vector<ll> v(n);
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>v[i];
-   }
-   ll j = 0;
-   ll i = 0;
-   ll sum = 0;
-   ll ans = -1e9;
-   while(j<n){
-      if(sum<0){
-        sum = 0;
-        i = j;
-      }
-      if(i<j){
-        if((v[j]^v[j-1])&1){
-          sum += v[j];
-        }
-        else{
-          sum = v[j];
-          i = j;
-        }
-      }
-      else{//both i = j
-        sum = v[j];
-
-      }
-      ans = max(sum , ans);
-      j++;
-   }
-   cout<<ans<<endl;
-  
-   
-   
-   
-   
-   
+   ll a , b;
+   cin>>a>>b;
+   cout<<(a*b - (min(a,b)))<<endl;
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    ll T; 
-    cin >> T; 
-    while (T--) { 
+    // ll T; 
+    // cin >> T; 
+    // while (T--) { 
         solve(); 
-    } 
+    // } 
     return 0; 
 }

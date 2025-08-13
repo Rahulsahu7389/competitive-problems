@@ -55,35 +55,37 @@ void solve(){
    {
     cin>>v[i];
    }
-   ll j = 0;
-   ll i = 0;
-   ll sum = 0;
+   vector<ll> pre(n);
+   pre[0] = v[0];
+   for (ll i = 1; i < n; i++)
+   {
+    pre[i] = v[i] + pre[i-1];
+   }
+   dbg(pre);
+   ll x = n;
    ll ans = -1e9;
-   while(j<n){
-      if(sum<0){
-        sum = 0;
-        i = j;
-      }
-      if(i<j){
-        if((v[j]^v[j-1])&1){
-          sum += v[j];
-        }
-        else{
-          sum = v[j];
-          i = j;
-        }
-      }
-      else{//both i = j
-        sum = v[j];
-
-      }
-      ans = max(sum , ans);
-      j++;
+   for (ll i = 1; i <=n && (n%i==0); i++)
+   {
+    ll mini = 5e9;
+    ll maxi = -5e9;
+    ll idx = 0;
+    mini = min(pre[i-1],mini);
+    maxi = max(maxi , pre[i-1]);
+    ll j = 2*i - 1;
+    idx = i-1;
+    for (j ; j < n; j += i)
+    {
+        
+        mini = min((pre[j] - pre[idx]) , mini);
+        maxi = max((pre[j] - pre[idx]) , maxi);
+        idx = j;
+        
+    }
+    // dbg(i,maxi , mini)
+    ans = max(abs(maxi - mini),ans);
+    
    }
    cout<<ans<<endl;
-  
-   
-   
    
    
    
