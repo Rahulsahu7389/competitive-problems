@@ -45,31 +45,50 @@ T power(T x,T n){
   }
   return pro;
 }
-
-
+void print(vector<ll> & arr){
+    for (ll i = 0; i < arr.size(); i++)
+    {
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+    
+}
 
 void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   if(n%2 !=0){
-    cout<<((n+1)/2)<<endl;
+   if( n == 1){
+    cout<<0<<endl;
     return;
    }
-   ll ans = (n/2);//all even numbers counted
-   if((n/2)%2!=0){
-    ans += (((n/2)+1)/2);
+   vector<ll> v(n);
+   for (ll i = 0; i < n; i++)
+   {
+    v[i] = i;
    }
-   else if(((n-2)/2)%2!=0){
-    ll t = ((n-2)/2);
-    ans += ((t+1)/2);
+   print(v);
+   for (ll i = 1; i < n; i++)
+   {
+    // if(i == 0){
+    //     print(v);
+    // }
+    // else{
+    //  dbg("before",i , v)
+        vector<ll> temp(n);
+        for (ll j = 0; j < n; j++)
+        {
+            temp[(1 + j)%n] = v[j];
+        }
+        v = temp;
+        // dbg(i,v);
+        
+        print(v);
+    // }
    }
    
-   cout<<ans<<endl;
+   
 
-   
-   
-//    cout<<fun(n,dp)<<endl;
 }
 
 int main() 

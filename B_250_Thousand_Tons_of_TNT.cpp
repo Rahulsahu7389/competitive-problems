@@ -61,31 +61,32 @@ void solve(){
    {
     pre[i] = v[i] + pre[i-1];
    }
-   dbg(pre);
-   ll x = n;
-   ll ans = -1e9;
-   for (ll i = 1; i <=n && (n%i==0); i++)
+  //  dbg(pre);
+   ll ans = -2e9;
+   ll i = 0;
+   for (ll i = 1;( i < n); i++)
    {
-    ll mini = 5e9;
-    ll maxi = -5e9;
-    ll idx = 0;
-    mini = min(pre[i-1],mini);
-    maxi = max(maxi , pre[i-1]);
-    ll j = 2*i - 1;
-    idx = i-1;
-    for (j ; j < n; j += i)
-    {
-        
-        mini = min((pre[j] - pre[idx]) , mini);
-        maxi = max((pre[j] - pre[idx]) , maxi);
+    // dbg(i)
+    if( n%i==0){
+
+      ll mini  = pre[i-1];
+      ll maxi = pre[i-1];
+      bool flag = true;
+      ll idx = 0;
+      for (ll j = i-1 + i; j < n; j += i)
+      {
+      
+        mini = min((pre[j] - pre[j - i]) , mini);
+        maxi = max((pre[j] - pre[j - i]) , maxi);
         idx = j;
-        
     }
-    // dbg(i,maxi , mini)
-    ans = max(abs(maxi - mini),ans);
+    // dbg(i , mini , maxi)
+    ans = max(abs(mini - maxi),ans);
+  }
     
    }
-   cout<<ans<<endl;
+   cout<<max(ans,0LL)<<endl;
+   
    
    
    
