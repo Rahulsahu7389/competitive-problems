@@ -8,6 +8,7 @@
         "utility": "cpp",
         "xutility": "cpp",
         "algorithm": "cpp",
-        "cstdlib": "cpp"
+        "cstdlib": "cpp",
+        "xstring": "cpp"
     }
 }
