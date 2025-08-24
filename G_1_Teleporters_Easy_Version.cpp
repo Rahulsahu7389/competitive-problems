@@ -48,36 +48,33 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   
-   ll cnt =0;
-   vector<ll> ans;
-   for (ll i = 1; i < 18; i++)
+   ll n , k;
+   cin>>n>>k;
+   vector<ll> v(n);
+   vector<ll> sum(n);
+   for (ll i = 0; i < n; i++)
    {
-    ll pov = (power(10LL,i) + 1);
-    // dbg(pov)
-    if(n%pov == 0){
+    cin>>v[i];
+    sum[i] = i + v[i] + 1;
+   }
+//    dbg(sum)
 
-        ll x = (n/pov);
-        ans.pb(x);
+   sort(all(sum));
+   ll cnt = 0;
+   for (ll i = 0; i < n; i++)
+   {
+    if((k - sum[i])<0){
+        break;
+    }
+    else{
         cnt++;
+        k -= sum[i];
     }
    }
-//    dbg(ans)
-//    dbg(ans.back())
    cout<<cnt<<endl;
-   sort(all(ans));
-   for (ll i = 0; i < ans.size(); i++)
-   {
-    cout<<ans[i]<<" ";
-   }
-   cout<<endl;
    
    
 
-   
-   
 }
 
 int main() 

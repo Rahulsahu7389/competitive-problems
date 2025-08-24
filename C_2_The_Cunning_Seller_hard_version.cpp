@@ -45,38 +45,42 @@ T power(T x,T n){
   }
   return pro;
 }
-
+ll compute(ll x){
+    ll p = 1;
+    ll t = 0;
+    while(p*3<=x){
+        p *= 3;
+        t++;
+    }
+    return t;
+}
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   
-   ll cnt =0;
-   vector<ll> ans;
-   for (ll i = 1; i < 18; i++)
-   {
-    ll pov = (power(10LL,i) + 1);
-    // dbg(pov)
-    if(n%pov == 0){
-
-        ll x = (n/pov);
-        ans.pb(x);
-        cnt++;
+   ll n,k;
+   cin>>n>>k;
+   ll x = n;
+   ll ans = 0;
+   ll deals = 0;
+   while(x>0){
+    dbg(x)
+    if(deals>=k){
+        cout<<-1<<endl;
+        return;
     }
-   }
-//    dbg(ans)
-//    dbg(ans.back())
-   cout<<cnt<<endl;
-   sort(all(ans));
-   for (ll i = 0; i < ans.size(); i++)
-   {
-    cout<<ans[i]<<" ";
-   }
-   cout<<endl;
-   
-   
+    // if(x<3){
+    //     ans += x*3;
+    //     break;
+    // }
+    ll t = compute(x);
+    deals++;
+    // dbg(x , t)
 
-   
+    ll sum = power(3LL,(t+1)) + t*(power(3LL,(t-1)));
+    x -= power(3LL,t);
+    ans += sum;
+
+   }
+   cout<<ans<<endl;
    
 }
 
