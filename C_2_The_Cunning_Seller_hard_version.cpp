@@ -45,42 +45,66 @@ T power(T x,T n){
   }
   return pro;
 }
+
+vector<ll> p(30);
+// ll compute(ll x){
+//     ll p = 1;
+//     ll t = 0;
+//     while(p*3<=x){
+//         p *= 3;
+//         t++;
+//     }
+//     return t;
+// }
 ll compute(ll x){
-    ll p = 1;
-    ll t = 0;
-    while(p*3<=x){
-        p *= 3;
-        t++;
-    }
-    return t;
+    return (p[x+1] + x*p[x-1]);
 }
+
+
+
 void solve(){
    //your code starts from here
    ll n,k;
    cin>>n>>k;
+
+   ll bit[30];
+   for (ll i = 0; i < 30; i++)
+   {
+    bit[i] = 0;
+   }
+   
    ll x = n;
    ll ans = 0;
-   ll deals = 0;
+   ll i = 0;
    while(x>0){
-    dbg(x)
-    if(deals>=k){
-        cout<<-1<<endl;
-        return;
-    }
-    // if(x<3){
-    //     ans += x*3;
-    //     break;
-    // }
-    ll t = compute(x);
-    deals++;
-    // dbg(x , t)
-
-    ll sum = power(3LL,(t+1)) + t*(power(3LL,(t-1)));
-    x -= power(3LL,t);
-    ans += sum;
-
+    ll rem = x%3;//no of deal to be done for 3^i wala deal
+    ans += compute(i)*rem;
+    bit[i] = rem;
+    i++;
+    k -= rem;
+    x /= 3;
    }
-   cout<<ans<<endl;
+   dbg(ans)
+   if(k<0){
+    cout<<-1<<endl;
+    return;
+   }
+   ll reduction = 0;
+   for (int i = 30 - 1; i >= 1; i--)
+   {
+    if(k>1 && bit[i]){
+
+        ll times = min(k/2,bit[i]);
+        k -= times*2;
+        bit[i] -= times;
+        bit[i-1] += 3*times;
+        reduction += times*p[i-1];
+    }
+   }
+   cout<<(ans - reduction) <<endl;
+   
+   
+   
    
 }
 
@@ -88,6 +112,11 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
+     p[0] = 1;
+    for (ll i = 1; i <30; i++)
+    {
+        p[i] = p[i-1]*3;
+    }
     ll T; 
     cin >> T; 
     while (T--) { 

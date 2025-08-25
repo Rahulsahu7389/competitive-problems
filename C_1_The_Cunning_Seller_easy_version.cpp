@@ -46,44 +46,70 @@ T power(T x,T n){
   return pro;
 }
 
-ll compute(ll x){
-    ll p = 1;
-    ll t = 0;
-    while(p*3<=x){
-        p *= 3;
-        t++;
-    }
-    return t;
+vector<ll> p(31);
+
+ll compute(ll rem , ll x){
+    return (p[x+1] + x*p[x-1])*rem;
 }
+
+
 
 void solve(){
    //your code starts from here
    ll n;
    cin>>n;
+
    ll x = n;
    ll ans = 0;
+   ll i = 0;
    while(x>0){
-    // dbg(x)
-    if(x<3){
-        ans += x*3;
-        break;
-    }
-    ll t = compute(x);
-    // dbg(x , t)
-
-    ll sum = power(3LL,(t+1)) + t*(power(3LL,(t-1)));
-    x -= power(3LL,t);
-    ans += sum;
-
+    ll rem = x%3;
+    ans += compute(rem,i);
+    i++;
+    x /= 3;
    }
    cout<<ans<<endl;
    
+   
+   
 }
+// void solve(){
+//    //your code starts from here
+//    ll n;
+//    cin>>n;
+//    ll x = n;
+//    ll ans = 0;
+//    while(x>0){
+//     // dbg(x)
+//     if(x<3){
+//         ans += x*3;
+//         break;
+//     }
+//     ll t = compute(x);
+//     // dbg(x , t)
+
+//     ll sum = power(3LL,(t+1)) + t*(power(3LL,(t-1)));
+//     x -= power(3LL,t);
+//     ans += sum;
+
+//    }
+//    cout<<ans<<endl;
+   
+// }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
+
+    p[0] = 1;
+    for (ll i = 1; i <=30; i++)
+    {
+        p[i] = p[i-1]*3;
+    }
+    // dbg(p)
+    
+
     ll T; 
     cin >> T; 
     while (T--) { 
