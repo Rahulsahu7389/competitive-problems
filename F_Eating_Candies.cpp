@@ -46,54 +46,52 @@ T power(T x,T n){
   return pro;
 }
 
+ll bs(vector<ll> &a , ll n, ll l , ll r){
+    while(l<=r){
+        ll mid = (l + r)/2;
+        if(a[mid] == n){
+            return mid;
+        }
+        else if(a[mid]>n){
+            r = mid - 1;
+        }
+        else{
+            l = mid + 1;
+        }
+    }
+    return -1;
+}
+
 void solve(){
    //your code starts from here
-   string s;
-   cin>>s;
-   set<char>st;
-   ll n = s.length();
+   ll n;
+   cin>>n;
+   vector<ll> v(n);
    for (ll i = 0; i < n; i++)
    {
-    st.insert(s[i]);
+    cin>>v[i];
    }
-   ll k = st.size();
-    ll l = 0;
-    ll r = l + k -1;
-    set<char> t;
-    for (ll i = 0; i <=r; i++)
-    {
-        if(t.count(s[i])>0){
-            cout<<"NO\n";
-            return;
-        }
-        else{
-
-            t.insert(s[i]);
-        }
+   vector<ll> pre(n);
+   vector<ll> post(n);
+   ll ans = 0;
+   pre[0] = v[0];
+   post[n-1] = v[n-1];
+   for (ll i = 1; i < n; i++)
+   {
+    pre[i] = pre[i-1] + v[i];
+    post[n-i-1] = post[n-i] + v[n-i-1];
+   }
+//    dbg(pre,post)
+   for (int i = n - 1; i >= 0; i--)
+   {
+    ll value = bs(pre , post[i],0 , i-1);
+    if(value!=-1){
+        ans = max(value + 1 + n - i,ans);
     }
-    
-    
-    // ll l = 0;
-    // ll r = l = k-1;
-    r++;
-    while(r<n){
-        t.erase(s[l]);
-        l++;
-        if(t.count(s[r])>0){
-            cout<<"NO\n";
-            return;
-        }
-        else{
-            t.insert(s[r]);
-        }
-        r++;
-        
+   }
+   cout<<ans<<endl;
+   
 
-    }
-    cout<<"YES\n";
-   
-   
-   
 }
 
 int main() 
