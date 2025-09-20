@@ -9,6 +9,8 @@
         "xutility": "cpp",
         "algorithm": "cpp",
         "cstdlib": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "memory": "cpp",
+        "iterator": "cpp"
     }
 }
