@@ -48,69 +48,44 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n,q;
-   cin>>n>>q;
-   vector<ll> v(n);
-   vector<pair<ll,ll>> unique;
-   set<ll> s;
+   ll n,m;
+   cin>>n>>m;
+   vector<pair<ll,ll>> v;
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i];
-    if(s.count(v[i])==0){
-      unique.pb({v[i],i});
-    }
-    s.insert(v[i]);
+    ll a,b;
+    cin>>a>>b;
+    v.pb({a,b});
    }
+   ll pts = 0;
+   ll timetaken = 0;
+   ll state = 0;
 //    dbg(v)
-   vector<ll> query(q);
-  //  dbg(unique)
-
-   for (ll i = 0; i < q; i++)
-   {
-    ll t;
-    cin>>t;
-    
-    vector<pair<ll,ll>> temp(unique.size());
-
-    //finding in unique the element
-    ll idx;
-    // ll val;
-    ll outeridx ;
-    for (ll k = 0; k < unique.size(); k++)
-    {
-      if(unique[k].first == t){
-        idx = unique[k].second;
-        outeridx = k;
-        break;
-      }
-    
-    }
-    // dbg(idx,outeridx)
-    cout<<(idx+1)<<" ";
-    ll ind = 1;
-    temp[0] = {unique[outeridx].first,0};
-    for (ll j = 0; j < unique.size(); j++)
-    {
-      if(outeridx!=j){
-        if(unique[j].second<unique[outeridx].second){
-          temp[ind] = {unique[j].first,unique[j].second + 1};
+   for(auto val:v){
+    ll time = val.first - timetaken;
+    ll tostate = val.second;
+    if(time%2==0){
+        if(state == tostate){
+            pts += (time);
         }
         else{
-          temp[ind] = {unique[j].first,unique[j].second};
-
+            pts += (time -1);
+            state = tostate;
         }
-        ind++;
-      }
     }
-    unique = temp;
-    // dbg(temp);
-    
-
-
-    
-
+    else{
+        if(state == tostate){
+            pts += time - 1;
+        }
+        else{
+            pts += (time);
+            state = tostate;
+        }
+    }
+    timetaken += time;
    }
-   
+   pts += m - timetaken;
+   cout<<pts<<endl;
    
 }
 
@@ -118,14 +93,10 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 }
-
-
-
-

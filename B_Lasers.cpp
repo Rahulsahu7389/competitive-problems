@@ -48,84 +48,32 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n,q;
-   cin>>n>>q;
-   vector<ll> v(n);
-   vector<pair<ll,ll>> unique;
-   set<ll> s;
+   ll n,m,x,y;
+   cin>>n>>m>>x>>y;
+   vector<ll> a(n);
+   vector<ll> b(m);
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i];
-    if(s.count(v[i])==0){
-      unique.pb({v[i],i});
-    }
-    s.insert(v[i]);
+    cin>>a[i];
    }
-//    dbg(v)
-   vector<ll> query(q);
-  //  dbg(unique)
-
-   for (ll i = 0; i < q; i++)
+   for (ll i = 0; i < m; i++)
    {
-    ll t;
-    cin>>t;
-    
-    vector<pair<ll,ll>> temp(unique.size());
-
-    //finding in unique the element
-    ll idx;
-    // ll val;
-    ll outeridx ;
-    for (ll k = 0; k < unique.size(); k++)
-    {
-      if(unique[k].first == t){
-        idx = unique[k].second;
-        outeridx = k;
-        break;
-      }
-    
-    }
-    // dbg(idx,outeridx)
-    cout<<(idx+1)<<" ";
-    ll ind = 1;
-    temp[0] = {unique[outeridx].first,0};
-    for (ll j = 0; j < unique.size(); j++)
-    {
-      if(outeridx!=j){
-        if(unique[j].second<unique[outeridx].second){
-          temp[ind] = {unique[j].first,unique[j].second + 1};
-        }
-        else{
-          temp[ind] = {unique[j].first,unique[j].second};
-
-        }
-        ind++;
-      }
-    }
-    unique = temp;
-    // dbg(temp);
-    
-
-
-    
-
+    cin>>b[i];
    }
    
    
+   
+   cout<<(n+m)<<endl;
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 }
-
-
-
-
