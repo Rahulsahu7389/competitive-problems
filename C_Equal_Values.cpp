@@ -46,84 +46,33 @@ T power(T x,T n){
   return pro;
 }
 
-ll fun(ll a, ll b,vector<ll> & v,ll k){
-    // ll sz = b - a + 1;
-    ll n = v.size();
-   ll l = 0;
-   ll r = 0;
-   map<ll,ll> m;
-   ll cnt = 0;
-   ll ans = 0;
-   while(r<n){
-    if(m.find(v[r]) == m.end() ){
-        m[v[r]]++;
-        cnt++;
-    }
-    else{
-        m[v[r]]++;
-        
-    }
-    while((r - l + 1)>b || (cnt)>k){
-        if(m[v[l]]==1){
-            cnt--;
-            // m.erase(v[l]);
-        }
-        // else{
-        m[v[l]]--;
-        // }
-        l++;
-    }
-    if(cnt<=k && ((r - l + 1)<=b && (r - l + 1)>=a)){
-        ans += (r - l + 1);
-    }
-    r++;
-   }
-   return ans;
-}
-ll atMostK(ll a, ll b, vector<ll>& v, ll k) {
-    if (k == 0) return 0;  // no valid subarrays
-    ll n = v.size();
-    ll ans = 0;
-    ll l = 0;
-    map<ll, ll> freq;
-
-    for (ll r = 0; r < n; r++) {
-        freq[v[r]]++;
-
-        // shrink if distinct > k
-        while (freq.size() > k) {
-            freq[v[l]]--;
-            if (freq[v[l]] == 0) freq.erase(v[l]);
-            l++;
-        }
-
-        // Count subarrays ending at r with length in [a, b]
-        ll len = r - l + 1;
-        if (len >= a) {
-            ll start_min = max(l, r - b + 1);
-            ll start_max = r - a + 1;
-            if (start_max >= start_min) {
-                ans += (start_max - start_min + 1);
-            }
-        }
-    }
-
-    return ans;
-}
-
 void solve(){
    //your code starts from here
-   ll n,k,a,b;
-   cin>>n>>k>>a>>b;
+   ll n;
+   cin>>n;
    vector<ll> v(n);
    for (ll i = 0; i < n; i++)
    {
     cin>>v[i];
    }
-   ll ans1 = atMostK(a,b,v,k) ;
-   ll ans2 = atMostK(a,b,v,k-1);
-   cout<<(ans1 - ans2)<<endl;
-//    dbg(ans2)
+   map<ll,vector<ll>> m;
+   for (ll i = 0; i < n; i++)
+   {
+    if(m.find(v[i]) == m.end()){
+        m[v[i]] = {i};
+    }
+    else{
+        m[v[i]].pb(i);
+    }
+   }
+   ll mini = 2e18;
+   for(auto val:m){
+    ll s1 = (val.second[0])*val.first;
+    ll s2 = (n - val.second.back() -1)*val.first;
+    mini = min(mini,(s1+s2));
+   }
+   cout<<mini<<endl;
+   
    
    
 }

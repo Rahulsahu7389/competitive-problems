@@ -45,86 +45,64 @@ T power(T x,T n){
   }
   return pro;
 }
-
-ll fun(ll a, ll b,vector<ll> & v,ll k){
-    // ll sz = b - a + 1;
-    ll n = v.size();
-   ll l = 0;
-   ll r = 0;
-   map<ll,ll> m;
-   ll cnt = 0;
-   ll ans = 0;
-   while(r<n){
-    if(m.find(v[r]) == m.end() ){
-        m[v[r]]++;
-        cnt++;
+ll calmed(ll n){
+    if(n%2==0){
+        return(n/2 - 1);
     }
     else{
-        m[v[r]]++;
-        
+        return (n/2);
     }
-    while((r - l + 1)>b || (cnt)>k){
-        if(m[v[l]]==1){
-            cnt--;
-            // m.erase(v[l]);
-        }
-        // else{
-        m[v[l]]--;
-        // }
-        l++;
-    }
-    if(cnt<=k && ((r - l + 1)<=b && (r - l + 1)>=a)){
-        ans += (r - l + 1);
-    }
-    r++;
-   }
-   return ans;
-}
-ll atMostK(ll a, ll b, vector<ll>& v, ll k) {
-    if (k == 0) return 0;  // no valid subarrays
-    ll n = v.size();
-    ll ans = 0;
-    ll l = 0;
-    map<ll, ll> freq;
-
-    for (ll r = 0; r < n; r++) {
-        freq[v[r]]++;
-
-        // shrink if distinct > k
-        while (freq.size() > k) {
-            freq[v[l]]--;
-            if (freq[v[l]] == 0) freq.erase(v[l]);
-            l++;
-        }
-
-        // Count subarrays ending at r with length in [a, b]
-        ll len = r - l + 1;
-        if (len >= a) {
-            ll start_min = max(l, r - b + 1);
-            ll start_max = r - a + 1;
-            if (start_max >= start_min) {
-                ans += (start_max - start_min + 1);
-            }
-        }
-    }
-
-    return ans;
 }
 
 void solve(){
    //your code starts from here
-   ll n,k,a,b;
-   cin>>n>>k>>a>>b;
-   vector<ll> v(n);
+   ll n;
+   cin>>n;
+   string s;
+   cin>>s;
+   vector<ll> a;
+   vector<ll> b;
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i];
+    if(s[i] == 'a'){
+        a.pb(i);
+    }
+    else{
+        b.pb(i);
+    }
    }
-   ll ans1 = atMostK(a,b,v,k) ;
-   ll ans2 = atMostK(a,b,v,k-1);
-   cout<<(ans1 - ans2)<<endl;
-//    dbg(ans2)
+   ll meda = calmed(a.size());
+   ll medb = calmed(b.size());
+//    dbg(a,meda)
+   ll ans1 = 0;
+   for (ll i = 0; i < a.size(); i++)
+   {
+    if(i<meda){
+        ll sum = (a[meda] - a[i] - 1) - (meda - i -1);
+        ans1+= sum;
+        
+    }
+    else if(i>meda){
+        ll sum =(a[i] - a[meda]  - 1) - (i - meda -1);
+        ans1+= sum;
+    }
+   }
+   ll ans2 = 0;
+   for (ll i = 0; i < b.size(); i++)
+   {
+    if(i<medb){
+        ll sum = (b[medb] - b[i] - 1) - (medb - i -1);
+        ans2+= sum;
+        
+    }
+    else if(i>medb){
+        ll sum =(b[i] - b[medb]  - 1) - (i - medb -1);
+        ans2+= sum;
+    }
+   }
+   cout<<(min(ans1,ans2))<<endl;
    
+
    
 }
 
