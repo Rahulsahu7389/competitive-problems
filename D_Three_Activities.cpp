@@ -50,9 +50,9 @@ bool custom(pair<ll,ll> a, pair<ll,ll> b){
     
     return (a.first>b.first);
 }
-bool custom2(vector<ll> a, vector<ll> b){
+bool custom2(ll a, ll b){
     
-    return (a[0]>b[0]);
+    return (a>b);
 }
 
 void solve(){
@@ -83,40 +83,45 @@ void solve(){
    sort(all(a),custom);
    sort(all(b),custom);
    sort(all(c),custom);
-//    dbg(a);
-   vector<vector<ll>> v;
-   for (ll i = 0; i < 3; i++)
-   {
-    v.pb({a[i].first,a[i].second,0});
-    
-   }
-   for (ll i = 0; i < 3; i++)
-   {
-    v.pb({b[i].first,b[i].second,1});
-    
-   }
-   for (ll i = 0; i < 3; i++)
-   {
-    v.pb({c[i].first,c[i].second,2});
-    
-   }
-   sort(all(v),custom2);
-   ll x = v[0][0];
-   vector<ll>vis(n);
-   vector<ll>visrow(3);
-   vis[v[0][1]] = 1;
-   visrow[v[0][2]] = 1;
-//    dbg(v)
 
-   for (ll i = 1; i < 9; i++)
+   vector<vector<pair<ll,ll>>> v(3,vector<pair<ll,ll>>(3));
+   for (ll i = 0; i < 3; i++)
    {
-    if(vis[v[i][1]]==0 && visrow[v[i][2]]==0){
-        x += v[i][0];
-        vis[v[i][1]] = 1;
-        visrow[v[i][2]] = 1;
-    }
+    v[0][i] = a[i];
    }
-   cout<<x<<endl;
+   for (ll i = 0; i < 3; i++)
+   {
+    v[1][i] = b[i];
+   }
+   for (ll i = 0; i < 3; i++)
+   {
+    v[2][i] = c[i];
+   }
+//    dbg(v);
+   ll maxi = -1;
+   for (ll i = 0; i < 3; i++)
+   {
+    
+    for (ll j = 0; j < 3; j++)
+    {
+        
+        for (ll k = 0; k < 3; k++)
+        {
+            ll sum = 0;
+            if(v[0][i].second!=v[1][j].second && v[0][i].second!=v[2][k].second && v[1][j].second!=v[2][k].second){
+                // dbg(i,j,k)
+                sum += (v[0][i].first + v[1][j].first + v[2][k].first);
+                maxi = max(maxi,sum);
+            }
+        }
+            
+        
+    }
+    
+   }
+   cout<<maxi<<endl;
+   
+   
    
    
 
