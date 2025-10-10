@@ -46,43 +46,30 @@ T power(T x,T n){
   return pro;
 }
 
-void solve(ll a){
+void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   vector<ll> v(n);
+   vector<ll> a(n);
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i];
+    cin>>a[i];
    }
-   if(a == 1){
-    cout<<5<<endl;
-    return;
+   vector<ll> dp(n);
+   dp[0] = a[0];
+   for (ll i = 1; i < n; i++)
+   {
+    dp[i] = a[i] + dp[i-1];
+    if(i-1>=0){
+      ll val =abs(a[i] - a[i-1]);
+      if(i-2 >=0)val += a[i-2];
+      if(i-3>=0)val += dp[i-3];
+      dp[i] = min(dp[i],val);
+
+    }
    }
-   else if(a == 2){
-    cout<<1<<endl;
-    return;
-   }
-   else if(a == 3){
-    cout<<0<<endl;
-    return;
-   }
-   else if(a == 4){
-    cout<<1<<endl;
-    return;
-   }
-   else if(a == 5){
-    cout<<4<<endl;
-    return;
-   }
-   else if(a == 6){
-    cout<<3000000000<<endl;
-    return;
-   }
-   else{
-    cout<<1<<endl;
-    return;
-   }
+   cout<<dp[n-1]<<endl;
+   
    
 }
 
@@ -92,10 +79,8 @@ int main()
     cin.tie(0); 
     ll T; 
     cin >> T; 
-    ll a = 1;
     while (T--) { 
-        solve(a); 
-        a++;
+        solve(); 
     } 
     return 0; 
 }

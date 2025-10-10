@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = true;  // toggle before submission
+bool DEBUG_MODE = false;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -46,35 +46,56 @@ T power(T x,T n){
   return pro;
 }
 
-void solve(ll a){
+void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   vector<ll> v(n);
+   vector<pair<ll,ll>> v(n);
+   map<ll,vector<ll>> mp;
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i];
+    cin>>v[i].first;
+    v[i].second = i;
+    mp[v[i].first].push_back(i);
    }
-   if(a == 1){
-    cout<<3<<endl;
-    cout<<"2 3 1"<<endl;
-    return;
+   dbg(mp)
+   bool single = false;//have all duplicates
+   for (auto &i : mp)
+   {
+    if(i.second.size()==1){
+      single = true;
+      break;
+    }
    }
-   else if(a == 2){
-    cout<<2<<endl;
-    cout<<"3 1 2"<<endl;
-    return;
-   }
-   else if(a == 3){
-    cout<<2<<endl;
-    cout<<"2 1"<<endl;
-    return;
+   vector<ll> ans(n);
+   if(single){
+    sort(all(v));
+    for (ll i = 1; i < n; i++)
+    {
+      //we want to put it according to the input array a given in the question
+      ans[v[i].second] = v[i-1].second + 1;//changing into 1 based by adding 1
+
+    }
+    ans[v[0].second] = v[n-1].second +1;
+    dbg(ans)
    }
    else{
-    cout<<1<<endl;
-    cout<<1<<endl;
-    return;
+    for(auto a:mp){
+      ll sz = a.second.size();
+      for (ll i = 0; i < sz; i++)
+      {
+        ll pos = (i==0)?(a.second[sz-1]):(a.second[i-1]);//finding pos for ans like according to input array where to put in ans
+        ans[a.second[i]] = pos + 1;//answer me index hona chaiye not element
+      }
+      
+    }
    }
+   cout<<((single)?(n-1):n)<<endl;
+   for(auto val:ans){
+    cout<<val<<" ";
+   }
+   cout<<endl;
+   
    
 }
 
@@ -84,10 +105,8 @@ int main()
     cin.tie(0); 
     ll T; 
     cin >> T; 
-    ll a = 1;
     while (T--) { 
-        solve(a); 
-        a++;
+        solve(); 
     } 
     return 0; 
 }
