@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -48,74 +48,47 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
+   ll n,k;
+   cin>>n>>k;
    vector<ll> v(n);
+   vector<ll> b(k);
    for (ll i = 0; i < n; i++)
    {
     cin>>v[i];
    }
-   map<ll,pair<ll,ll>> m;
-   ll r = 1;
-   ll l = 0;
-   ll ans = 2e18;
-   while (r<n)
+   for (ll i = 0; i < k; i++)
    {
-    if(v[r]!=v[r-1]){
-      // if(m.find(v[r-1]) == m.end()){
-      //   m[v[r-1]] = {l,r-1};
-      //   l = r;
-      // }
-      // else{
-      //   if((r -l)>(m[v[r-1]].second - m[v[r-1]].first)){
-      //     m[v[r-1]] = {l,r-1};
-      //     l = r;
-      //   }
-      // }
-      ll leftidx = l + 1;
-      ll rightidx = r-1 + 1;
-      ll ele = v[r-1];
-      ll sum = ((leftidx-1)*ele) + ((n - rightidx )*ele);
-      ans = min(ans,sum);
-      dbg(leftidx,rightidx,sum,r)
-      l = r;
-      r++;
+    cin>>b[i];
+   }
+   sort(v.rbegin(),v.rend());
+   sort(all(b));
+   ll idx = 0;
+   vector<bool> flag(n,false);
+   ll l = 0;
+   ll r = 0;
+   while(r<n && l<k){
+    while(l<k && r<n && (b[l]-1)>0){
+        flag[r] = true;
+        b[l]--;
+        r++;
+        // dbg("first")
     }
-    else if(v[r] == v[r-1]){
-      r++;
-
+    // dbg("second")
+    l++;
+    r++;
+   }
+   while(r<n){
+    flag[r] = true;
+    r++;
+   }
+   ll ans = 0;
+   for (ll i = 0; i < n; i++)
+   {
+    if(flag[i]){
+        ans += v[i];
     }
    }
-  //  if(m.find(v[r-1]) == m.end()){
-  //     m[v[r-1]] = {l,r-1};
-  //     // l = r;
-  //   }
-  //   else{
-  //     if((r -l)>(m[v[r-1]].second - m[v[r-1]].first)){
-  //       m[v[r-1]] = {l,r-1};
-  //       // l = r;
-  //     }
-  //   }
-  ll leftidx = l + 1;
-      ll rightidx = r-1 + 1;
-      ll ele = v[r-1];
-      ll sum = ((leftidx-1)*ele) + ((n - rightidx )*ele);
-      ans = min(ans,sum);
-      dbg(leftidx,rightidx,sum,r)
-
-  //  dbg(m)
-   
-  //  for(auto val: m){
-  //   ll ele = val.first;
-  //   ll leftidx = val.second.first + 1;
-  //   ll rightidx = val.second.second + 1;
-  //   ll sum = ((leftidx-1)*ele) + ((n - rightidx )*ele);
-  //   // dbg(ele,leftidx,rightidx,sum)
-  //   ans = min(sum,ans);
-  //  }
    cout<<ans<<endl;
-
-   
    
 }
 
