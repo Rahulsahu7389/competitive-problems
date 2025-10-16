@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -46,57 +46,23 @@ T power(T x,T n){
   return pro;
 }
 
-bool custom(pair<ll,ll> a ,pair<ll,ll> b){
-  return (a.first>b.first);
-}
-
 void solve(){
-  vector<pair<ll,ll>> v =  {{60 ,10 },{100, 50} ,{120, 30} ,{30 ,20 },{200, 80} ,{75 ,25 },{50 ,10 },{90 ,40 },{20 ,5 },{10 ,2}};
-  vector<pair<double,ll>> a(10);
-  cout<<"chla\n";
-  for (ll i = 0; i < 10; i++)
-  {
-    a[i] = {(((double)v[i].first)/v[i].second),v[i].second};
-  }
-  sort(all(a),custom);
-  for (auto &&i : a)
-  {
-    cout<<i.first<<" "<<i.second<<endl;
-  }
-  ll ans = 0;
-  ll w = 100;
-  for (ll i = 0; i < 10; i++)
-  {
-    if(a[i].second<w){
-      ans += a[i].first*a[i].second;
-      w -= a[i].second;
-      cout<<a[i].second<<"<-"<<i<<endl;
-      a[i] = {0,0};
-    }
-    if(w<=0){
-      break;
-    }
-  }
-  ll maxi = 0;
-  for (ll i = 0; i < 10; i++)
-  {
-    maxi = max(maxi,(ll)(w*(a[i].first)));
-  }
-  // cout<<<<endl;
-  cout<<(ans + maxi)<<endl;
-  cout<<endl;
-  
-  
+   //your code starts from here
+   ll a,b,m;
+   cin>>a>>b>>m;
+   ll t1 = m/a;
+   ll t2 = m/b;
+   cout<<(t1 + t2 + 2)<<endl;
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 }
