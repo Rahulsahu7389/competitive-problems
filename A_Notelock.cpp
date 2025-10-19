@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = true;  // toggle before submission
+bool DEBUG_MODE = false;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -46,57 +46,46 @@ T power(T x,T n){
   return pro;
 }
 
-ll isIt(ll n,ll sz){
-    ll t = n;
-    vector<ll> v;
-    // bool only36 = true;
-    
-    while(t>0){
-        ll rem = t%10;
-        if(v.size()>sz){
-            return 2LL;
-        }
-        if(rem !=3 && rem!=6){
-            return 0LL;
-        }
-
-        v.pb(rem);
-        t /= 10;
-    }
-    // dbg(v)
-    if(v.size() == sz){
-        return 1LL;
-    }
-    return 0LL;
-}
-
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   if(n == 1 || n == 3){
-    cout<<-1<<endl;
-    return;
+   ll n,k;
+   cin>>n>>k;
+   string s;
+   cin>>s;
+   ll idx = 0;
+   ll cnt = 0;
+   while(idx<n && s[idx]!='1'){
+    idx++;
    }
-   if(n%2==0){
-    for (ll i = 0; i < n-2; i++)
-    {
-        cout<<3;
-    }
-    cout<<66<<endl;
-    
-   }
-   else{
-    for (ll i = 0; i < n-4; i++)
-    {
-        cout<<3;
-    }
-    cout<<6366<<endl;
-    
-   }
-   
-   
+   dbg(idx)
+   for (ll i = idx; i < n; i++)
+   {
+    set<char> st;
+    bool aage = false;
+    if(s[i] == '1'){
+        ll previdx = max(0LL,i - (k -1LL));
 
+        dbg(i,previdx)
+        for (ll j = previdx; j < i; j++)
+        {
+            if(s[j] == '1'){
+                aage = true;
+            }
+        }
+        
+        if(aage){
+            continue;
+        }
+        else{
+            cnt++;
+        }
+        
+    }
+   }
+   cout<<cnt<<endl;
+   
+   
+   
 }
 
 int main() 

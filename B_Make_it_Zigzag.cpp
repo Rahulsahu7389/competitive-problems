@@ -46,57 +46,45 @@ T power(T x,T n){
   return pro;
 }
 
-ll isIt(ll n,ll sz){
-    ll t = n;
-    vector<ll> v;
-    // bool only36 = true;
-    
-    while(t>0){
-        ll rem = t%10;
-        if(v.size()>sz){
-            return 2LL;
+void solve() {
+    ll n;
+    cin >> n;
+    vector<ll> a(n);
+    for (ll i = 0; i < n; i++) cin >> a[i];
+
+    vector<ll> prefix_max(n);
+    prefix_max[0] = a[0];
+    for (ll i = 1; i < n; i++)
+        prefix_max[i] = max(prefix_max[i-1], a[i]);
+
+    ll ans = 0;
+
+    for (ll i = 1; i < n; i += 2) { // 1-based even = 0-based odd
+        ll left = a[i-1];
+        ll right = (i+1 < n ? a[i+1] : LLONG_MIN);
+        ll M = max(left, right);
+
+        if (a[i] > M) continue; // already peak
+
+        ll dec1 = LLONG_MAX, dec2 = LLONG_MAX;
+
+        // Strategy A: Use max(1..i)
+        ll pmax = prefix_max[i];
+        if (pmax > M) {
+            dec1 = 0;
+        } else {
+            dec1 = M - pmax + 1; // need to decrement neighbors
         }
-        if(rem !=3 && rem!=6){
-            return 0LL;
-        }
 
-        v.pb(rem);
-        t /= 10;
-    }
-    // dbg(v)
-    if(v.size() == sz){
-        return 1LL;
-    }
-    return 0LL;
-}
+        // Strategy B: Keep a[i], just decrement neighbors
+        dec2 = M - a[i] + 1;
 
-void solve(){
-   //your code starts from here
-   ll n;
-   cin>>n;
-   if(n == 1 || n == 3){
-    cout<<-1<<endl;
-    return;
-   }
-   if(n%2==0){
-    for (ll i = 0; i < n-2; i++)
-    {
-        cout<<3;
+        ans += min(dec1, dec2);
+        // You don't actually have to modify the array for the answer
+        // But if needed to construct final array, you'd apply the chosen option
     }
-    cout<<66<<endl;
-    
-   }
-   else{
-    for (ll i = 0; i < n-4; i++)
-    {
-        cout<<3;
-    }
-    cout<<6366<<endl;
-    
-   }
-   
-   
 
+    cout << ans << "\n";
 }
 
 int main() 

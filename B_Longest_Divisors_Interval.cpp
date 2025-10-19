@@ -46,56 +46,37 @@ T power(T x,T n){
   return pro;
 }
 
-ll isIt(ll n,ll sz){
-    ll t = n;
-    vector<ll> v;
-    // bool only36 = true;
+void primeFactorisation(ll n){
+    for (ll i = 2; i*i <=n; i++)
+    {
+        while(n%i == 0){
+            cout<<i<<endl;
+            n /= i;
+        }
+    }
     
-    while(t>0){
-        ll rem = t%10;
-        if(v.size()>sz){
-            return 2LL;
-        }
-        if(rem !=3 && rem!=6){
-            return 0LL;
-        }
-
-        v.pb(rem);
-        t /= 10;
+    if(n!=1){
+        cout<<n<<endl;
     }
-    // dbg(v)
-    if(v.size() == sz){
-        return 1LL;
-    }
-    return 0LL;
 }
 
 void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   if(n == 1 || n == 3){
-    cout<<-1<<endl;
+   if(n == 1){
+    cout<<1<<endl;
     return;
    }
-   if(n%2==0){
-    for (ll i = 0; i < n-2; i++)
+    for (ll i = 2; i <n; i++)
     {
-        cout<<3;
+        if(n%i!=0){
+            cout<<(i-1)<<endl;
+            return;
+        }
     }
-    cout<<66<<endl;
+    cout<<(n)<<endl;
     
-   }
-   else{
-    for (ll i = 0; i < n-4; i++)
-    {
-        cout<<3;
-    }
-    cout<<6366<<endl;
-    
-   }
-   
-   
 
 }
 
