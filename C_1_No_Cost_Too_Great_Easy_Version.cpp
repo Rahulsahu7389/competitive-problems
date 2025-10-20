@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -45,55 +45,112 @@ T power(T x,T n){
   }
   return pro;
 }
-
-void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> v(n);
-    for (ll i = 0; i < n; i++) cin >> v[i];
-
-    ll maxi = v[0];
-    for (ll i = 0; i < n; i++)
+bool primeFactorisation(int n,set<ll> & s){
+    set<ll> temp(all(s));
+    dbg(n)
+    for (int i = 2; i*i <=n; i++)
     {
-        maxi = max(v[i],maxi);
-        if(i%2!=0){
-            v[i] = maxi;
+        while(n%i == 0){
+            if(temp.count(i)>0){
+                return true;
+            }
+            s.insert(i);
+            n /= i;
         }
     }
-    ll ans = 0;
-    for (ll i = 0; i < n; i++)
-    {
-        // maxi = max(v[i],maxi);
-        if(i%2==0 && i!=0 && i!=n-1){
-            if(v[i-1]<=v[i] && v[i]<v[i+1]){
-                ans += abs(v[i] - v[i-1]) + 1;
-                // v[i] = v[i] -  abs(v[i] - v[i-1]) - 1;
-                dbg(v[i])
-            }
-            else if(v[i-1]>v[i] && v[i]>=v[i+1]){
-                ans += abs(v[i] - v[i+1]) + 1;
-                // v[i] = v[i] - abs(v[i] - v[i+1]) - 1;
-                dbg(v[i])
-
-            }
-            else if(v[i-1]<=v[i] && v[i]>=v[i+1]){
-                ans += abs(v[i] - min(v[i+1],v[i-1])) + 1;
-                v[i] = v[i] - abs(v[i] - min(v[i+1],v[i-1])) - 1;
-                dbg("third")
-            }
-           
-        }
-        else if(i == n-1 && (i%2==0) && (v[i-1]<=v[i])){
-            ans += abs(v[i] - v[i-1]) + 1;
-        }
-        else if(i == 0 && (v[i]>=v[i+1])){
-            ans += abs(v[i] - v[i+1])+ 1;
-        }
-         dbg(i,ans)
-    }
-    cout<<ans<<endl;
     
-    dbg(v)
+    if(n!=1){
+        if(temp.count(n)>0){
+            return true;
+        }
+        s.insert(n);
+        // cout<<n<<endl;
+    }
+
+    
+    return false;
+}
+
+void solve(){
+   //your code starts from here
+   ll n;
+   cin>>n;
+   vector<ll> v(n);
+   set<ll> s;
+   map<ll,ll> m;
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>v[i];
+   }
+   for (ll i = 0; i < n; i++)
+   {
+    ll b;
+    cin>>b;
+   }
+
+   //for 0
+   for (ll k = 0; k < n; k++)
+   {
+    ll t = v[k];
+    set<ll>s ;
+
+    for (int i = 2; i*i <=t; i++)
+    {
+        while(t%i == 0){
+            s.insert(i);
+            t /= i;
+        }
+    }
+    
+    if(t!=1){
+        s.insert(t);
+    }
+    for (auto &&i : s )
+    {
+        if(m[i]>0){
+            cout<<0<<endl;
+                return;
+        }
+        else{
+            m[i]++;
+        }
+    }
+    
+   }
+
+//    for 1
+   for (ll k = 0; k < n; k++)
+   {
+    ll t = v[k] + 1;
+    for (int i = 2; i*i <=t; i++)
+    {
+        while(t%i == 0){
+            if(m[i]>0){
+                cout<<1<<endl;
+                return;
+            }
+            // s.insert(i);
+            t /= i;
+        }
+    }
+    
+    if(t!=1){
+        if(m[t]>0){
+            cout<<1<<endl;
+            return ;
+        }
+        // s.insert(t);
+        // cout<<n<<endl;
+    }
+   }
+
+   cout<<2<<endl;
+   
+   
+
+   
+   
+   
 
 }
 
