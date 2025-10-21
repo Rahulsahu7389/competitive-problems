@@ -48,31 +48,42 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   vector<ll> v(n);
-   ll mini = 1e18;
-   ll maxi = -1;
+   ll n,c;
+   cin>>n>>c;
+   vector<ll> b(n),d(n);
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i];
-    maxi = max(maxi,v[i]);
-    mini = min(mini,v[i]);
+    cin>>b[i];
    }
-   for (int i = maxi - 1; i > mini; i--)
+   for (ll i = 0; i < n; i++)
    {
-    if(mini%i!=0 && maxi%i!=0){
-      cout<<i<<endl;
-      return;
-    }
+    cin>>d[i];
    }
-   for (int i = mini - 1; i >= 0; i--)
+   vector<vector<ll>> dp(n+1,vector<ll>(n,0));//dp(i,j) - for ith cycle min cost for index j
+   for (ll i = 0; i < n; i++)
    {
-    if(mini%i!=0 && maxi%i!=0){
-      cout<<i<<endl;
-      return;
-    }
+    dp[0][i] = b[i]*d[i];
    }
+   ll ans = 0;
+   for (ll i = 0; i < n; i++)
+   {
+    ans += dp[0][i];
+   }
+   for (ll i = 1; i < n; i++)
+   {
+    for (ll j = 1; j < n; j++)
+    {
+        dp[i][j] = min(dp[i-1][j],(d[j]*(b[(j-i +n)%n])));
+
+    }
+    ll curr =0;
+    for(ll j=0;j<n;j++) curr += dp[i][j];
+    ans += min(ans,i*c + curr);
+    
+   }
+   cout<<ans<<endl;
+   
+   
    
    
    
