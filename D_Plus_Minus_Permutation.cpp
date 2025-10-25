@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = true;  // toggle before submission
+bool DEBUG_MODE = false;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -48,32 +48,27 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   vector<ll> a(n);
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>a[i];
+   ll n,a,b;
+   cin>>n>>a>>b;
+   ll lcm = (a*b)/__gcd(a,b);
+   ll common = n/lcm;
+   ll x = n/a;
+   ll y = n/b;
+   x -= common;
+   y -= common;
+   dbg(lcm,common,x,y)
+   if(x<=0){
+    ll sum = ((y)*(y+1))/2;
+    cout<<-sum<<endl;
+    return;
    }
-   
-   ll t = 1;
-   for (ll i = 1; i <=60; i++)
-   {
-    t *= 2;
-    set<ll> s;
-    for (ll j = 0; j < n; j++)
-    {
-      s.insert((a[j]%t));
-    }
-    if(s.size() == 2){
-      cout<<t<<endl;
-      return;
-    }
-    
+   else{
+    ll t = n - x;
+    ll backsum = (((n)*(n+1))/2) - ((t*(t+1))/2);
+    ll frontsum = (((y)*(y+1))/2);
+    dbg(backsum,frontsum)
+    cout<<(backsum - frontsum)<<endl;
    }
-   
-
-   
 }
 
 int main() 
