@@ -55,73 +55,42 @@ void solve(){
    {
     cin>>v[i];
    }
-   if(n == 1){
-    cout<<1<<endl;return;
-   }
-   vector<ll> s;
-   s.pb(v[0]);
-   for (ll i = 1; i < n; i++)
-   {
-    if(v[i]==v[i-1]){
-        continue;
-    }
-    else{
-        s.pb(v[i]);
-    }
-   }
-//    dbg(s)
-   if(s.size() == 1){
+   
+   auto it = unique(all(v));
+   ll dis = distance(v.begin(),it);
+   v.resize(dis);
+   ll sz = v.size();
+   if(sz== 1){
     cout<<1<<endl;
     return;
    }
-   if(s.size() == 2){
+   if(sz == 2){
     cout<<2<<endl;
     return;
    }
-   vector<bool> ans1(s.size(),true);
-   vector<bool> ans2(s.size(),true);
-//    ll prev = 0;
-//    ll idx = 1;
-//    ll ahead = 2;
-   for (ll idx = 1; idx<s.size()-1; idx++)
-   {
-    if(s[idx]>s[idx-1] && (s[idx]<s[idx+1])){
-        ans1[idx] = false; 
-    }
-   }
-   reverse(all(s));
-
-   for (ll idx = 1; idx < s.size()-1; idx++)
-   {
-    if(s[idx]>s[idx-1] && (s[idx]<s[idx+1])){
-        ans2[idx] = false; 
-    }
-   }
+//    dbg(v)
    ll cnt1 = 0;
-   ll cnt2 = 0;
-//    for (auto &&i : ans1)
-//    {
-//     cout<<i<<" ";
-//    }
-//    cout<<endl;
-//    for (auto &&i : ans2)
-//    {
-//     cout<<i<<" ";
-//    }
-//    cout<<endl;
-   
-   
-   for (ll i = 0; i < ans1.size(); i++)
+   vector<bool> flag(sz,true);
+   for (ll i = 1; i < sz-1; i++)
    {
-    if(ans1[i]){
+    if((v[i]>v[i-1]) && (v[i]<v[i+1])){
+        flag[i] = false;
+    }
+    if((v[i]<v[i-1]) && (v[i]>v[i+1])){
+        flag[i] = false;
+    }
+   }
+   for (ll i = 0; i < sz; i++)
+   {
+    if(flag[i]){
         cnt1++;
     }
-    if(ans2[i]){
-        cnt2++;
-    }
    }
-//    dbg(cnt1,cnt2)
-   cout<<min(cnt1,cnt2)<<endl;
+   cout<<cnt1<<endl;
+   
+
+   
+   
    
 
    
