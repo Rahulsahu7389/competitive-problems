@@ -68,30 +68,38 @@ void solve(){
    }
    vector<ll> x = fun(a);
    vector<ll> y = fun(b);
-   dbg(x,y)
+//    dbg(x,y)
 
-   if(a<b && (x.size()<y.size())){
+   if(x.size()<y.size()){
     cout<<-1<<endl;
     return;
    }
-//    else if(a>b && (x.size()<y.size()))not possible 
-   else{
-    ll n = x.size();
-    ll idx = 0;
-    for (ll i = 0; i < n; i++)
-    {
-        if(x[i] == 1){
-            idx = i;
-            break;
-        }
+   ll n = x.size();
+   ll num = 0;
+   for (ll i = 0; i < n-1; i++)
+   {
+    if(((a&(1<<i))!=0) && !((b&(1<<i))!=0)){
+        num = (num | (1<<i));
     }
-    
-    for (int i = n - 1; i >= 0; i--)
-    {
-        
+    else if(!((a&(1<<i))!=0) && ((b&(1<<i))!=0)){
+        num = (num | (1<<i));
+
     }
-    
    }
+   ll t = 0;
+   if((!((a&(1<<(n-1)))!=0) && ((b&(1<<(n-1)))!=0)) || (((a&(1<<(n-1)))!=0) && !((b&(1<<(n-1)))!=0))){
+    t = (t | (1<<(n-1)));
+   }
+   else{
+        cout<<1<<endl;
+       cout<<num<<endl;
+       return;
+   }
+   cout<<2<<endl;
+   cout<<(num)<<" "<<t<<endl;
+
+   
+   
 
 
 

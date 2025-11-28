@@ -48,47 +48,119 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   vector<ll> a(n);
-   vector<ll> b(n);
-   
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>a[i];
-   }
-   bool flag = true;
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>b[i];
-    if(a[i] != b[i]){
-        flag = false;
-    }
-   }
-   if(flag){
-    cout<<"Yes\n";
-    return;
-   }
-   bool flag2 = true;
-   for (ll i = 0; i < n-1; i++)
-   {
-    if((a[i]<a[i+1] && (b[i]>b[i+1])) || ((a[i]>a[i+1] && (b[i]<b[i+1])))){
-        flag2 = false;
-    }
-   }
-   if(flag2){
-    cout<<"Yes\n";
+   ll n,k;
+   cin>>n>>k;
+   string s;
+   cin>>s;
+   ll score = 0;
+   if(s[k-1] == '1'){
+    score++;
    }
    else{
-    cout<<"No\n";
+    cout<<-1<<endl;
+    return;
    }
+   k--;
+   ll l = (k - 1 + n) % n;
+   ll r = (k+1)%n;
+
+   ll cnt = 2;
+   vector<ll> ans;
+   ans.pb(k);
+
+   while(l!=r){
+    if(score<=0){
+        cout<<-1<<endl;
+        return;
+    }
+    if(cnt%2==0){
+        if((s[l] == '0' && s[r] == '0') || (s[l] == '0' && s[r] == '1')){
+            ans.pb(l); 
+            l = (l - 1 + n) % n;
+        }
+        else if((s[l] == '1' && s[r] == '0')){
+            ans.pb(r);
+            r = (r+1)%n;
+        }
+        else{
+            ans.pb(r);
+            score--;
+            r = (r+1)%n;
+            
+        }
+    }
+    else{
+        if((s[l] == '0' && s[r] == '0')){
+            ans.pb(l);
+            l = (l - 1 + n) % n;
+        }
+        else if((s[l] == '0' && s[r] == '1')){
+            ans.pb(r);
+            r = (r+1)%n;
+            score++;
+            
+        }
+        else{
+            ans.pb(l);
+            l = (l - 1 + n) % n;
+            score++;
+        }
+    }
+    cnt++;
+   }
+
+   if(score<=0){
+        cout<<-1<<endl;
+        return;
+    }
+    if(cnt%2==0){
+        if((s[l] == '0' && s[r] == '0') || (s[l] == '0' && s[r] == '1')){
+            ans.pb(l); 
+            l = (l - 1 + n) % n;
+        }
+        else if((s[l] == '1' && s[r] == '0')){
+            ans.pb(r);
+            r = (r+1)%n;
+        }
+        else{
+            ans.pb(r);
+            score--;
+            r = (r+1)%n;
+            
+        }
+    }
+    else{
+        if((s[l] == '0' && s[r] == '0')){
+            ans.pb(l);
+            l = (l - 1 + n) % n;
+        }
+        else if((s[l] == '0' && s[r] == '1')){
+            ans.pb(r);
+            r = (r+1)%n;
+            score++;
+            
+        }
+        else{
+            ans.pb(l);
+            l = (l - 1 + n) % n;
+            score++;
+        }
+    }
+    cnt++;
+
+    if(score<=0){
+        cout<<-1<<endl;
+        return;
+    }
    
+   for (auto &&i : ans )
+   {
+    cout<<(i+1)<<" ";
+   }
+   cout<<endl;
    
-   
-   
-   
-   
-   
+
+
    
 }
 

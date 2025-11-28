@@ -50,46 +50,56 @@ void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   vector<ll> a(n);
-   vector<ll> b(n);
-   
+   vector<ll> v(n);
+   map<ll,ll> m;
+   set<ll> s;
    for (ll i = 0; i < n; i++)
    {
-    cin>>a[i];
+    cin>>v[i];
+    s.insert(v[i]);
+    m[v[i]]++;
    }
-   bool flag = true;
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>b[i];
-    if(a[i] != b[i]){
-        flag = false;
+   auto it = (--s.end());
+   ll ans = 0;
+   ans += m[*it];
+   auto temp = it;
+   --it;
+
+//    ll cntr = 0;
+   while(temp!=s.begin()){
+    // dbg("algj")
+    ll x = (*temp);
+    ll y = (*it);
+    if(abs(x - y)>1){
+        ans += m[y];
     }
-   }
-   if(flag){
-    cout<<"Yes\n";
-    return;
-   }
-   bool flag2 = true;
-   for (ll i = 0; i < n-1; i++)
-   {
-    if((a[i]<a[i+1] && (b[i]>b[i+1])) || ((a[i]>a[i+1] && (b[i]<b[i+1])))){
-        flag2 = false;
+    else{
+        if(m[y] > m[x]){
+            ll sum = abs(m[x] - m[y]);
+            ans += sum;
+        }
     }
+    temp = it;
+    --it;
    }
-   if(flag2){
-    cout<<"Yes\n";
-   }
-   else{
-    cout<<"No\n";
-   }
+//    dbg(ans)
+//    ll x = (*temp);
+//     ll y = (*it);
+//     if(abs(x - y)>1){
+//         ans += m[x];
+//     }
+//     else{
+//         if(m[y] > m[x]){
+//             ll sum = abs(m[x] - m[y]);
+//             ans += sum;
+//         }
+//     }
+    cout<<ans<<endl;
+
+
+
    
-   
-   
-   
-   
-   
-   
-   
+
 }
 
 int main() 
