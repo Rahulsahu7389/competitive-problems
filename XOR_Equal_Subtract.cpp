@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = true;  // toggle before submission
+bool DEBUG_MODE = false;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -46,44 +46,79 @@ T power(T x,T n){
   return pro;
 }
 
-void solve(){
-   //your code starts from here
-   ll n,x,y;
-   cin>>n>>x>>y;
+// void solve(){
+//    //your code starts from here
+//    ll n;
+//    cin>>n;
+//    vector<ll> v(n);
+//    for (ll i = 0; i < n; i++)
+//    {
+//     cin>>v[i];
+//    }
+//    ll tsum = ((n*(n-1))/2);
    
-   vector<ll> pre(n+1);
-//    f(x,y) = py - p(x-1); for prefix array
-   pre[0] = 0;
-   if(x == 1){
-    pre[y] = 0;
-   }
-   else{
-    pre[x-1] = 1;
-    pre[y] = 1;
-   }
-   ll cnt = 2;
-   for (ll i = 1; i <=n; i++)
-   {
-    if(i!=x-1 && i!=y){
-        pre[i] = cnt;
-        cnt++;
+   
+//    ll cnt = 0;
+//    for (ll i = 0; i < n; i++)
+//    {
+//     for (ll j = i+1; j < n; j++)
+//     {
+       
+//         ll l = (v[i]^v[j]);
+//         ll r = abs(v[i] - v[j]);
+//         // dbg(v[i],v[j],l,r)
+//         if(l != r){
+//             cnt++;
+//         }
+        
+//     }
+    
+//    }
+//    if(tsum == cnt){
+//     cout<<1<<endl;
+//     return;
+//    }
+//    if(cnt == 0){
+//     cout<<n<<endl;
+//     return;
+//    }
+//    ll alpha = tsum -cnt;
+//    dbg(alpha)
+//    double sum = (1 + sqrtl(1 + alpha*alpha))/2;
+//    ll cans = floorl(n - sum);
+//    cout<<(n -cans)<<endl;
+   
+   
+   
+   
+   
+// }
+
+void solve() {
+    ll n;
+    cin >> n;
+    vector<ll> v(n);
+    for (ll &x : v) cin >> x;
+
+    sort(v.begin(), v.end());
+
+    vector<ll> dp(n, 1);
+    ll ans = 1;
+
+    for (ll i = 0; i < n; i++) {
+        for (ll j = 0; j < i; j++) {
+            ll x = v[j], y = v[i];
+            
+            if ((x & y) == x) {
+                dp[i] = max(dp[i], dp[j] + 1);
+            }
+        }
+        ans = max(ans, dp[i]);
     }
-   }
 
-   dbg(pre)
-
-   for (ll i = 1; i <=n; i++)
-   {
-    cout<<(pre[i-1]^pre[i])<<" ";
-   }
-   cout<<endl;
-
-   
-   
-
-
-
+    cout << ans << "\n";
 }
+
 
 int main() 
 { 

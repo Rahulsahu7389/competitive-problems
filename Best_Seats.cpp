@@ -48,41 +48,22 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n,x,y;
-   cin>>n>>x>>y;
-   
-   vector<ll> pre(n+1);
-//    f(x,y) = py - p(x-1); for prefix array
-   pre[0] = 0;
-   if(x == 1){
-    pre[y] = 0;
-   }
-   else{
-    pre[x-1] = 1;
-    pre[y] = 1;
-   }
-   ll cnt = 2;
-   for (ll i = 1; i <=n; i++)
+   ll n;
+   cin>>n;
+   vector<ll> v(n);
+   for (ll i = 0; i < n; i++)
    {
-    if(i!=x-1 && i!=y){
-        pre[i] = cnt;
-        cnt++;
-    }
+    cin>>v[i];
    }
-
-   dbg(pre)
-
-   for (ll i = 1; i <=n; i++)
+   
+   ll mini = 1e18;
+   for (ll i = 1; i < n; i++)
    {
-    cout<<(pre[i-1]^pre[i])<<" ";
+    ll sum = v[i] + v[i-1];
+    mini = min(sum,mini);
    }
-   cout<<endl;
-
+   cout<<mini<<endl;
    
-   
-
-
-
 }
 
 int main() 

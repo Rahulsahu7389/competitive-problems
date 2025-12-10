@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = true;  // toggle before submission
+bool DEBUG_MODE = false;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -48,38 +48,73 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n,x,y;
-   cin>>n>>x>>y;
-   
-   vector<ll> pre(n+1);
-//    f(x,y) = py - p(x-1); for prefix array
-   pre[0] = 0;
-   if(x == 1){
-    pre[y] = 0;
+   string s;
+   cin>>s;
+   string t;
+   cin>>t;
+   map<char,ll> m1;
+   map<char,ll> m2;
+   for(auto val:s){
+    m1[val]++;
    }
-   else{
-    pre[x-1] = 1;
-    pre[y] = 1;
+   for(auto val:t){
+    m2[val]++;
    }
-   ll cnt = 2;
-   for (ll i = 1; i <=n; i++)
-   {
-    if(i!=x-1 && i!=y){
-        pre[i] = cnt;
-        cnt++;
+   dbg(m2)
+   bool flag = false;
+   for(auto val:m1){
+    if(m1[val.first]>m2[val.first]){
+        flag = true;
+        break;
+    }
+    else{
+        m2[val.first] -= m1[val.first];
     }
    }
-
-   dbg(pre)
-
-   for (ll i = 1; i <=n; i++)
-   {
-    cout<<(pre[i-1]^pre[i])<<" ";
+   dbg(m2)
+   if(flag){
+    cout<<"Impossible\n";
+    return;
    }
-   cout<<endl;
 
-   
-   
+   string temp = "";
+   for(auto val:m2){
+    for (ll i = 0; i < val.second; i++)
+    {
+        temp += val.first;
+    }
+    
+   }
+//    dbg(temp)
+   ll l = 0;//s
+   ll r = 0;//temp
+   string ans = "";
+   while(l<s.length() && r<temp.length()){
+    if(temp[r]<s[l]){
+        ans += temp[r];
+        r++;
+    }
+    else if(temp[r]>s[l]){
+        ans += s[l];
+        l++;
+    }
+    else{
+        ans += s[l];
+        l++;
+    }
+   }
+   dbg(ans)
+   while(l<s.length()){
+    ans += s[l];
+    l++;
+   }
+   while(r<temp.length()){
+    ans += temp[r];
+    r++;
+   }
+   dbg(ans)
+   cout<<ans<<endl;
+
 
 
 
