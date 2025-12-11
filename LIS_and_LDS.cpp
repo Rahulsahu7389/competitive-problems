@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -46,85 +46,29 @@ T power(T x,T n){
   return pro;
 }
 
-bool valid(ll a , ll b){
-    ll l = (a^b);
-    ll r = abs(a - b);
-    return (l == r);
-}
-
-ll fun(vector<ll> & v , ll i , ll prevind,vector<vector<ll>> &dp){
-    if(i ==0){
-        if(prevind == -1 || valid(v[i],v[prevind])){
-            return 1;
-        }
-        else{
-            return 0;
-        }
-    }
-    if(dp[i][prevind+1]!=-1){
-        return dp[i][prevind+1];
-    }
-    ll take = 0;
-    ll nottake = 0;
-    if(prevind == -1 || valid(v[i],v[prevind])){
-        take = 1 + fun(v,i-1,i,dp);
-    }
-    nottake = fun(v,i-1,prevind,dp);
-    return max(take,nottake);
-}
-
 void solve(){
    //your code starts from here
    ll n;
    cin>>n;
    vector<ll> v(n);
+   ll cntg2 = 0;
+   ll cnt1 = 0;
    for (ll i = 0; i < n; i++)
    {
     cin>>v[i];
-   }
-   sort(all(v));
-   vector<vector<int>> dp(n+1, vector<int>(n + 1, 0));
-
-    for (int i = n-1; i>=0; i--) {
-        for (int prevind = i-1; prevind >= -1; prevind--) {
-            int take = 0;
-            int nottake = 0;
-            // cout<<i<<" "<<prevind<<endl;
-            if (prevind == -1 || valid(v[i], v[prevind])) {
-                take = 1  + dp[i+1][i+1];//+1 beacause it had index shifting
-            }
-            nottake =  dp[i+1][prevind+1];
-            dp[i][prevind + 1] = max(take, nottake);
-        }
+    if(v[i]==1){
+        cnt1++;
     }
-    cout<< dp[0][0]<<endl;
+    else{
+        cntg2++;
+    }
+   }
+   ll a = cntg2 + (cnt1 + 1)/2;
+   ll b = cntg2 + (cnt1 + 1 + 1)/2;
+   cout<<min(a,b)<<endl;
+
+   
 }
-
-// void solve() {
-//     ll n;
-//     cin >> n;
-//     vector<ll> v(n);
-//     for (ll &x : v) cin >> x;
-
-//     sort(v.begin(), v.end());
-
-//     vector<ll> dp(n, 1);
-//     ll ans = 1;
-
-//     for (ll i = 0; i < n; i++) {
-//         for (ll j = 0; j < i; j++) {
-//             ll x = v[j], y = v[i];
-            
-//             if ((x & y) == x) {
-//                 dp[i] = max(dp[i], dp[j] + 1);
-//             }
-//         }
-//         ans = max(ans, dp[i]);
-//     }
-
-//     cout << ans << "\n";
-// }
-
 
 int main() 
 { 
