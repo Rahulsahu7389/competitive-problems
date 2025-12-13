@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -45,73 +45,55 @@ T power(T x,T n){
   }
   return pro;
 }
+bool cust(vector<ll> & a , vector<ll> & b){
+    return a[0]>b[0];
+}
 
 void solve(){
    //your code starts from here
-   ll n,q;
-   cin>>n>>q;
-   vector<pair<ll,ll>> v(n);
-   ll sum = 0;
+   ll n;
+   cin>>n;
+   vector<ll> v(n);
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i].first;
-    v[i].second = 0;
-    sum += v[i].first;
+    cin>>v[i];
    }
-   ll cntfirst = 0;
-   vector<vector<ll>> query(q,vector<ll>(3));
    
-   for (ll i = 0; i < q; i++)
+   vector<vector<ll>> data;
+   vector<bool> vis(n,true);
+   for (ll i = 0; i < n; i++)
    {
-    ll t;
-    cin>>t;
-    // dbg(t)
-    if(t == 1){
-        ll idx,x;
-        cin>>idx>>x;
-        query[i] = {t,idx,x};
-        cntfirst++;
+    ll cnt = 0;
+    for (ll j = i+1; j < n; j++)
+    {
+        if(v[i]>v[j]){
+            cnt++;
+        }
     }
-    else{
-        ll nval;
-        cin>>nval;
-        query[i] = {t,nval,0LL};
-        
-    }
-    // cout<<sum<<endl;
+    // dbg(cnt)
+    data.push_back({cnt,v[i],i});
+    
    }
-   dbg(query)
-   dbg(sum)
-  
-   pair<ll,ll> global = {0,-1};//sum,last updated
-   
-   ll idx = -1;//of first
-   for (ll i = 0; i < q; i++)
+   sort(all(data),cust);
+   ll ans = 0;
+   for (ll i = 0; i < data.size(); i++)
    {
-    if(query[i][0] == 1){
-        //kaun sa update kre
-        if(v[query[i][1]-1].second > global.second){
-            sum -= v[query[i][1]-1].first;
-            v[query[i][1]-1].first = query[i][2];
-            v[query[i][1]-1].second = i +1;//the last updated at
-            sum += query[i][2];
+    auto it = data[i];
+    ll val = data[i][1];
+    ll idx = data[i][2];
+    for (ll j = idx+1; j < n; j++)
+    {
+        if(v[idx]>v[j] && vis[j]){
+            ans++;
+            vis[j] = false;
         }
-        else{
-            sum -= global.first;
-            v[query[i][1]-1].first = query[i][2];
-            v[query[i][1]-1].second = i +1;//the last updated at
-            sum += query[i][2];
-        }
-        
     }
-    else{
-        sum = query[i][1]*n;
-        global.first = query[i][1];
-        global.second = i+1;
-    }
-    cout<<sum<<endl;
+
+    // dbg(val,ans)
+    
+
    }
-   
+   cout<<ans<<endl;
    
    
 }
@@ -120,10 +102,10 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 }

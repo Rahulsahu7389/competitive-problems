@@ -46,72 +46,55 @@ T power(T x,T n){
   return pro;
 }
 
-void solve(){
-   //your code starts from here
-   ll n,q;
-   cin>>n>>q;
-   vector<pair<ll,ll>> v(n);
-   ll sum = 0;
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>v[i].first;
-    v[i].second = 0;
-    sum += v[i].first;
-   }
-   ll cntfirst = 0;
-   vector<vector<ll>> query(q,vector<ll>(3));
-   
-   for (ll i = 0; i < q; i++)
-   {
-    ll t;
-    cin>>t;
-    // dbg(t)
-    if(t == 1){
-        ll idx,x;
-        cin>>idx>>x;
-        query[i] = {t,idx,x};
-        cntfirst++;
-    }
-    else{
-        ll nval;
-        cin>>nval;
-        query[i] = {t,nval,0LL};
-        
-    }
-    // cout<<sum<<endl;
-   }
-   dbg(query)
-   dbg(sum)
-  
-   pair<ll,ll> global = {0,-1};//sum,last updated
-   
-   ll idx = -1;//of first
-   for (ll i = 0; i < q; i++)
-   {
-    if(query[i][0] == 1){
-        //kaun sa update kre
-        if(v[query[i][1]-1].second > global.second){
-            sum -= v[query[i][1]-1].first;
-            v[query[i][1]-1].first = query[i][2];
-            v[query[i][1]-1].second = i +1;//the last updated at
-            sum += query[i][2];
+ll fun(ll i , vector<ll> & pref , ll x){
+    ll n = pref.size();
+    ll s = 0;
+    ll end = n-1;
+    ll idx = n;
+    while(s<=end){
+        ll mid = s  + (end - s)/2;
+        ll val = pref[mid] + i*(mid + 1);
+        if(val>x){
+            idx = mid;
+            end = mid - 1;
         }
         else{
-            sum -= global.first;
-            v[query[i][1]-1].first = query[i][2];
-            v[query[i][1]-1].second = i +1;//the last updated at
-            sum += query[i][2];
+            s = mid + 1;
         }
-        
+
     }
-    else{
-        sum = query[i][1]*n;
-        global.first = query[i][1];
-        global.second = i+1;
-    }
-    cout<<sum<<endl;
+    return idx;
+}
+
+void solve(){
+   //your code starts from here
+   ll n,x;
+   cin>>n>>x;
+   vector<ll> v(n);
+   ll mini = 1e18;
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>v[i];
+    mini = min(mini,v[i]);
    }
+   sort(all(v));
+   vector<ll> pref(n);
+   pref[0] = v[0];
+   for (ll i = 1; i < n; i++)
+   {
+    pref[i] = pref[i-1] + v[i];
+   }
+   ll range = abs(mini - x);
+   ll ans = 0;
    
+   for (int k = 0; k < n; k++) {
+        if (pref[k] > x) break;
+
+        ll maxDays = (x - pref[k]) / (k + 1);
+        ans += maxDays + 1;
+    }
+   cout<<ans<<endl;
+
    
    
 }
@@ -120,10 +103,10 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 }

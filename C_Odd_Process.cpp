@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -46,73 +46,112 @@ T power(T x,T n){
   return pro;
 }
 
+bool cust(ll a, ll b){
+    return a>b;
+}
+
 void solve(){
    //your code starts from here
-   ll n,q;
-   cin>>n>>q;
-   vector<pair<ll,ll>> v(n);
-   ll sum = 0;
+   ll n;
+   cin>>n;
+   vector<ll> v(n);
+   vector<ll> even;
+   ll maxodd = -1;
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i].first;
-    v[i].second = 0;
-    sum += v[i].first;
-   }
-   ll cntfirst = 0;
-   vector<vector<ll>> query(q,vector<ll>(3));
-   
-   for (ll i = 0; i < q; i++)
-   {
-    ll t;
-    cin>>t;
-    // dbg(t)
-    if(t == 1){
-        ll idx,x;
-        cin>>idx>>x;
-        query[i] = {t,idx,x};
-        cntfirst++;
+    cin>>v[i];
+    if(v[i]%2!=0){
+        if(maxodd < v[i]){
+            maxodd = v[i];
+        }
     }
     else{
-        ll nval;
-        cin>>nval;
-        query[i] = {t,nval,0LL};
-        
+        even.pb(v[i]);
     }
-    // cout<<sum<<endl;
    }
-   dbg(query)
-   dbg(sum)
-  
-   pair<ll,ll> global = {0,-1};//sum,last updated
-   
-   ll idx = -1;//of first
-   for (ll i = 0; i < q; i++)
-   {
-    if(query[i][0] == 1){
-        //kaun sa update kre
-        if(v[query[i][1]-1].second > global.second){
-            sum -= v[query[i][1]-1].first;
-            v[query[i][1]-1].first = query[i][2];
-            v[query[i][1]-1].second = i +1;//the last updated at
-            sum += query[i][2];
+   sort(all(even),cust);
+   if(even.size()==0){
+    // cout<<maxodd<<" ";
+    for (ll i = 1; i <=n; i++)
+    {
+        if(i%2==0){
+            cout<<0<<" ";
         }
         else{
-            sum -= global.first;
-            v[query[i][1]-1].first = query[i][2];
-            v[query[i][1]-1].second = i +1;//the last updated at
-            sum += query[i][2];
+            cout<<maxodd<<" ";
         }
-        
+    }
+    cout<<endl;
+    return;
+    
+   }
+   if(maxodd == -1){
+    for (ll i = 0; i < n; i++)
+    {
+        cout<<0<<" ";
+    }
+    cout<<endl;
+    return;
+    
+   }
+   vector<ll> pref(even.size() + 1,0);
+
+   
+   pref[0] = maxodd;
+   pref[1] = even[0] + maxodd;
+//    dbg(pref)
+   for (ll i = 1; i < even.size(); i++)
+   {
+    pref[i+1] = even[i] + pref[i];
+   }
+
+//    dbg(pref)
+   ll left = n - pref.size();
+   ll cnt = 0;
+   for (ll i = 1; i <=n; i++)
+   {
+    if(i<=pref.size()){
+        cout<<(pref[i-1])<<" ";
+        cnt++;
     }
     else{
-        sum = query[i][1]*n;
-        global.first = query[i][1];
-        global.second = i+1;
+        break;
     }
-    cout<<sum<<endl;
+   }
+   bool flag = true;
+   while(cnt<n){
+    if(cnt == n-1){
+        if(left%2!=0){
+            cout<<"0"<<" ";
+        }
+        else{
+            if(flag){
+                cout<<pref[pref.size()-2]<<" ";
+                flag = false;
+            }
+            else{
+                flag = true;
+                cout<<pref[pref.size()-1]<<" ";
+            }
+        }
+    }
+    else{
+        if(flag){
+            cout<<pref[pref.size()-2]<<" ";
+            flag = false;
+        }
+        else{
+            flag = true;
+            cout<<pref[pref.size()-1]<<" ";
+        }
+    }
+    cnt++;
    }
    
+   cout<<endl;
    
+   
+
    
 }
 
@@ -120,10 +159,10 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 }

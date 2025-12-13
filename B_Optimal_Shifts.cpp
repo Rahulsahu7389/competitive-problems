@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -48,70 +48,33 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n,q;
-   cin>>n>>q;
-   vector<pair<ll,ll>> v(n);
-   ll sum = 0;
+   ll n;
+   cin>>n;
+   string s;
+   cin>>s;
+   ll cnt = 0;
+   bool flag = false;
+   if(s[0]=='0'){
+    flag = true;
+   }
+   vector<ll> v;
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i].first;
-    v[i].second = 0;
-    sum += v[i].first;
-   }
-   ll cntfirst = 0;
-   vector<vector<ll>> query(q,vector<ll>(3));
-   
-   for (ll i = 0; i < q; i++)
-   {
-    ll t;
-    cin>>t;
-    // dbg(t)
-    if(t == 1){
-        ll idx,x;
-        cin>>idx>>x;
-        query[i] = {t,idx,x};
-        cntfirst++;
+    if(s[i]=='1'){
+        v.pb(cnt);
+        cnt = 0;
     }
     else{
-        ll nval;
-        cin>>nval;
-        query[i] = {t,nval,0LL};
-        
+        cnt++;
     }
-    // cout<<sum<<endl;
    }
-   dbg(query)
-   dbg(sum)
-  
-   pair<ll,ll> global = {0,-1};//sum,last updated
-   
-   ll idx = -1;//of first
-   for (ll i = 0; i < q; i++)
-   {
-    if(query[i][0] == 1){
-        //kaun sa update kre
-        if(v[query[i][1]-1].second > global.second){
-            sum -= v[query[i][1]-1].first;
-            v[query[i][1]-1].first = query[i][2];
-            v[query[i][1]-1].second = i +1;//the last updated at
-            sum += query[i][2];
-        }
-        else{
-            sum -= global.first;
-            v[query[i][1]-1].first = query[i][2];
-            v[query[i][1]-1].second = i +1;//the last updated at
-            sum += query[i][2];
-        }
-        
-    }
-    else{
-        sum = query[i][1]*n;
-        global.first = query[i][1];
-        global.second = i+1;
-    }
-    cout<<sum<<endl;
+   v.pb(cnt);
+   if(flag){
+    v[0] += v.back();
+    v.pop_back();
    }
-   
+   ll elem = *max_element(all(v));
+   cout<<elem<<endl;
    
    
 }
@@ -120,10 +83,10 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 }
