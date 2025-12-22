@@ -46,35 +46,31 @@ T power(T x,T n){
   return pro;
 }
 
+ll calc(ll n){
+    ll sum = (n*(n-1))/2;
+    return sum;
+}
+
 void solve(){
-   //your code starts from here
-   ll n;
-   cin>>n;
-   string s;
-   cin>>s;
-   ll cnt = 0;
-   for (ll i = 0; i < n; i++)
-   {
-    if(s[i] == '1'){
-        cnt++;
+    ll n;
+    cin>>n;
+    vector<ll> nums(n);
+    map<ll,ll> mp;
+    for (ll i = 0; i < n; i++)
+    {
+        cin>>nums[i];
+        mp[ nums[i] - i]++;
     }
-   }
+    ll ans = 0;
+    for(auto val:mp){
+        ans += calc(val.second);
+    }
+    cout<<ans<<endl;
+
+    
    
-   ll zeros = n - cnt;
-   if(zeros == 1){
-    cout<<"BOB\n";
-    return;
-   }
-  //  if(zeros == 0){
-  //   cout<<"DRAW\n";
-  //   return;
-  //  }
-   if(zeros%2==0){
-    cout<<"BOB\n";
-   }
-   else{
-    cout<<"ALICE\n";
-   }
+    
+    
 }
 
 int main() 

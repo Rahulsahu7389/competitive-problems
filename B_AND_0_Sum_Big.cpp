@@ -48,33 +48,15 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   string s;
-   cin>>s;
-   ll cnt = 0;
-   for (ll i = 0; i < n; i++)
+   ll n, k;
+   cin>>n>>k;
+   ll sum = 1;
+   for (ll i = 0; i < k; i++)
    {
-    if(s[i] == '1'){
-        cnt++;
-    }
+    sum = (sum * n)%MOD;
    }
+   cout<<sum<<endl;
    
-   ll zeros = n - cnt;
-   if(zeros == 1){
-    cout<<"BOB\n";
-    return;
-   }
-  //  if(zeros == 0){
-  //   cout<<"DRAW\n";
-  //   return;
-  //  }
-   if(zeros%2==0){
-    cout<<"BOB\n";
-   }
-   else{
-    cout<<"ALICE\n";
-   }
 }
 
 int main() 
