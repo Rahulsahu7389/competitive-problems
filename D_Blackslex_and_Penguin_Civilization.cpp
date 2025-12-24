@@ -47,31 +47,30 @@ T power(T x,T n){
 }
 
 void solve() {
-    int n;
+    ll n;
     cin >> n;
 
-    int N = 1 << n;
-    vector<vector<int>> groups(n + 1);
+    cout<<(1<<n)-1<<" ";
 
-    // group numbers by highest set bit
-    for (int x = 0; x < N; x++) {
-        if (x == 0) {
-            groups[0].push_back(0);
-        } else {
-            int msb = 31 - __builtin_clz(x);
-            groups[msb + 1].push_back(x);
-        }
-    }
+    for (int i = n - 1; i >= 0; i--)
+    {
+        ll low = (1<<i) -1;
+        ll lim = 1<<(n-i-1);//this gives the number of numbers with higher bits reandomly filled(0 or 1)
+        dbg(low,lim)
 
-    // output from highest group to lowest
-    for (int i = n; i >= 0; i--) {
-        sort(groups[i].begin(), groups[i].end());
-        for (int x : groups[i]) {
-            cout << x << " ";
+        for (ll j = 0; j < lim; j++)//this loop generates the all possible combo in higher bits 
+        {
+            ll val = (j<<(i+1)) | low;//this will ensure ith will be zero and lower bits will be 1 and other will be filled all possible ways and number will be generated in lexico.
+            dbg(val)
+            cout<<val<<" ";
         }
+        
     }
-    dbg(groups)
-    cout << "\n";
+    cout<<endl;
+    
+    
+    
+    
 }
 
 int main() 
