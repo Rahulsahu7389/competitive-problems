@@ -46,39 +46,44 @@ T power(T x,T n){
   return pro;
 }
 
-void primeFactorisation(int n){
-    for (int i = 2; i*i <=n; i++)
-    {
-        while(n%i == 0){
-            cout<<i<<endl;
-            n /= i;
-        }
-    }
-    
-    if(n!=1){
-        cout<<n<<endl;
-    }
-}
-
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   if(n%2!=0){
-    if(n == 3 || n ==1){
-        cout<<"Yes"<<endl;
-        return;
+   ll n,x,y;
+   cin>>n>>x>>y;
+   vector<ll> v(n);
+   map<ll,vector<ll>> mp;
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>v[i];
+    mp[v[i]%y].pb(v[i]);
+   }
+   
+   ll ans = 0;
+   dbg(mp)
+   for(auto val:mp){
+    vector<ll> temp = val.second;
+    map<ll,ll> m;
+    for(auto k:temp){
+        m[k%x]++;
+    }
+    dbg(m)
+    for(auto t:m){
+        if(t.first == 0 || (x%2==0 && (t.first == x/2))){
+            ll sum = (t.second)*(t.second -1)/2;
+            ans += sum;
+            t.second = 0;
+        }
+        else{
+            ll f = t.second;
+            ll s = m[x - t.first%x];
+            ans += f*s;
+            m[x - t.first%x] =0 ;
+        }
     }
    }
-   else{
-    if(n%4==0 || n == 2 || n ==6){
-        cout<<"Yes\n";
-        return;
-    }
-   }
-
-   cout<<"No\n";
-
+   cout<<ans<<endl;
+   
+   
 }
 
 int main() 

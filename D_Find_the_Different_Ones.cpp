@@ -45,40 +45,49 @@ T power(T x,T n){
   }
   return pro;
 }
-
-void primeFactorisation(int n){
-    for (int i = 2; i*i <=n; i++)
-    {
-        while(n%i == 0){
-            cout<<i<<endl;
-            n /= i;
-        }
-    }
-    
-    if(n!=1){
-        cout<<n<<endl;
-    }
-}
-
 void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   if(n%2!=0){
-    if(n == 3 || n ==1){
-        cout<<"Yes"<<endl;
-        return;
+   vector<ll> v(n);
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>v[i];
+   }
+   ll q;
+   cin>>q;
+   vector<ll> idx(n);
+   idx[0] = -1;
+   for (ll i = 1; i < n; i++)
+   {
+    if(v[i]!=v[i-1]){
+        idx[i] = i-1;
+    }
+    else{
+        idx[i] = idx[i-1];
     }
    }
-   else{
-    if(n%4==0 || n == 2 || n ==6){
-        cout<<"Yes\n";
-        return;
+   dbg(idx)
+   
+
+   while(q--){
+    ll l,r;
+    cin>>l>>r;
+    
+    
+    ll val = idx[r-1]+1;
+    if(l<=val){
+        cout<<r<<" "<<(val)<<endl;
     }
+    else{
+        cout<<-1<<" "<<-1<<endl;
+    }
+    
    }
+   cout<<endl;
+   
 
-   cout<<"No\n";
-
+   
 }
 
 int main() 
