@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = true;  // toggle before submission
+bool DEBUG_MODE = false;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -46,9 +46,66 @@ T power(T x,T n){
   return pro;
 }
 
+ll calc(ll n){
+    return (n*(n+1)/2);
+}
+
 void solve(){
    //your code starts from here
-   
+   ll k,x;
+   cin>>k>>x;
+
+   ll total = (2*calc(k-1)) + k;
+   dbg(total)
+   if(total<=x){
+    cout<<(2*k-1LL)<<endl;
+    return;
+   }
+   ll smn = calc(k);
+   if(smn>=x){
+    
+    ll st = 1;
+    ll end = k;
+    ll ans = k+1;
+    while(st<=end){
+        ll mid = st + (end - st)/2;
+        ll val = calc(mid);
+        if(val<x){
+            
+            st = mid + 1;
+        }
+        else{
+            ans = min(ans,mid);
+            end = mid - 1;
+        }
+    }
+    cout<<ans<<endl;
+   }
+   else{
+    dbg("here")
+    //smn<x
+    x -= smn;
+    ll val = calc(k-1) - x;
+    ll st = 1;
+    ll end = k;
+    ll ans = -1;
+    while(st<=end){
+        ll mid = st + (end - st)/2;
+        ll t = calc(mid);
+        if(t<=val){
+            ans = max(ans,mid);
+            st = mid + 1;
+        }
+        else{
+            end = mid - 1;
+        }
+    }
+    cout<<(k-1-ans + k)<<endl;
+
+   }
+
+
+
 }
 
 int main() 

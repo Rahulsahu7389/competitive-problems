@@ -45,77 +45,74 @@ T power(T x,T n){
   }
   return pro;
 }
-const ll INF = 1e18;
-
-vector<ll> A;
-pair<ll,ll> memo[25][25];
-bool vis[25][25];
-
-pair<ll,ll> solve2(int l, int r){
-    if(l == r) return {A[l], A[l]};
-    if(vis[l][r]) return memo[l][r];
-    vis[l][r] = true;
-
-    ll mn = INF, mx = -INF;
-
-    for(int k = l; k < r; k++){
-        auto L = solve2(l, k);
-        auto R = solve2(k+1, r);
-
-        
-        vector<ll> vals = {
-            L.first  + 2*R.first,
-            L.first  + 2*R.second,
-            L.second + 2*R.first,
-            L.second + 2*R.second
-        };
-
-        for(ll v : vals){
-            mn = min(mn, v);
-            mx = max(mx, v);
-        }
-    }
-
-    return memo[l][r] = {mn, mx};
-}
 
 void solve(){
-//    int N; cin >> N;
-//     A.assign(N+1, 0);
-//     for(int i = 1; i <= N; i++) cin >> A[i];
-
-//     memset(vis, 0, sizeof(vis));
-//     auto ans = solve2(1, N);
-//     cout << ans.first << " " << ans.second << endl;
-
-    ll n;
-    cin>>n;
-    vector<ll> v(n);
-    for (ll i = 0; i < n; i++)
-    {
-        cin>>v[i];
+   //your code starts from here
+   ll a,b;
+   cin>>a>>b;
+   ll val = 1;
+   ll ans1 = 0;
+   //start from a first
+   ll x = a;
+   ll y = b;
+   bool flag = true;//a
+   while(x>0 || y>0){
+    if(flag){
+        if(val<=x){
+            x -= val;
+            ans1++;
+            flag = false;
+            val *= 2;
+        }
+        else{
+            break;
+        }
     }
-    ll mini = v[0];
-    for (ll i = 1; i < n; i++)
-    {
-        mini +=  v[i]*2;
+    else{
+        if(val <=y){
+            y -= val;
+            ans1++;
+            flag = true;
+            val *= 2;
+        }
+        else{
+            break;
+        }
     }
+   }
+   dbg(ans1)
+   ll ans2 =0;
+   x = a;
+   y  = b;
+   val = 1;
+   flag = false;
+   while(x>0 || y>0){
+    if(flag){
+        if(val<=x){
+            x -= val;
+            ans2++;
+            flag = false;
+            val *= 2;
+        }
+        else{
+            break;
+        }
+    }
+    else{
+        if(val <=y){
+            y -= val;
+            ans2++;
+            flag = true;
+            val *= 2;
+        }
+        else{
+            break;
+        }
+    }
+   }
+   dbg(ans2)
+   cout<<max(ans1,ans2)<<endl;
 
-    dbg(mini)
-    ll maxi = v[n-1];
-    ll val = v[n-1];
-    for (int i = n - 2; i >= 0; i--)
-    {
-        maxi = v[i] + maxi*2;
-    }
-    dbg(maxi)
-    cout<<mini<<" "<<maxi<<endl;
-    
-    
-   
-   
-   
-   
 }
 
 int main() 
