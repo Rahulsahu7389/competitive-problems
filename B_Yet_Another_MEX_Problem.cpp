@@ -46,67 +46,76 @@ T power(T x,T n){
   return pro;
 }
 
-int binExp(int a, int b, int mod) {
-    int res = 1;
-    a %= mod;
-    while (b > 0) {
-        if (b & 1) {
-            res = (res * a) % mod;
-        }
-        a = (a * a) % mod;
-        b >>= 1;
-    }
-    return res;
-}
-
-//if a<=1e18 , each time a is multiplied and taken mod so take mod prior as it wont affect the answer
-//a^b%M = ((a%M)^b)%M
-int binExp(int a, int b, int mod) {
-    int res = 1;
-    a %= mod;//phle hi mod kr diye
-    while (b > 0) {
-        if (b & 1) {
-            res = (res * a) % mod;
-        }
-        a = (a * a) % mod;
-        b >>= 1;
-    }
-    return res;
-}
-
-//now if mod<=1e18 so suppose a*a result in 1e18 but now in next time 1e18*1e9 ->> overflow as mod to iske baad kaam krega
-//rather we can do addition of a till a times as a+a<1e18 and mod it but i takes o(n) 
-//now to do this in O(LOgn) we use binary multiplication of a*b here we make b into binary
-int binMultiply(int a, int b, int mod) {//runs in logn
-    int res = 0;
-    while (b > 0) {
-        if (b & 1) {
-            res = (res + a) % mod;
-        }
-        a = (a + a) % mod;
-        b >>= 1;
-    }
-    return res;
-}
-
-ll binExp(ll a, ll b,ll mod) {//log^2(n)
-    ll res = 1;
-    a %= mod;//phle hi mod kr diye
-    while (b > 0) {
-        if (b & 1) {
-            res = binMultiply(a,res,mod);
-        }
-        a = binMultiply(a,a,mod);
-        b >>= 1;
-    }
-    return res;
-}
-
 void solve(){
    //your code starts from here
    ll n,k;
    cin>>n>>k;
-   cout<<(((n*k)/60))<<" "<<((n*k)%60)<<endl;
+   vector<ll> v(n);
+   ll maxi = -1;
+   
+
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>v[i];
+    maxi = max(maxi,v[i]);
+   }
+   set<ll> s;
+   for (ll i = 0; i <=maxi+1; i++)
+   {
+    s.insert(i);
+   }
+//    dbg(s)
+   map<ll,ll> m;
+   ll l = 0;
+   ll r = 0;
+   for (ll i = 0; i < k; i++)
+   {
+    ll val = v[i];
+    
+
+
+   }
+//    dbg(m,s)
+   ll ans = -1;
+   while(r<n){
+    ll val = v[r];
+    if(r<k){
+        if(m.find(val) == m.end()){
+            m[val]++;
+            s.erase(val);
+        }
+        else{
+            m[val]++;
+        }
+        if(r == k-1){
+            ans = max(ans,(*s.begin()));
+        }
+    }
+    else{
+        ll t = v[l];
+        if(m[t]==1){
+            s.insert(t);
+            m.erase(t);
+        }
+        else{
+            m[l]--;
+        }
+        l++;
+        if(m.find(val) == m.end()){
+            m[val]++;
+            s.erase(val);
+        }
+        ans = max(ans,(*s.begin()));
+    }
+    // dbg(ans,r,s)
+    r++;
+}
+ans = max(ans,(*s.begin()));
+// dbg(ans,r,s)
+   cout<<max(ans-1,1LL)<<endl;
+
+   
+   
    
 }
 

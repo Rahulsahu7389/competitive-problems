@@ -46,68 +46,75 @@ T power(T x,T n){
   return pro;
 }
 
-int binExp(int a, int b, int mod) {
-    int res = 1;
-    a %= mod;
-    while (b > 0) {
-        if (b & 1) {
-            res = (res * a) % mod;
-        }
-        a = (a * a) % mod;
-        b >>= 1;
-    }
-    return res;
-}
-
-//if a<=1e18 , each time a is multiplied and taken mod so take mod prior as it wont affect the answer
-//a^b%M = ((a%M)^b)%M
-int binExp(int a, int b, int mod) {
-    int res = 1;
-    a %= mod;//phle hi mod kr diye
-    while (b > 0) {
-        if (b & 1) {
-            res = (res * a) % mod;
-        }
-        a = (a * a) % mod;
-        b >>= 1;
-    }
-    return res;
-}
-
-//now if mod<=1e18 so suppose a*a result in 1e18 but now in next time 1e18*1e9 ->> overflow as mod to iske baad kaam krega
-//rather we can do addition of a till a times as a+a<1e18 and mod it but i takes o(n) 
-//now to do this in O(LOgn) we use binary multiplication of a*b here we make b into binary
-int binMultiply(int a, int b, int mod) {//runs in logn
-    int res = 0;
-    while (b > 0) {
-        if (b & 1) {
-            res = (res + a) % mod;
-        }
-        a = (a + a) % mod;
-        b >>= 1;
-    }
-    return res;
-}
-
-ll binExp(ll a, ll b,ll mod) {//log^2(n)
-    ll res = 1;
-    a %= mod;//phle hi mod kr diye
-    while (b > 0) {
-        if (b & 1) {
-            res = binMultiply(a,res,mod);
-        }
-        a = binMultiply(a,a,mod);
-        b >>= 1;
-    }
-    return res;
-}
-
 void solve(){
    //your code starts from here
-   ll n,k;
-   cin>>n>>k;
-   cout<<(((n*k)/60))<<" "<<((n*k)%60)<<endl;
-   
+   ll n;
+   cin>>n;
+//    vector<ll> v;
+    map<ll,ll> mp;
+   ll x = n;
+   ll totalcnt = 0;
+    for (int i = 2; i*i <=n; i++)
+    {
+        while(n%i == 0){
+            // cout<<i<<endl;
+            totalcnt++;
+            mp[i]++;
+            n /= i;
+        }
+    }
+
+    if(n!=1){
+        // cout<<n<<endl;
+        // v.pb(n);
+        mp[n]++;
+        totalcnt++;
+    }
+    // dbg(mp)
+    if(mp.size()==0 ){
+        cout<<"NO\n";
+    }
+    else if(mp.size()==1){
+        if(totalcnt<=5){
+            cout<<"NO\n";
+        }
+        else{
+            cout<<"YES\n";
+            auto it = mp.begin();
+            ll val = (*it).first;
+            cout<<(val)<<" "<<val*val<<" "<<(x/(val*val*val))<<endl;
+        }
+    }
+    else if(mp.size() ==2){
+        if(totalcnt<4){
+            cout<<"NO\n";
+            
+        }
+        else{
+            cout<<"YES\n";
+            ll temp = x;
+            for(auto val:mp){
+                temp /= val.first;
+                cout<<val.first<<" ";
+            }
+            cout<<temp<<endl;
+        }
+    }
+    else if(mp.size()>=3){
+        cout<<"YES\n";
+        ll cnt = 0;
+        ll temp = x;
+        for(auto val:mp){
+            if(cnt==2){
+                break;
+            }
+            cout<<val.first<<" ";
+            temp /= val.first;
+            cnt++;
+        }
+        cout<<temp<<endl;
+    }
+
 }
 
 int main() 
