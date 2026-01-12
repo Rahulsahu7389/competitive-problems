@@ -50,22 +50,23 @@ void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   
-   vector<ll> s(n);
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>s[i];
+   if(n == 3){
+    cout<<3<<endl;
    }
-   //taking input here
-   
-    ll st = s[0];
-    ll end = s[n-1];
-    if(st == 0 && end == 0){
-        cout<<"Bob\n";
+   else if(n == 2){
+    cout<<2<<endl;
+   }
+   else if(n == 4){
+    cout<<0<<endl;
+   }
+   else{
+    if(n%2==0){
+        cout<<0<<endl;
     }
     else{
-        cout<<"Alice\n";
+        cout<<1<<endl;
     }
+   }
 }
 
 int main() 

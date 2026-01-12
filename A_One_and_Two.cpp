@@ -50,22 +50,36 @@ void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   
-   vector<ll> s(n);
+   vector<ll> v(n);
+//    ll total = 1;
    for (ll i = 0; i < n; i++)
    {
-    cin>>s[i];
+    cin>>v[i];
+    // total *= v[i];
    }
-   //taking input here
+   vector<long double> pre(n);
+    pre[0] = log(v[0]);
+
+    for (int i = 1; i < n; i++)
+        pre[i] = pre[i - 1] + log(v[i]);
+
+    long double total = pre[n - 1];
+
+    for (int i = 0; i < n - 1; i++) {
+        long double left = pre[i];
+        long double right = total - left;
+
+        if (fabsl(left - right) < 1e-12) {
+            cout << i + 1 << '\n';
+            return;
+        }
+    }
+
+    cout << -1 << '\n';
    
-    ll st = s[0];
-    ll end = s[n-1];
-    if(st == 0 && end == 0){
-        cout<<"Bob\n";
-    }
-    else{
-        cout<<"Alice\n";
-    }
+   
+
+   
 }
 
 int main() 

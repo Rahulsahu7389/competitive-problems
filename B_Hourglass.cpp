@@ -48,24 +48,15 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   
-   vector<ll> s(n);
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>s[i];
-   }
-   //taking input here
-   
-    ll st = s[0];
-    ll end = s[n-1];
-    if(st == 0 && end == 0){
-        cout<<"Bob\n";
-    }
-    else{
-        cout<<"Alice\n";
-    }
+   ll s,k,m;
+   cin>>s>>k>>m;
+   ll rem = m%k;
+  if(s<=k || ((m/k)%2==0)){
+    cout<<max(0LL,s - rem)<<endl;
+  }
+  else{
+    cout<<max(0LL,k -rem)<<endl;
+  }
 }
 
 int main() 

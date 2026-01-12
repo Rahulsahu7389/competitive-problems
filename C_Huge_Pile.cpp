@@ -46,27 +46,37 @@ T power(T x,T n){
   return pro;
 }
 
-void solve(){
-   //your code starts from here
-   ll n;
-   cin>>n;
-   
-   vector<ll> s(n);
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>s[i];
-   }
-   //taking input here
-   
-    ll st = s[0];
-    ll end = s[n-1];
-    if(st == 0 && end == 0){
-        cout<<"Bob\n";
+void solve() {
+    ll n, k;
+    cin >> n >> k;
+
+    if (k > n) {
+        cout << -1 <<endl;
+        return;
     }
-    else{
-        cout<<"Alice\n";
+
+    ll mini = n, maxi = n;
+
+    for (int mins = 0; mins <= 62; mins++) {
+        
+        if (mini <= k && k <= maxi) {
+            cout << mins << endl;
+            return;
+        }
+
+        
+        ll new_min = mini / 2;
+        ll new_max = (maxi + 1) / 2;
+
+        mini = new_min;
+        maxi = new_max;
+
+        if (maxi == 0) break;
     }
+
+    cout << -1 << endl;
 }
+
 
 int main() 
 { 
