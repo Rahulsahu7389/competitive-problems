@@ -46,75 +46,84 @@ T power(T x,T n){
   return pro;
 }
 
-void solve(){
-    ll n,m,k;
-    cin>>n>>m>>k;
+void solve() {
+    ll n, m, k;
+    cin >> n >> m >> k;
 
-    vector<ll>a(n),b(m);
-    for(ll i=0;i<n;i++) cin>>a[i];
-    for(ll i=0;i<m;i++) cin>>b[i];
+    vector<ll> a(n), b(m);
+    set<ll> spikes;
 
-    string st;
-    cin>>st;
-
-    sort(all(a));
-    sort(all(b));
-
-    vector<pair<ll,ll>> p;
-
-    ll i=0;
-
-    while(i<n && a[i]<b[0]){
-        p.pb({LLONG_MIN, b[0]-a[i]});
-        i++;
+    for (ll &x : a) cin >> x;
+    for (ll &x : b) {
+        cin >> x;
+        spikes.insert(x);
     }
 
-    if(i<n){
-        for(ll j=0;j<m-1;j++){
-            if(i==n) break;
-            if(a[i]>b[j] && a[i]<b[j+1]){
-                p.pb({-(a[i]-b[j]), b[j+1]-a[i]});
-                i++;
-                j--;
+    string s;
+    cin >> s;
+
+    // (distance, robot_index)
+    set<pair<ll,ll>> before;
+    set<pair<ll,ll>> after;
+
+    vector<pair<ll,ll>> p(n);
+
+    // -------- PREPROCESS ----------
+    for (ll i = 0; i < n; i++) {
+        auto it = spikes.upper_bound(a[i]);
+
+        ll bef = LLONG_MAX, aft = LLONG_MAX;
+
+        if (it != spikes.end())
+            aft = *it - a[i];
+
+        if (it != spikes.begin()) {
+            --it;
+            bef = a[i] - *it;
+        }
+
+        p[i] = {bef, aft};
+        before.insert({bef, i});
+        after.insert({aft, i});
+    }
+
+    // -------- SIMULATION ----------
+    ll val = 0;
+    ll ans = n;
+
+    for (ll step = 0; step < k; step++) {
+        if (s[step] == 'R') val++;
+        else val--;
+
+        if (val > 0) {
+            while (!after.empty() && after.begin()->first <= val) {
+                ll idx = after.begin()->second;   // robot index
+                after.erase(after.begin());
+
+                
+                before.erase({p[idx].first, idx});
+
+                ans--;
+            }
+        } else {
+            while (!before.empty() && before.begin()->first <= -val) {
+                ll idx = before.begin()->second;  // robot index
+                before.erase(before.begin());
+
+                
+                after.erase({p[idx].second, idx});
+
+                ans--;
             }
         }
+
+        cout << ans << " ";
     }
 
-    while(i<n){
-        p.pb({-(a[i]-b[m-1]), LLONG_MAX});
-        i++;
-    }
-
-    map<ll,ll> left,right;
-    for(ll j=0;j<p.size();j++){
-        left[p[j].first]++;
-        right[p[j].second]++;
-    }
-
-    ll val=0;
-    ll ans=n;
-
-    for(ll j=0;j<k;j++){
-        if(st[j]=='L') val--;
-        else val++;
-
-        auto itl=left.begin();
-        while(itl!=left.end() && itl->first>=val){
-            ans-=itl->second;
-            itl=left.erase(itl);
-        }
-
-        auto itr=right.begin();
-        while(itr!=right.end() && itr->first<=val){
-            ans-=itr->second;
-            itr=right.erase(itr);
-        }
-
-        if(ans<0) cout<<0<<" ";
-        else cout<<ans<<" ";
-    }
-    cout<<endl;
+    cout << "\n";
 }
+
+
 
 
 int main() 
