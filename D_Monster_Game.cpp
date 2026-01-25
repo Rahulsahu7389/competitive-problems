@@ -48,28 +48,40 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n,l,h;
-   cin>>n>>l>>h;
-   vector<ll> v(n);
+   ll n;
+   cin>>n;
+   vector<ll> a(n);
+   vector<ll> b(n);
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i];
+    cin>>a[i];
    }
-   sort(all(v));
-   ll s = 0;
-   ll r = n-1;
-   ll cnt = 0;
-   while(s<r){
-    if((v[s]<=h && v[r]<=l) || (v[s]<=l && v[r]<=h)){
-        cnt++;
-        s++;
-        r--;
-    }
-    else if(v[r]>l || v[r]>h){
-        r--;
-    }
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>b[i];
    }
-   cout<<cnt<<endl;
+   sort(a.rbegin(),a.rend());
+   vector<ll> pre(n+1,0);
+   
+   for (ll i = 0; i < n; i++)
+   {
+    pre[i+1] = pre[i] + b[i];
+   }
+//    dbg(pre)
+//    dbg()
+   ll ans = -1;
+   for (ll i = 1; i <=n; i++)
+   {
+    ll x = a[i-1];
+    ll level = upper_bound(all(pre),i) - pre.begin() - 1LL;
+    ans = max(ans,x*level);
+
+
+   }
+   cout<<ans<<endl;
+   
+   
+   
    
 }
 
@@ -84,50 +96,3 @@ int main()
     } 
     return 0; 
 }
-
-
-#include <vector>
-#include <algorithm>
-
-using namespace std;
-typedef long long ll;
-
-class Solution {
-    ll C[65][65];
-
-    // Precompute nCr using Pascal's Identity: C(n, k) = C(n-1, k-1) + C(n-1, k)
-    void precompute() {
-        for (int i = 0; i <= 64; ++i) {
-            C[i][0] = 1;
-            for (int j = 1; j <= i; ++j) {
-                // Cap the value at a safe maximum to prevent overflow
-                // If sum exceeds LLONG_MAX, it stays at LLONG_MAX
-                C[i][j] = C[i - 1][j - 1] + C[i - 1][j];
-                if (C[i][j] < 0) C[i][j] = 2e18; // Safe threshold for nth smallest problems
-            }
-        }
-    }
-
-public:
-    ll nthSmallest(ll n, int k) {
-        precompute();
-        ll ans = 0;
-        
-        // Iterating from the highest possible bit (e.g., 60 for long long)
-        for (int i = 60; i >= 0; i--) {
-            if (k == 0) break;
-            
-            // If we don't set the i-th bit, the number of combinations 
-            // of the remaining (i) bits with (k) set bits is C[i][k]
-            if (C[i][k] < n) {
-                // If n is larger than combinations without this bit, 
-                // we MUST set this bit.
-                n -= C[i][k];
-                ans |= (1LL << i); // Use 1LL to prevent 32-bit shift overflow
-                k--;
-            }
-            // Else: We keep this bit 0 and continue to the next bit.
-        }
-        return ans;
-    }
-};

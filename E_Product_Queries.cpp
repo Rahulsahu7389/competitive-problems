@@ -46,30 +46,63 @@ T power(T x,T n){
   return pro;
 }
 
+void primeFactorisation(int n,set<ll> ){
+    for (int i = 2; i*i <=n; i++)
+    {
+        while(n%i == 0){
+            cout<<i<<endl;
+            n /= i;
+        }
+    }
+    
+    if(n!=1){
+        cout<<n<<endl;
+    }
+}
+
 void solve(){
    //your code starts from here
-   ll n,l,h;
-   cin>>n>>l>>h;
+   ll n;
+   cin>>n;
    vector<ll> v(n);
+   set<ll> st;
    for (ll i = 0; i < n; i++)
    {
     cin>>v[i];
+    st.insert(v[i]);
    }
-   sort(all(v));
-   ll s = 0;
-   ll r = n-1;
-   ll cnt = 0;
-   while(s<r){
-    if((v[s]<=h && v[r]<=l) || (v[s]<=l && v[r]<=h)){
-        cnt++;
-        s++;
-        r--;
+   for (ll i = 0; i < n; i++)
+   {
+    ll val = v[i];
+    if(val<(*st.begin())){
+        cout<<-1<<" ";
+        continue;
     }
-    else if(v[r]>l || v[r]>h){
-        r--;
+    if(st.count(val)==0){
+        cout<<-1<<" ";
+        continue;
     }
+
+    ll ans1 = 0;
+    for (int i = 2; i*i <=val; i++)
+    {   
+        ll cnt = 0;
+        if(st.count(i)>0){
+
+            while(val%i == 0){
+                if(s.count())
+                n /= i;
+            }
+        }
+    }
+    
+    if(val!=1){
+        cout<<n<<endl;
+    }
+    
+
    }
-   cout<<cnt<<endl;
+   
    
 }
 
@@ -84,50 +117,3 @@ int main()
     } 
     return 0; 
 }
-
-
-#include <vector>
-#include <algorithm>
-
-using namespace std;
-typedef long long ll;
-
-class Solution {
-    ll C[65][65];
-
-    // Precompute nCr using Pascal's Identity: C(n, k) = C(n-1, k-1) + C(n-1, k)
-    void precompute() {
-        for (int i = 0; i <= 64; ++i) {
-            C[i][0] = 1;
-            for (int j = 1; j <= i; ++j) {
-                // Cap the value at a safe maximum to prevent overflow
-                // If sum exceeds LLONG_MAX, it stays at LLONG_MAX
-                C[i][j] = C[i - 1][j - 1] + C[i - 1][j];
-                if (C[i][j] < 0) C[i][j] = 2e18; // Safe threshold for nth smallest problems
-            }
-        }
-    }
-
-public:
-    ll nthSmallest(ll n, int k) {
-        precompute();
-        ll ans = 0;
-        
-        // Iterating from the highest possible bit (e.g., 60 for long long)
-        for (int i = 60; i >= 0; i--) {
-            if (k == 0) break;
-            
-            // If we don't set the i-th bit, the number of combinations 
-            // of the remaining (i) bits with (k) set bits is C[i][k]
-            if (C[i][k] < n) {
-                // If n is larger than combinations without this bit, 
-                // we MUST set this bit.
-                n -= C[i][k];
-                ans |= (1LL << i); // Use 1LL to prevent 32-bit shift overflow
-                k--;
-            }
-            // Else: We keep this bit 0 and continue to the next bit.
-        }
-        return ans;
-    }
-};
