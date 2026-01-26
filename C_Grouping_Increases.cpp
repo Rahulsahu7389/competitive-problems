@@ -46,55 +46,55 @@ T power(T x,T n){
   return pro;
 }
 
-void primeFactorisation(int n,set<ll> ){
-    for (int i = 2; i*i <=n; i++)
-    {
-        while(n%i == 0){
-            cout<<i<<endl;
-            n /= i;
-        }
-    }
+void solve(){
+   //your code starts from here
+   ll n;
+   cin>>n;
+   vector<ll> arr(n);
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>arr[i];
+   }
+
+   int maxi = -1;
+	vector<int> dp(n,1);//init it with all 1
+	vector<int> hash(n);
+	for(int i = 0;i<n;i++){
+		hash[i] = i;
+	}
+	int maxind = -1;
+	for(int i = 0;i<n;i++){
+		for(int prev = 0;prev<i;prev++){
+			if(arr[prev]>arr[i] && (1 + dp[prev]>dp[i])){
+				dp[i] = 1 + dp[prev];
+				hash[i] = prev;
+			}
+		}
+		if(maxi<dp[i]){
+			maxi = dp[i];
+			maxind = i;
+		}
+	}
+	
+	// vector<int> ans(maxi);
+	int idx = maxi-1;
+    set<ll> st;
+	vector<ll> vis(n,1);
+	while(hash[maxind]!=maxind){
+		// ans[idx] = arr[maxind];
+        // st.insert(arr[maxind]);
+        vis[maxind] = 0;
+		maxind = hash[maxind];
+		// idx--;
+	}
+	// ans[idx] = arr[maxind];
+    // st.insert(arr[maxind]);
+    vis[maxind] = 0;
+    dbg(vis)
+
     
-    if(n!=1){
-        cout<<n<<endl;
-    }
+   
 }
-
-void solve() {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    vector<int> freq(n+1, 0);
-
-    for (int i = 0; i < n; i++) {
-        cin >> a[i];
-        freq[a[i]]++;
-    }
-
-    const int INF = 1e9;
-    vector<int> dp(n+1, INF);
-
-    // Base
-    for (int i = 1; i <= n; i++) {
-        if (freq[i] > 0) dp[i] = 1;
-    }
-
-    // DP over products
-    for (int i = 1; i <= n; i++) {
-        if (dp[i] == INF) continue;
-        for (int x = 1; x * i <= n; x++) {
-            if (freq[x] > 0) {
-                dp[i * x] = min(dp[i * x], dp[i] + 1);
-            }
-        }
-    }
-
-    for (int i = 1; i <= n; i++) {
-        cout << (dp[i] == INF ? -1 : dp[i]) << " ";
-    }
-    cout << "\n";
-}
-
 
 int main() 
 { 
