@@ -46,54 +46,51 @@ T power(T x,T n){
   return pro;
 }
 
+int a[100005] , seg[4*100005];
+
+void build(int ind , int low , int high){
+    if(low == high){
+        seg[ind] = a[low];//base case leaf node
+        return;
+    }
+    int mid = (low + high)/2;
+    build(2*ind+1,low,mid);
+    build(2*ind+2,mid+1,high);
+    seg[ind] = max(seg[2*ind+1],seg[2*ind+2]);//storing the max into the parent
+}
+
+int query(int ind,int low,int high,int l , int r){
+    if(low>=l && high<=r){//if completely lies in range
+        return seg[ind];
+    }
+    if(high< l || low>r){//if doesnt lie at all
+        return  INT_MIN;
+    }
+    int mid = (low + high)/2;
+    int left = query(2*ind+1,low ,mid,l,r);
+    int right = query(2*ind+2,mid+1,high,l,r);
+    return max(left,right);
+}
+
+// call by pointUpdate(0,0,n-1,node,val)
+void pointUpdate(int ind , int low , int high ,int node, int val){
+    if(low == high){
+        seg[low] += val;//leaf node
+    }
+    else{
+        int mid = (low + high)/2;
+        if(node<=mid && node>=low){//if lies on the left
+            pointUpdate(2*ind+1,low,mid,node,val);
+        }
+        else{//lies on the right
+            pointUpdate(2*ind+2,mid+1,high,node,val);
+        }
+        seg[ind] = seg[2*ind+1]+seg[2*ind+2];//once updatation done now update the parent
+    }
+}
+
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   vector<ll> arr(n);
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>arr[i];
-   }
-
-   int maxi = -1;
-	vector<int> dp(n,1);//init it with all 1
-	vector<int> hash(n);
-	for(int i = 0;i<n;i++){
-		hash[i] = i;
-	}
-	int maxind = -1;
-	for(int i = 0;i<n;i++){
-		for(int prev = 0;prev<i;prev++){
-			if(arr[prev]>arr[i] && (1 + dp[prev]>dp[i])){
-				dp[i] = 1 + dp[prev];
-				hash[i] = prev;
-			}
-		}
-		if(maxi<dp[i]){
-			maxi = dp[i];
-			maxind = i;
-		}
-	}
-	
-	// vector<int> ans(maxi);
-	int idx = maxi-1;
-    set<ll> st;
-	vector<ll> vis(n,1);
-	while(hash[maxind]!=maxind){
-		// ans[idx] = arr[maxind];
-        // st.insert(arr[maxind]);
-        vis[maxind] = 0;
-		maxind = hash[maxind];
-		// idx--;
-	}
-	// ans[idx] = arr[maxind];
-    // st.insert(arr[maxind]);
-    vis[maxind] = 0;
-    dbg(vis)
-
-    
-   
 }
 
 int main() 
@@ -107,8 +104,3 @@ int main()
     } 
     return 0; 
 }
-
-
-
-
-
