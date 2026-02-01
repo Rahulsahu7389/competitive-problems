@@ -50,49 +50,72 @@ void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   vector<ll> arr(n);
+   vector<ll>v(n);
    for (ll i = 0; i < n; i++)
    {
-    cin>>arr[i];
+    cin>>v[i];
    }
+   vector<ll>a;
+   vector<ll>b;
+   a.pb(LLONG_MAX);
+   b.pb(LLONG_MAX);
+   ll id1 = 0;
+   ll id2 = 0;
+   for (ll i = 0; i < n; i++)
+   {
+    ll x = a[id1];
+    ll y = b[id2];
+    ll val = v[i];
+    if(x<=y){
+        if(val<=x){
+            a.pb(val);
+            id1++;
+        }
+        else if(val>y){
+            a.pb(val);
+            id1++;
+        }
+        else if(val>x && val<=y){
+            b.pb(val);
+            id2++;
+        }
+    }
+    else{
+        if(val<=y){
+            b.pb(val);
+            id2++;
+        }
+        else if(val>x){
+            b.pb(val);
+            id2++;
+        }
+        else if(val>y && val<=x){
+            a.pb(val);
+            id1++;
+        }
+    }
 
-   int maxi = -1;
-	vector<int> dp(n,1);//init it with all 1
-	vector<int> hash(n);
-	for(int i = 0;i<n;i++){
-		hash[i] = i;
-	}
-	int maxind = -1;
-	for(int i = 0;i<n;i++){
-		for(int prev = 0;prev<i;prev++){
-			if(arr[prev]>arr[i] && (1 + dp[prev]>dp[i])){
-				dp[i] = 1 + dp[prev];
-				hash[i] = prev;
-			}
-		}
-		if(maxi<dp[i]){
-			maxi = dp[i];
-			maxind = i;
-		}
-	}
-	
-	// vector<int> ans(maxi);
-	int idx = maxi-1;
-    set<ll> st;
-	vector<ll> vis(n,1);
-	while(hash[maxind]!=maxind){
-		// ans[idx] = arr[maxind];
-        // st.insert(arr[maxind]);
-        vis[maxind] = 0;
-		maxind = hash[maxind];
-		// idx--;
-	}
-	// ans[idx] = arr[maxind];
-    // st.insert(arr[maxind]);
-    vis[maxind] = 0;
-    dbg(vis)
+   }
+//    dbg(a)
+//    dbg(b)
+   ll ans = 0;
+   for (ll i = 1; i < a.size(); i++)
+   {
+    if(a[i]>a[i-1]){
+        ans++;
+    }
+   }
+   for (ll i = 1; i < b.size(); i++)
+   {
+    if(b[i]>b[i-1]){
+        ans++;
+    }
+   }
+   cout<<ans<<endl;
+   
+   
 
-    
+   
    
 }
 
