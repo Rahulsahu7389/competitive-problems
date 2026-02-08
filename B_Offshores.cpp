@@ -48,43 +48,24 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n,m;
-   cin>>n>>m;
-   vector<ll> a(n);
-//    vector<ll> b(n);
-    multiset<ll> st;
-   a[0] = 1;
-   for (ll i = 1; i < n; i++)
-   {
-    cin>>a[i];
-   }
-   for (ll i = 0; i < n; i++)
-   {
-    ll b;
-    cin>>b;
-    st.insert(b);
-   }
-
-   sort(all(a));
-//    sort(all(b));
-   ll ans = 0;
-   for (ll i = 0; i < n; i++)
-   {
-    auto it = st.upper_bound(a[i]);
-    if(it!=st.end()){
-        ans++;
-        st.erase(it);
-    }
-    else{
-        break;
+   ll n,x,y;
+   cin>>n>>x>>y;
+    vector<ll> v(n);
+    map<ll,vector<ll>> mp;
+    ll cnt = 0;
+    for (ll i = 0; i < n; i++)
+    {
+        cin>>v[i];
+        if(v[i]%x!=0){
+            mp[v[i]%x].pb(v[i]);
+        }
+        else{
+            
+        }
     }
 
-   }
-   cout<<st.size()<<endl;
-   
-
-   
-   
+    
+    
 }
 
 int main() 
@@ -98,46 +79,3 @@ int main()
     } 
     return 0; 
 }
-
-
-
-class Solution {
-    using ll = long long;
-    ll inf = 1e15;
-
-public:
-    long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
-        int n = nums1.size();
-        int m = nums2.size();
-        
-        
-        vector<vector<vector<ll>>> dp(n + 1, vector<vector<ll>>(m + 1, vector<ll>(k + 1, -inf)));
-
-        
-        for (int i = 0; i <= n; i++) {
-            for (int j = 0; j <= m; j++) {
-                dp[i][j][0] = 0;
-            }
-        }
-
-       
-        for (int rem_k = 1; rem_k <= k; rem_k++) {
-            for (int i = 1; i <= n; i++) {
-                for (int j = 1; j <= m; j++) {
-                    
-                    ll pickboth = (ll)nums1[i - 1] * nums2[j - 1] + dp[i - 1][j - 1][rem_k - 1];
-                    
-                    
-                    ll picki = dp[i - 1][j][rem_k];
-                    
-                    
-                    ll pickj = dp[i][j - 1][rem_k];
-                    
-                    dp[i][j][rem_k] = max({pickboth, picki, pickj});
-                }
-            }
-        }
-
-        return dp[n][m][k];
-    }
-};
