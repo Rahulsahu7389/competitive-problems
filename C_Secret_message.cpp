@@ -48,30 +48,39 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n,x,y;
-   cin>>n>>x>>y;
-    vector<ll> v(n);
-    vector<ll> p(n);
-    ll total = 0;
-    for (ll i = 0; i < n; i++)
-    {
-        cin>>v[i];
-        ll val = v[i]/x;
-        p[i] = val*y;
-        total += p[i];
+   ll n,k;
+   cin>>n>>k;
+   vector<string> s(k);
+   vector<vector<ll>> s2(n,vector<ll>(26,0));
+   for (ll i = 0; i < k; i++)
+   {
+    cin>>s[i];
+    for(int j =0;j<n;j++){
+        s2[j][s[i][j]-'a']++;
     }
-    ll ans = 0;
-    for (ll i = 0; i < n; i++)
-    {
-        ll val = total - p[i] + v[i];
-        ans = max(val,ans);
+   }
+   vector<ll> fac;
+   for(int i = 1;i*i<=n;i++){
+    if(n%i==0){
+        fac.pb(i);
+        if(n/i != i){
+            fac.pb(n/i);
+        }
     }
-    cout<<ans<<endl;
-    
-    
+   }
 
+   for(auto d:fac){
     
+    for (ll i = 0; i < d; i++)
+    {
+        for(int j = 0;j<k;j++){
+            for(int t = i+d;)
+        }
+        
+    }
     
+   }
+   
 }
 
 int main() 
