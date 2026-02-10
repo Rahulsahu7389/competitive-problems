@@ -47,84 +47,79 @@ T power(T x,T n){
 }
 
 void solve(){
-   //your code starts from here
-   ll n,k;
-   cin>>n>>k;
-   vector<string> s(k);
-   vector<vector<ll>> s2(n,vector<ll>(26,0));
-   for (ll i = 0; i < k; i++)
-   {
-    cin>>s[i];
-    for(int j =0;j<n;j++){
-        s2[j][s[i][j]-'a']++;
-    }
-   }
-   set<ll> fac;
-   for(int i = 1;i*i<=n;i++){
-    if(n%i==0){
-        fac.insert(i);
-        if(n/i != i){
-            fac.insert(n/i);
+    ll n , m;
+    cin >> n >> m;
+
+    vector<vector<ll>> v(n, vector<ll>(m));
+    ll cnt = 0;
+
+    for(ll i=0;i<n;i++){
+        for(ll j=0;j<m;j++){
+            cin >> v[i][j];
+            if(v[i][j] == 1) cnt++;
         }
     }
-   }
-   
-//    dbg(fac)
 
-   for(auto d:fac){
-    string ans1 = "";
-    bool outerflag = false;
-    for (ll i = 0; i < d; i++)
-    {
-        bool notanyk = false;
-        for (ll t = 0; t < k; t++)
-        {
-            char st = s[t][i];
+    ll x = cnt / 2;
 
-            //checking
-            bool notvalid = false;
-            for (ll j = i+d; j < n; j+=d)
-            {
-                if(s2[j][st-'a']==0){
-                    notvalid = true;
-                    break;
-                }
-            }
-            if(notvalid){
+    // compute row sums
+    vector<ll> row(n, 0);
+    for(ll i=0;i<n;i++){
+        for(ll j=0;j<m;j++){
+            row[i] += v[i][j];
+        }
+    }
 
-                continue;
+    ll pref = 0;
+    ll R = 0;
 
-            }
-            else{
-                ans1.push_back(st);
-                notanyk = true;//measn got one for i
+    // full rows first
+    while(R < n && pref + row[R] <= x){
+        pref += row[R];
+        R++;
+    }
+
+    // now R is the partial row (if any)
+    ll c = m; // start of suffix
+    if(pref < x){
+        ll need = x - pref;
+
+        ll got = 0;
+        for(ll j = m-1; j >= 0; j--){
+            if(v[R][j] == 1) got++;
+            if(got == need){
+                c = j;
                 break;
             }
-            
-
-            
         }
-        if(!notanyk){//if didnt got for any k for i
-            outerflag = true;//not got any
-            break;
-        }
-        
     }
-    
-    if(ans1.size()==d){
-        for(int te = 0;te<(n/d);te++){
-            cout<<ans1;
-        }
-        cout<<endl;
-        return;
-    }
-    if(outerflag) continue;
-    
-    
-   }
 
-   
+    ll a = x;
+    ll b = cnt - x;
+
+    cout << a * b << "\n";
+
+    // restore path
+    // go down R rows
+    for(ll i=0;i<R;i++) cout << 'D';
+
+    // go right to column c
+    for(ll j=0;j<c;j++) cout << 'R';
+
+    // if there is a partial row
+    if(R < n){
+        cout << 'D';
+    }
+
+    // go right to the end
+    for(ll j=c;j<m;j++) cout << 'R';
+
+    // go down to the end
+    for(ll i=R+1;i<n;i++) cout << 'D';
+
+    cout << "\n";
 }
+
 
 int main() 
 { 
