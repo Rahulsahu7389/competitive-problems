@@ -46,54 +46,34 @@ T power(T x,T n){
   return pro;
 }
 
-int a[100005] , seg[4*100005] , lazy[4*100005];
+// vector<ll> seg;
+//isme min max plus addition wala prefix sum bnaye for leetcode question 
+vector<ll> segMin;
+vector<ll> segMax;
+vector<ll> v;
+vector<ll> lazy;
 
-void build(int ind , int low , int high){
-    if(low == high){
-        seg[ind] = a[low];//base case leaf node
+void build(ll ind, ll l ,ll r){//here ind = 0 as root 0 se start hota and l and r is the range of root node
+    if(l == r){
+        segMax[ind] = v[l];//here both l and r are index of v also but ind is of seg only
+        segMin[ind] = v[l];//here both l and r are index of v also but ind is of seg only
         return;
     }
-    int mid = (low + high)/2;
-    build(2*ind+1,low,mid);
-    build(2*ind+2,mid+1,high);
-    seg[ind] = max(seg[2*ind+1],seg[2*ind+2]);//storing the max into the parent
+    ll mid = (l+r)/2;
+    build(2*ind+1,l,mid);
+    build(2*ind+2,mid+1,r);
+    segMax[ind] = max(segMax[2*ind+1] , segMax[2*ind+2]);
+    segMin[ind] = max(segMin[2*ind+1] , segMin[2*ind+2]);
+
 }
 
-int query(int ind,int low,int high,int l , int r){
-    if(low>=l && high<=r){//if completely lies in range
-        return seg[ind];
-    }
-    if(high< l || low>r){//if doesnt lie at all
-        return  INT_MIN;
-    }
-    int mid = (low + high)/2;
-    int left = query(2*ind+1,low ,mid,l,r);
-    int right = query(2*ind+2,mid+1,high,l,r);
-    return max(left,right);
-}
-
-// call by pointUpdate(0,0,n-1,node,val)
-void pointUpdate(int ind , int low , int high ,int idx, int val){
-    if(low == high){
-        seg[ind] += val;//leaf node
-    }
-    else{
-        int mid = (low + high)/2;
-        if(idx<=mid && idx>=low){//if lies on the left
-            pointUpdate(2*ind+1,low,mid,idx,val);
-        }
-        else{//lies on the right
-            pointUpdate(2*ind+2,mid+1,high,idx,val);
-        }
-        seg[ind] = seg[2*ind+1]+seg[2*ind+2];//once updatation done now update the parent
-    }
-}
 
 // ind is for seg and you want to update into range l to r with value val ---- works for logn
 void rangeUpdate(int ind , int low , int high , int l , int r ,int val){//here l and r is the range into which you want to update and low and high chnage hoga
     //seeing if any update pending
     if(lazy[ind]!=0){
-        seg[ind] += (high - low + 1)*lazy[ind];
+        segMin[ind] += lazy[ind];
+        segMax[ind] += lazy[ind];
         if(low !=high){
             //if not leaf node so update the lazy of its children for later updates
             lazy[2*ind+1] += lazy[ind];
@@ -105,56 +85,55 @@ void rangeUpdate(int ind , int low , int high , int l , int r ,int val){//here l
 
     //if overlaps completely so update the value and propagate the update to its childs for later
     if(low >= l && high <=r){
-        seg[ind]+= (high - low + 1)*val;
+        segMin[ind] += val;
+        segMax[ind] += val;
         if(low !=high){
-            lazy[2*ind + 1] += lazy[ind];
-            lazy[2*ind+2] += lazy[ind];
+            lazy[2*ind + 1] += val;
+            lazy[2*ind+2] += val;
         }
         return;
     }
 
     //if it partially overlaps with the range
     int mid = (low + high)>>1;
-    rangeUpdate(2*ind + 1,low,ind,l,r,val);
+    rangeUpdate(2*ind + 1,low,mid,l,r,val);
     rangeUpdate(2*ind+2,mid+1,high,l,r,val);
-    seg[ind] + seg[2*ind+1] + seg[2*ind +2];//updating the parent after updating its childs
+    segMin[ind] = min(segMin[2*ind+1] , segMin[2*ind +2]);//updating the parent after updating its childs
+    segMax[ind] = max(segMax[2*ind+1] , segMax[2*ind +2]);//updating the parent after updating its childs
 
     
 }
 
-int querySumLazy(int ind , int low , int high , int l , int r ,int val){
-    //seeing if any update pending
-    if(lazy[ind]!=0){
-        seg[ind] += (high - low + 1)*lazy[ind];
-        if(low !=high){
-            //if not leaf node so update the lazy of its children for later updates
-            lazy[2*ind+1] += lazy[ind];
-            lazy[2*ind + 2] += lazy[ind];
-        }
-        lazy[ind ]= 0;
-    }
-    if(r<low || l > high || low > high) return 0;//if completely outside
 
-    if(low>=l && high<=r){
-        return seg[ind];
-    }
-    int mid = (low + high) >> 1;
-    //if there is the partial overlaps
-    return querySumLazy(2*ind+1,low,mid,l,r,val) + querySumLazy(2*ind+2,mid+1,high,l,r,val);
-}
 
 void solve(){
    //your code starts from here
+   ll n ;
+   cin>>n;
+   segMin.assign(4*n,0);
+   segMax.assign(4*n,0);
+   v.assign(n,0);
+   lazy.assign(4*n,0);
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>v[i];
+   }
+   build(0,0,n-1);
+   rangeUpdate(0,0,n-1,1,3,2);
+   cout<<querySumLazy(0,0,n-1,1,3);
+
+
+   
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    ll T; 
-    cin >> T; 
-    while (T--) { 
+    // ll T; 
+    // cin >> T; 
+    // while (T--) { 
         solve(); 
-    } 
+    // } 
     return 0; 
 }
