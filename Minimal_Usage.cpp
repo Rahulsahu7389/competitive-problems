@@ -45,82 +45,51 @@ T power(T x,T n){
   }
   return pro;
 }
-bool isSubsetSum(vector<ll>& arr, ll sum,ll total) {
-    // code here
-    int n = arr.size();
-    
-    vector<vector<bool>> dp(n,vector<bool>(sum+1,false));
-    
-    for(int i =0;i<n;i++ ){
-        dp[i][0] = true;
-    }
-    
-    
-    for(ll val = 0;val<=sum;val++){
-        if(val == arr[0]){
-            dp[0][val] = true;
+
+void solve(){
+   //your code starts from here
+   ll n ,k,s,m;
+   cin>>n>>k>> s>>m;
+   if(k ==1){
+    if(s == m) cout<<1<<endl;
+    else cout<<0<<endl;
+    return;
+   }
+
+   if(m !=1 && m!=2 && m!=n && m!=n-1){
+    cout<<0<<endl;
+    return;
+   }
+   if(m ==2){
+    if(n >=4){
+        if(s == k+1) cout<<1<<endl;
+        else{
+            cout<<0<<endl;
         }
     }
-    
-    for(ll i =1;i<n;i++){
-        for(ll val=1;val<=sum;val++){
-            bool nottake = dp[i-1][val];
-            bool take =false;
-            if(val>=arr[i]){
-                take = dp[i-1][val-arr[i]];
-            }
-            dp[i][val] = (take | nottake);
-            
-        }
+
+    if(n==3){
+        if((s -k)%2 ==1) cout<<1<<endl;
+        else cout<<0<<endl;
     }
-    return (dp[n-1][sum]);
-}
+    if(n==2) cout<<s-k<<endl;
+    return;
+   }
+   if(m==1){
+    if(s>=2*k) cout<<0<<endl;
+    else cout<<2*k -s<<endl;
+    return;
+   }
+   if(m ==n){
+    cout<<max(0LL,s-k*(n-1))<<endl;
+    return;
+   }
+   if(m == n-1){
+    if(s == (k-1)*n + n-1) cout<<1<<endl;
+    else cout<<0<<endl;
+    return;
+   }
 
-
-
-ll minSum(ll kp, ll m) {
-    if (kp == 0) return 0;
-    if (m <= kp) {
-        ll tot = (kp + 1) * (kp + 2)/2;
-        return tot - m;
-    } else {
-        return kp * (kp + 1)/2;
-    }
-}
-
-ll maxSum(ll kp, ll n, ll m) {
-    if (kp == 0) return 0;
-    ll st = n - kp + 1;
-    if (m >= st && m <= n) {
-        ll tot = (n * (n + 1)) / 2 - ((st - 2) * (st - 1))/2;
-        return tot - m;
-    } else {
-        ll tot = (n * (n + 1)) / 2 - ((st - 1) * st)/2;
-        return tot;
-    }
-}
-
-void solve() {
-    ll n,k,s, m;
-    cin>>n>>k>>s>>m;
-    ll ans = -1;
-
-    for (ll c = 0; c <= k; c++) {
-        ll kp = k - c;
-        if (kp > n - 1) continue;
-        
-        ll sp = s -(c*m);
-        if (sp < 0) continue;
-
-        ll mn = minSum(kp,m);
-        ll mx = maxSum(kp, n,m);
-
-        if (sp>= mn && sp <= mx) {
-            ans = c;
-            break;
-        }
-    }
-    cout<<ans<<endl;
 }
 
 int main() 
