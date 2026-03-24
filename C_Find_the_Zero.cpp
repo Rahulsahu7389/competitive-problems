@@ -50,6 +50,50 @@ void solve(){
    //your code starts from here
    ll n;
    cin>>n;
+   ll i = 1;
+   if(n>2){
+
+     for ( i=5; i <=2*n; i+=2)
+     {
+       ll a;
+       cout<<"? "<<i<<" "<<i+1<<endl;
+       cin>>a;
+      
+       if(a ==1){
+         cout<<"! "<<i<<endl;
+         return;
+        }
+      }
+    }
+    
+   ll d;
+   cout<<"? "<<1<<" "<<(3)<<endl;
+   cin>>d;
+   if(d ==1){
+    cout<< "! "<< 1<<endl;
+    return;
+    
+   }
+   ll c;
+   cout<<"? "<<(1)<<" "<<(2)<<endl;
+   cin>>c;
+   if(c ==1){
+    cout<< "! "<< (1)<<endl;
+    return;
+   }
+
+   ll a = i;
+   ll b = 2*n;
+   cout<<"? "<<2<<" "<<3<<endl;
+   ll t;
+   cin>>t;
+   if(t==1){
+    cout<< "! "<< 2<<endl;
+    return;
+   }
+   else{
+    cout<<"! "<<3<<endl;
+   }
    
 }
 
