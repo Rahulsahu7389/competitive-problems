@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -48,47 +48,30 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   vector<ll> v(n+1);
-   for (ll i = 1; i <=n; i++)
-   {
-    cin>>v[i];
+   ll n,m;
+   cin>>n>>m;
+   if(m ==1){
+    cout<<"1 2\n";
+    return;
    }
+   if(m<=n){
+    cout<<1<<" "<<m<<endl;
+    return;
+   }
+   ll p = 4;
+   while(p<=m){
+    ll t = p-1;
+    ll l = (m -n + p -3)/(p-2);
+    ll r = (m-1)/(p-1);
+    if(l<=r){
+        ll x = m -(l*(p-1)), y = x+l;
+        cout<<x<<" "<<y<<endl;
+        return;
+    }
+    p *= 2;
 
-   vector<ll> ans(n+1);
-   for (ll i = 2; i <=n-1; i++)
-   {
-    ans[i] = ((v[i+1] + v[i-1] - 2*v[i])/2);
    }
-
-   ll sum1 = v[1];
-   dbg(sum1)
-   ll sum2 = v[n];
-   dbg(sum2)
-   for (ll i = 2; i <=n-1; i++)
-   {
-    sum1 -= (i-1)*ans[i];
-    
-   }
-   for (int i = n - 1; i >= 0; i--)
-   {
-    sum2 -= (n - i)*ans[i];
-   }
-   
-   dbg(sum1,sum2)
-   ans[n] = (sum1/(n-1));
-   ans[1] = (sum2/(n-1));
-   for (ll i = 1; i <=n; i++)
-   {
-    cout<<ans[i]<<" ";
-   }
-   cout<<endl;
-   
-   
-   
-
-   
+   cout<<-1<<endl;
 }
 
 int main() 
