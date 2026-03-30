@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = true;  // toggle before submission
+bool DEBUG_MODE = false;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -50,50 +50,56 @@ void solve(){
    //your code starts from here
    ll n,m,k;
    cin>>n>>m>>k;
-   vector<pair<ll,ll>> v(n);
+   vector<ll> v(n);
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i].second;
-    v[i].second--;
-    v[i].first = i;
+    cin>>v[i];
+    v[i]--;
    }
    vector<vector<ll>> adj(n);
    for (ll i = 0; i < m; i++)
    {
     ll a,b;
     cin>>a>>b;
+    // dbg(a,b)
     a--;b--;
     adj[a].pb(b);
     adj[b].pb(a);
    }
    priority_queue<pair<ll,ll>,vector<pair<ll,ll>> , greater<pair<ll,ll>>> q;//dis,node
-   vector<ll> dis(k,1e15);
-   vector<ll> vis(n,0);
+   vector<ll> dis(n,1e15);
+//    vector<ll> vis(n,0);
    q.push({0,0});
 //    vis[0] = 1;
-   dis[v[0].second] = 0;
-   dbg(dis)
+   dis[0] = 0;
+   dbg(adj)
    while(!q.empty()){
     auto it = q.top();
     ll dist = it.first;
     ll par = it.second;
-    vis[par] = 1;
     q.pop();
     for(auto val:adj[par]){
-        if(vis[val] == 0){
-            dis[v[val].second] = dist + 1;
-            q.push({dist + 1, val});
-        }
-        else{
-            if(dis[v[val].second] > dist + 1){
-                dis[v[val].second] = dist + 1;
-                q.push({dist + 1, val});
-            }
+        if(dis[val]>dist + 1){
+            dis[val] = dist + 1;
+            q.push({dis[val],val});
         }
 
     }
    }
    dbg(dis)
+   vector<ll> ans(k,0);
+   for (ll i = 0; i < n; i++)
+   {
+    ll val = v[i];
+    if(ans[val]<dis[i]){
+        ans[val] = dis[i];
+    }
+   }
+   for(auto val:ans){
+    cout<<val<<" ";
+   }
+   cout<<endl;
+   
    
    
 }
@@ -102,10 +108,10 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    ll T; 
-    cin >> T; 
-    while (T--) { 
+    // ll T; 
+    // cin >> T; 
+    // while (T--) { 
         solve(); 
-    } 
+    // } 
     return 0; 
 }

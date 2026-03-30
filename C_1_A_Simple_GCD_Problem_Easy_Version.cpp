@@ -46,41 +46,46 @@ T power(T x,T n){
   return pro;
 }
 
+ll lcm(ll a, ll b){
+    ll gc = __gcd(a,b);
+    return ((a*b)/gc);
+}
+
 void solve(){
    //your code starts from here
-   ll n, k;
-   cin>>n>>k;
+   ll n;
+   cin>>n;
    vector<ll> v(n);
+   vector<ll> b(n);
    for (ll i = 0; i < n; i++)
    {
     cin>>v[i];
    }
-   ll i = 0;
-   set<ll> st;
-
-   while(i<n){
-    ll val = v[i];
-    st.insert(val);
-    if(st.size() == k){
-        auto it = st.end();
-        it--;
-        st.erase(it);
-    }
-
-
-    i++;
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>b[i];
    }
    
-   ll x = 0;
-   for(auto val:st){
-    if(x == val){
-        x++;
-    }
-    else{
-        break;
+   vector<ll> temp(n);
+   temp[0] = __gcd(v[0],v[1]);
+   temp[n-1] = __gcd(v[n-2],v[n-1]);
+   for (ll i = 1; i < n-1; i++)
+   {
+    ll a = __gcd(v[i],v[i-1]);
+    ll b = __gcd(v[i],v[i+1]);
+    ll val = lcm(a,b);
+    temp[i] = val;
+   }
+   ll ans = 0;
+   for (ll i = 0; i < n; i++)
+   {
+    if(temp[i]!=v[i]){
+        ans++;
     }
    }
-   cout<<x<<endl;
+   cout<<ans<<endl;
+   
+
    
 }
 

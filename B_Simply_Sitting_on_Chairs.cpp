@@ -48,39 +48,22 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n, k;
-   cin>>n>>k;
+   ll n;
+   cin>>n;
    vector<ll> v(n);
    for (ll i = 0; i < n; i++)
    {
     cin>>v[i];
    }
-   ll i = 0;
-   set<ll> st;
-
-   while(i<n){
-    ll val = v[i];
-    st.insert(val);
-    if(st.size() == k){
-        auto it = st.end();
-        it--;
-        st.erase(it);
+   ll cnt = 0;
+   for (ll i = 0; i < n; i++)
+   {
+    if(v[i]<=i+1){
+        cnt++;
     }
-
-
-    i++;
    }
+   cout<<cnt<<endl;
    
-   ll x = 0;
-   for(auto val:st){
-    if(x == val){
-        x++;
-    }
-    else{
-        break;
-    }
-   }
-   cout<<x<<endl;
    
 }
 
