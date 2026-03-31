@@ -1,89 +1,95 @@
-#include "bits/stdc++.h" 
-using namespace std; 
+#include <bits/stdc++.h>
+using namespace std;
 
 #define FOR(a, c) for (int(a) = 0; (a) < (c); (a)++) 
 #define FORLL(a, c) for (long long(a) = 0; (a) < (c); (a)++) 
 #define FORR(a, b, c) for (int(a) = (b); (a) >= (c); (a)--) 
-#define INF 1000000000000000003 
 typedef long long int ll; 
 typedef vector<int> vi; 
 typedef pair<int, int> pi; 
+#define all(a) a.begin(),a.end()
 #define F first 
 #define S second 
 #define pb push_back 
 #define pob pop_back 
-long long modl(ll a){
-  if(a<0){return -a;}
-  return a;
-}
+ll MOD = 1e9 + 7;
 
-int modl(int a){
-  if(a<0){return -a;}
-  return a;
-}
+// ======== DEBUG SYSTEM ========
+bool DEBUG_MODE = true;  // toggle before submission
 
+template<typename T> void _print(const T &x) { cerr << x; }
+template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
+template<typename T> void _print(const vector<T> &v) { cerr << "["; for (auto &i : v) { _print(i); cerr << " "; } cerr << "]"; }
+template<typename T> void _print(const set<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
+template<typename T> void _print(const multiset<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
+template<typename K, typename V> void _print(const map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
+
+// Variadic template for multiple args
+void dbg_out() { cerr << "\n"; }
+template<typename Head, typename... Tail>
+void dbg_out(Head H, Tail... T) { _print(H); if(sizeof...(T)) cerr << " | "; dbg_out(T...); }
+
+#define dbg(...) if(DEBUG_MODE){ cerr << "[" << __LINE__ << "] " << #__VA_ARGS__ << " = "; dbg_out(__VA_ARGS__); }
+
+// ======== UTILITY FUNCTIONS ========
+template<typename T>
+T mod(T a){ return (a<0)? -a : a; }
+
+template<typename T>
+T power(T x,T n){
+  T pro = 1;
+  while(n!=0){
+    if(n%2==1) pro *= x;
+    x *= x;
+    n /= 2;
+  }
+  return pro;
+}
 
 void solve(){
-  //your code starts from here
-  string s;
-  cin>>s;
-  ll n = s.length();
-  if(is_sorted(s.begin(),s.end())){
-    cout<<"YES"<<endl;
-    return;
-  }
-  if(n == 2){
-    cout<<"YES"<<endl;
-    return;
-  }
-  ll idxOfOne = -1 ;
-  ll idxofzero = -1 ;
-  bool flagOfone = true;
-  bool flagOfzero = true;
-  for (ll i = 1; i <= n; i++)
-  {
-    if(s[i-1]=='1'){
-        if(s[i-1] == s[i]){
-            flagOfone = false;
-        }
-        if(idxOfOne == -1){
-            idxOfOne = i;
-            idxOfOne += 2;
-        }
-        else if(i>=idxOfOne){
-            idxOfOne += 2;
-        }
-        else{
-            flagOfone = false;
-        }
+   //your code starts from here
+   string s;
+   cin>>s;
+   ll n = s.length();
+   ll cnt1 = 0;
+   ll cnt0 = 1;
+   char f = s[0];
+   if(f == '1') cnt1++;
+   else cnt0++;
+    vector<ll> cons1;
+    ll cons0 = 0;
+   for (ll i = 1; i < n; i++)
+   {
+    if(s[i]=='1'){
+      cnt1++;
     }
-    if(s[i-1]=='0'){
-        if(s[i-1] == s[i]){
-            flagOfzero = false;
-        }
-        if(idxofzero == -1){
-            idxofzero = i;
-            idxofzero += 2;
-        }
-        else if(i>=idxofzero){
-            idxofzero += 2;
-        }
-        else{
-            flagOfzero= false;
-        }
+    else cnt0++;
+
+    if(s[i] == s[i-1]){
+      if(s[i]=='0') cons0++;
+      else{
+        cons1.pb(i);
+      }
     }
-  }
-//   cout<<flagOfone<<" "<<flagOfzero<<endl;
-
-  if(flagOfone || flagOfzero){
-    cout<<"YES"<<endl;
+   }
+   if(cons1.empty() || cons0 == 0){
+    cout<<"YES\n";
     return;
-  }
-  cout<<"NO"<<endl;
-  
+   }
+   ll i = cons1[0] + 1;//if both of above is false
+   for (i; i < n; i++)
+   {
+    if(s[i]==s[i-1] && s[i]=='0'){
+      cout<<"NO\n";
+      return;
+    }
+   }
+   cout<<"YES\n";
+   
 
-
+   
 }
+
 int main() 
 { 
     ios::sync_with_stdio(0); 
@@ -94,4 +100,4 @@ int main()
         solve(); 
     } 
     return 0; 
-} 
+}

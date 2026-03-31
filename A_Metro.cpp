@@ -1,3 +1,4 @@
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -60,46 +61,45 @@ void solve(){
    {
     cin>>b[i];
    }
-   if(a[0] == 0){
+   s--;
+   if(a[0] ==1 && a[s]==1){
+    cout<<"YES\n";
+    return;
+   }
+
+   if(a[0] == 0 || (b[s] ==0 && a[s]==0)){
     cout<<"NO\n";
     return;
    }
-   if(a[s-1] == 0 && b[s-1] == 0){
-    cout<<"NO\n";
-    return;
-   }
-   for (ll i = 1; i < n; i++)
+   //both station exist
+   bool ok = false;
+   for (ll i = s+1; i < n; i++)
    {
-    if(a[i] == 1 && (i == s-1)){
-        cout<<"YES\n";
-        return;
+    ll val = (a[i]&b[i]);
+    if(val == 1){
+        ok = true;
+        break;
     }
-    if(a[i] == 1){
-
-        for (ll j = i;j>=0;j--)
-        {
-            if(b[j] == 0){
-                break;
-            }
-            if(b[j] == 1 && (s-1 == j)){
-                cout<<"YES\n";
-                return;
-            }
-        }
-    }
-    
    }
-   cout<<"NO\n";
+   if(ok){
+    cout<<"YES\n";
+   }
+   else{
+    cout<<"NO\n";
+   }
    
 
+
    
+   
+
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
+    ll T; 
     // cin >> T; 
     // while (T--) { 
         solve(); 
