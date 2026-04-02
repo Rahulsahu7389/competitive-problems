@@ -46,36 +46,43 @@ T power(T x,T n){
   return pro;
 }
 
-ll calc(ll val , ll x){
-    return ((val/x));
-}
-
 void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   vector<ll> v(n);
+   vector<pair<ll,ll>> v;//wt,i
+   vector<ll> vis(n,0);
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i];
+    ll a;
+    cin>>a;
+    v.pb({a,i+1});
    }
-
-   ll ans = 1e15;
+   string s;
+   cin>>s;
+   sort(all(v));
    ll idx = 0;
-  for(int i = 0;i<n;i++){
-    ll k = 0;
-    if(v[i]>i){
-        k = (v[i] - i + n -1)/n;
+//    dbg(v)
+   set<pair<ll,ll>>st;
+   for (ll i = 0; i < 2*n; i++)
+   {
+    char c = s[i];
+    if(c == '0'){
+        cout<<v[idx].second<<" ";
+        st.insert(v[idx++]);
     }
-    if(k<ans){
-        ans = k;
-        idx = i+1;
+    else{
+        auto it = st.end();
+        it--;
+        cout<<(it->second)<<" ";
+        st.erase(it);
     }
-  }
-  cout<<idx<<endl;
-
+   }
+   
    
 
+   
+   
    
 }
 
@@ -83,7 +90,7 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    ll T; 
+    // ll T; 
     // cin >> T; 
     // while (T--) { 
         solve(); 
