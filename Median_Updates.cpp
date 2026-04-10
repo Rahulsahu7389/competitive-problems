@@ -52,45 +52,64 @@ void solve(){
    cin>>n;
    string s;
    cin>>s;
-   string temp = s[n-1] + s + s[0];
-   string temp2 = "";
-   
-   for (ll i = 1; i <=n; i++)
+    // vector<ll> temp(n);
+    ll cnt = 0;
+    queue<ll> q;//dist,node
+    vector<ll> dis(n,-1);
+   for (ll i = 0; i < n; i++)
    {
-    ll cnt0 = 0;
-    ll cnt1 = 0;
-    for(int j = i-1;j<=i+1;j++){
-        if(temp[j]=='1') cnt1++;
-        else{
-            cnt0++;
-        }
-    }
-    if(cnt1>cnt0){
-        temp.push_back('1');
+    char l,r;
+    char curr = s[i];
+    if(i==0){
+        l = s[n-1];
+
     }
     else{
-        temp.push_back('0');
+        l = s[i-1];
+    }
+    if(i == n-1){
+        r = s[0];
+
+    }
+    else{
+        r = s[i+1];
+    }
+    if(l == curr || r == curr){
+        cnt++;
+        dis[i] = 0;
+        q.push(i);
     }
    }
-   cout<<temp2<<endl;
-   if(temp2 == s){
-    cout<<1<<endl;
+   if(q.empty()){
+    cout<<-1<<endl;
     return;
    }
-   ll cnt0 = 0;
-   for (ll i = 0; i < temp2.length(); i++)
-   {
-    if(temp2[i]=='0'){
-        cnt0++;
+
+   ll ans = 0;
+   
+   while(!q.empty()){
+    auto node = q.front();
+    
+    q.pop();
+    ll leftx = (node - 1 + n)%n;
+    ll rightx = (node +1)%n;
+    for(auto val:{leftx,rightx}){
+        if(dis[val]==-1){
+            dis[val] = dis[node] + 1;
+            q.push(val);
+        }
     }
+
    }
-   if(cnt0 == n || cnt0 == 0){
-    cout<<2<<endl;
-    return;
-   }
-   cout<<-1<<endl;
+   ans = *max_element(all(dis));
+   cout<<ans+1<<endl;
    
 
+   
+   
+   
+   
+   
    
 }
 
