@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -50,92 +50,101 @@ void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   vector<ll> cal(n);
+   vector<pair<ll,ll>> v(n);
+   vector<ll> temp(n);
    for (ll i = 0; i < n; i++)
    {
-    cin>>cal[i];
+    cin>>v[i].first;
+    v[i].second = i;
+    temp[i] = abs(v[i].first);
    }
-   if(n == 1){
-    cout<<"YES\n";
-    return;
-   }
-   ll val = cal[0];
-   ll valneg = -1*val;
+   ll tar = v[0].first;
    ll idx = n/2;
-   vector<ll> v;
-   for (ll i = 0; i < n; i++)
-   {
-    if(i ==0) continue;
-    v.pb(cal[i]);
-   }
-   sort(all(v));
-   vector<ll> pos(n-1,0);
-   vector<ll> neg(n-1,0);
-   dbg(v)
-   //pos loop
-   ll id = 0;
-   ll taken = v.size()-1;
-   while(id<idx && id<n && taken>=0){
-    ll t = v[taken];
-    if(t<val){
-        id++;
-        pos[taken]= 1;
-    }
-    else if(-1*t<val){
-        id++;
-        pos[taken]= 1;
-    }
-    taken--;
-    
-   }
-   dbg(pos)
-   bool ans1 = true;
-   for (ll i = 0; i < n; i++)
-   {
-    if(pos[i]==0){
-        if(v[i]>val && v[i]*-1>val){
-            ans1 = false;
-            break;
-        }
-    }
-   }
-   if(ans1 && id == idx){
+   if(tar == v[idx].first){
     cout<<"YES\n";
     return;
    }
-   val = valneg;
-   id = 0;
-   taken = v.size()-1;
-   while(id<idx && id<n && taken>=0){
-    ll t = v[taken];
-    if(t<val){
-        id++;
-        neg[taken]= 1;
-    }
-    else if(-1*t<val){
-        id++;
-        neg[taken]= 1;
-    }
-    taken--;
-    
+   ll leftsp = 0;
+   ll rightsp = 0;
+   if(n%2==0){
+    leftsp = idx-1;
+    rightsp = idx;
    }
-   dbg(neg)
-   ans1 = true;
-   for (ll i = 0; i < n; i++)
+   else{
+    leftsp = idx;
+    rightsp = idx;
+   }
+   ll left1 = leftsp;
+   ll right1 = rightsp;
+   sort(temp.begin()+1,temp.end());
+   //positive
+   ll pos = temp[0];
+   ll id1 = 1;
+   bool flag1 = true;
+   for (ll i = 1; i < n; i++)
    {
-    if(neg[i]==0){
-        if(v[i]<val && v[i]*-1<val){
-            ans1 = false;
+    if(temp[i]<pos){
+        if(leftsp>0){
+            leftsp--;
+        }
+        else{
+            flag1 = false;
+            break;
+        }
+    }
+    else{
+        if(rightsp>0){
+            rightsp--;
+        }
+        else if(temp[i]*-1<pos){
+            if(leftsp>0){
+                leftsp--;
+            }
+            else{
+                flag1 = false;
+                break;
+            }
+        }
+    }
+   }
+//    dbg(flag1)
+   if(flag1){
+    cout<<"YES\n";
+    return;
+   }
+   //neg
+   ll neg = -1*pos;
+//    dbg(neg,temp)
+   bool flag2 = true;
+   for (ll i = 1; i < n; i++)
+   {
+    ll t = temp[i];
+    if(t>neg){
+        if(right1>0){
+            right1--;
+        }
+        else if(t*-1<neg && left1>0){
+            // if(){
+                left1--;
+            // }
+            
+        }
+        else{
+            flag2= false;
             break;
         }
     }
    }
-   if(ans1 && id == idx){
+   if(flag2){
     cout<<"YES\n";
     return;
    }
    cout<<"NO\n";
    
+   
+
+
+
    
 }
 
