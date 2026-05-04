@@ -48,60 +48,25 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n,k;
-   cin>>n>>k;
-   vector<ll> a(n);
-   vector<ll> b(n);
-   vector<ll> vis(n);
+   ll n,x,y;
+   cin>>n>>x>>y;
+   vector<ll> v(n);
+   ll total = 0;
    for (ll i = 0; i < n; i++)
    {
-    cin>>a[i];
+    cin>>v[i];
+    total += v[i];
    }
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>b[i];
-    if(b[i]!=-1){
 
-        vis[b[i]-1]++;
-    }
+   ll sum = x + total;
+   if(sum%2==0 && y%2==0 || (sum%2!=0 && y%2!=0)){
+    cout<<"Alice\n";
+    return;
    }
-   for (ll i = 0; i < n; i++)
-   {
-    if(vis[i]>1){
-        cout<<"NO\n";
-        return;
-    }
-   }
-   //range for a
-   map<ll,pair<ll,ll>> mp1;
-   for (ll i = 0; i < n; i++)
-   {
-    ll l = max(0LL,i - k + 1);
-    ll r = min(i+k-1,n-1);
-    mp1[a[i]] = {l,r};
-   }
-   for (ll i = 0; i < n; i++)
-   {
-    if(b[i]!=-1){
-        ll l = max(0LL,i - k + 1);
-        ll r = min(i+k-1,n-1);
-        auto temp = mp1[b[i]];
-        ll left = temp.first;
-        ll right =temp.second;
-        if(left != l || right != r){
-            cout<<"NO\n";
-            return;
-        }
-    }
-   }
-   cout<<"YES\n";
-   
+   cout<<"Bob\n";
 
    
-   
 
-   
-   
 }
 
 int main() 
