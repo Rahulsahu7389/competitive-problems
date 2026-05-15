@@ -48,7 +48,56 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll 
+   ll n;
+   cin>>n;
+   string s;
+   cin>>s;
+   ll cntp = 0;
+   ll cntn = 0;
+   for (ll i = 0; i < n; i++)
+   {
+    if(s[i]=='+') cntp++;
+    else cntn++;
+   }
+   
+   ll q;
+   cin>>q;
+   vector<pair<ll,ll>> inp(q);
+//    vector<ll> ans(q);
+   for (ll i = 0; i < q; i++)
+   {
+    
+    cin>>inp[i].first>>inp[i].second;
+    
+   }
+   for(auto val:inp){
+    ll a = val.first;
+    ll b = val.second;
+    ll sum = (cntn - cntp)*b;
+    ll den = a -b;
+    if(den == 0){
+        if(cntp == cntn){
+            cout<<"YES\n";
+        }
+        else{
+            cout<<"NO\n";
+        }
+    }
+    else if(sum%den == 0){
+        ll temp = sum/den;
+        if(temp>=-cntn && temp<=cntp){
+            cout<<"YES\n";
+        }
+        else{
+            cout<<"NO\n";
+        }
+
+    }
+    else{
+        cout<<"NO\n";
+    }
+   }
+   
 }
 
 int main() 
@@ -56,9 +105,9 @@ int main()
     ios::sync_with_stdio(0); 
     cin.tie(0); 
     ll T; 
-    cin >> T; 
-    while (T--) { 
+    // cin >> T; 
+    // while (T--) { 
         solve(); 
-    } 
+    // } 
     return 0; 
 }

@@ -48,7 +48,63 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll 
+   ll n;
+   cin>>n;
+   vector<ll> v(n);
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>v[i];
+   }
+  
+   vector<ll> pref(n+1);
+   for (ll i = 1; i <=n; i++)
+   {
+    pref[i] = (pref[i-1]^v[i-1]);
+   }
+//    dbg(pref)
+   string s;
+   cin>>s;
+   ll xor1 = 0;
+   ll xor0 = 0;
+   for (ll i = 0; i < n; i++)
+   {
+    if(s[i] == '0'){
+        xor0 = (xor0 ^ v[i]);
+    }
+    else{
+        xor1 ^= v[i];
+    }
+   }
+   ll q;
+   cin>>q;
+   for (ll i = 0; i < q; i++)
+   {
+    ll f;
+    cin>>f;
+    if(f == 1){
+        ll l,r;
+        cin>>l>>r;
+        ll val = pref[r]^pref[l-1];
+        // dbg(l,r,val)
+        xor0 ^= val;
+        xor1 ^=val;
+    }
+    else{
+        ll a;
+        cin>>a;
+        if(a == 0){
+            cout<<xor0<<" ";
+        }
+        else{
+            cout<<xor1<<" ";
+        }
+    }
+   }
+   cout<<endl;
+   
+   
+   
+   
 }
 
 int main() 

@@ -45,20 +45,109 @@ T power(T x,T n){
   }
   return pro;
 }
+int countWaysUnlimited(std::vector<int>& arr, int target) {
+    std::vector<int> dp(target + 1, 0);
+    dp[0] = 1;
 
-void solve(){
-   //your code starts from here
-   ll 
+    for (int num : arr) {
+        // Iterate forward to allow multiple uses of the same number
+        for (int j = num; j <= target; j++) {
+            dp[j] += dp[j - num];
+        }
+    }
+    return dp[target];
+}
+
+const ll Mod = 1000000007;
+
+bool ispalindromic(ll i){
+    if(i>=1 && i<=9) return true;
+    ll temp = i;
+    ll val = 0;
+    while(i>0){
+        ll rem = i%10;
+        val = (val*10 + rem);
+        i /= 10;
+    }
+    return (temp == val);
+
+}
+
+ll fun(ll i ,ll sum,vector<ll> & arr,vector<vector<ll>> &dp){
+    if(i == 0){
+        if(sum%arr[i]==0){
+            return 1;
+        }
+    }
+    if(sum ==0) return 1;
+    if(dp[i][sum]!=-1){
+        return dp[i][sum];
+    }
+
+    ll take = 0;
+    ll nottake = fun(i-1,sum,arr,dp);
+    if(arr[i]<=sum){
+        take += fun(i,sum -arr[i],arr,dp);
+    }
+    return dp[i][sum] = (take + nottake)%Mod;
+
+}
+
+void solve(vector<vector<ll>>& dp){
+   ll n;
+   cin>>n;
+   
+   cout<<(dp[dp.size()-1][n])<<endl;
+   
+   
+
+   
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
+    ll n = 4*1e4;
+    vector<ll> temp;
+    
+    for (ll i = 1; i <=n; i++)
+    {
+        if(ispalindromic(i)){
+            temp.pb(i);
+        }
+    }
+    ll m = temp.size();
+    vector<vector<ll>> dp(m,vector<ll>(n+1,0));
+    // fun(temp.size()-1,n,temp,dp);
+    for (ll i = 0; i <m; i++)
+    {
+        dp[i][0] = 1;
+    }
+    for (ll i = 1; i <=n; i++)
+    {
+        dp[0][i] = 1;
+    }
+    for (ll i = 1; i < m; i++)
+    {
+        for (ll sum = 0; sum <=n; sum++)
+        {
+            ll take = 0;
+            ll nottake = dp[i-1][sum];
+            if(temp[i]<=sum){
+                take += dp[i][sum-temp[i]];
+            }
+            dp[i][sum] = (take + nottake)%Mod;
+        }
+        
+    }
+
+    
+    
     ll T; 
     cin >> T; 
     while (T--) { 
-        solve(); 
+        solve(dp); 
     } 
     return 0; 
 }

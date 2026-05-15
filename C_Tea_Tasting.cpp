@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = true;  // toggle before submission
+bool DEBUG_MODE = false;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -48,7 +48,78 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll 
+   ll n;
+   cin>>n;
+   vector<ll> a(n+1);
+   vector<ll> b(n+1);
+   for (ll i = 1; i <=n; i++)
+   {
+    cin>>a[i];
+   }
+   for (ll i = 1; i <= n; i++)
+   {
+    cin>>b[i];
+   }
+   vector<ll> preb(n+1);
+   for (ll i = 1; i <=n; i++)
+   {
+    preb[i] = preb[i-1] + b[i];
+
+   }
+
+   vector<ll> diff(n+2);//last one for padding and 1 for one based indexing
+   vector<ll> ans(n+1);
+   dbg(preb)
+   for (ll i = 1; i <=n; i++)
+   {
+    ll tar = a[i] + preb[i-1];
+    auto l = lower_bound(all(preb),tar);
+    if(l == preb.end()){
+        diff[i] += 1;
+        diff[n+1] += -1;
+    }
+    else{
+        ll id = l - preb.begin();
+        diff[i] += 1;
+        dbg(i,id)
+        diff[id] += -1;
+        ll sum = a[i] - preb[id -1];
+        if(id>=2){
+
+            sum+=preb[i-1];
+        }
+        dbg(i,sum)
+        ans[id] += sum;
+
+
+    }
+
+   }
+   dbg(diff)
+   dbg(ans)
+   //make the difference array
+   for (ll i = 1; i <=n+1; i++)
+   {
+    diff[i] = diff[i-1] + diff[i];
+   }
+   dbg(diff)
+   for (ll i = 1; i <=n; i++)
+   {
+    ans[i] = b[i]*diff[i] + ans[i];
+    cout<<ans[i]<<" ";
+   }
+   cout<<endl;
+   
+
+   
+   
+   
+   
+   
+
+
+   
+   
 }
 
 int main() 
