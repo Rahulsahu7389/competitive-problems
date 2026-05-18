@@ -51,34 +51,48 @@ void solve(){
    //your code starts from here
    ll a,n;
    cin>>a>>n;
-   vector<ll> v(2);
-   cin>>v[0];
-   cin>>v[1];
+   vector<ll> v(n);
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>v[i];
+   }
+   
    string s = to_string(a);
    ll l = s.length();
    //for smaller length use v[1]
-   ll ans = 1e18;
+   ll ans = 2e18;
    if(l>1){
-    ll val = 0;
-    for (ll i = 0; i < l-1; i++)
-    {
-        val = val*10 + v[1];
+       for(auto x:v){
+        ll val = 0;
+
+    
+        for (ll i = 0; i < l-1; i++)
+        {
+            val = val*10 + x;
+        }
+        ans = min(ans,abs(val - a));
+        dbg(val)
+    
     }
-    ans = min(ans,abs(val - a));
-    dbg(val)
    }
    //for greater length
-   ll val = 0;
-   if(v[0]==0){
-    val = v[1];
-   }
-   else val = v[0];
-   for (ll i = 1; i < l+1; i++)
-   {
-    val = val*10 + v[0];
-   }
-   dbg(val)
-   ans = min(ans,abs(val - a));
+    if(n>1 || (n ==1 && v[0]!=0)){
+
+   
+        ll val = 0;
+        if(v[0]==0){
+            val = v[1];
+        }
+        else val = v[0];
+        for (ll i = 1; i < l+1; i++)
+        {
+            val = val*10 + v[0];
+        }
+        dbg(val)
+        ans = min(ans,abs(val - a));
+    }
+   
+   
    
    //go digit by digit
    ll curr = 0;
@@ -97,17 +111,22 @@ void solve(){
             
             
         }
-        else{
+        else if(d<dig){
             for (ll j = i+1; j < l; j++)//we have already chosen till i digit
             {
-                temp = temp*10 + v[1];
+                temp = temp*10 + v[n-1];
             }
         }
         ans = min(ans,abs(a - temp));
     }
-    if(dig!=v[0] && dig!=v[1]){
-        //as no same then we have done those case in above
-        made = false;//could not make it complete
+    bool found = true;//true means we could not found
+    for(auto x:v){
+        if(x == dig){
+            found = false;
+        }
+    }
+    if(found){//means we could not find dig
+        made = false;
         break;
     }
     curr = curr*10 + dig;

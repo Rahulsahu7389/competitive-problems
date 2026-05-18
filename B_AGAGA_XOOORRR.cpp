@@ -1,4 +1,3 @@
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -16,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -49,74 +48,40 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll a,n;
-   cin>>a>>n;
-   vector<ll> v(2);
-   cin>>v[0];
-   cin>>v[1];
-   string s = to_string(a);
-   ll l = s.length();
-   //for smaller length use v[1]
-   ll ans = 1e18;
-   if(l>1){
-    ll val = 0;
-    for (ll i = 0; i < l-1; i++)
-    {
-        val = val*10 + v[1];
-    }
-    ans = min(ans,abs(val - a));
-    dbg(val)
-   }
-   //for greater length
-   ll val = 0;
-   if(v[0]==0){
-    val = v[1];
-   }
-   else val = v[0];
-   for (ll i = 1; i < l+1; i++)
+   ll n;
+   cin>>n;
+   vector<ll> v(n+1);
+   for (ll i = 1; i <=n; i++)
    {
-    val = val*10 + v[0];
+    cin>>v[i];
    }
-   dbg(val)
-   ans = min(ans,abs(val - a));
-   
-   //go digit by digit
-   ll curr = 0;
-   bool made = true;
-   for (ll i = 0; i < l; i++)
+   vector<ll> pre(n+1);
+   for (ll i = 1; i <=n; i++)
    {
-    ll dig = s[i]-'0';
-    for(auto d:v){
-        ll temp = curr*10 + d;
-        if(d>dig){
-            //first point of diff is greater so put smaller no ahead
-            for (ll j = i+1; j < l; j++)//we have already chosen till i digit
-            {
-                temp = temp*10 + v[0];
-            }
-            
-            
-        }
-        else{
-            for (ll j = i+1; j < l; j++)//we have already chosen till i digit
-            {
-                temp = temp*10 + v[1];
-            }
-        }
-        ans = min(ans,abs(a - temp));
-    }
-    if(dig!=v[0] && dig!=v[1]){
-        //as no same then we have done those case in above
-        made = false;//could not make it complete
-        break;
-    }
-    curr = curr*10 + dig;
+    pre[i] = (pre[i-1]^v[i]);
    }
-   if(made){
-    cout<<0<<endl;
+   if(pre[n] ==0){
+    cout<<"YES\n";
     return;
    }
-   cout<<ans<<endl;
+   //need two pointer to solve it
+   for (ll i = 1; i <=n; i++)
+   {
+    for (ll j = i+1; j <=n; j++)
+    {
+        ll f = pre[i];
+        ll s = pre[j]^pre[i];
+        ll t = pre[n]^pre[j];
+        // dbg(f,s,t)
+        if(f == s && s == t){
+            cout<<"YES\n";
+            return;
+        }
+    }
+    
+   }
+   cout<<"NO\n";
+   
    
    
 }
@@ -132,4 +97,3 @@ int main()
     } 
     return 0; 
 }
-

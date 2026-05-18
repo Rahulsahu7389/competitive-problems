@@ -1,4 +1,3 @@
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -49,76 +48,35 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll a,n;
-   cin>>a>>n;
-   vector<ll> v(2);
-   cin>>v[0];
-   cin>>v[1];
-   string s = to_string(a);
-   ll l = s.length();
-   //for smaller length use v[1]
-   ll ans = 1e18;
-   if(l>1){
-    ll val = 0;
-    for (ll i = 0; i < l-1; i++)
-    {
-        val = val*10 + v[1];
-    }
-    ans = min(ans,abs(val - a));
-    dbg(val)
-   }
-   //for greater length
-   ll val = 0;
-   if(v[0]==0){
-    val = v[1];
-   }
-   else val = v[0];
-   for (ll i = 1; i < l+1; i++)
+   ll n;
+   cin>>n;
+   vector<ll> x(n);
+   vector<ll> y(n);
+   for (ll i = 0; i < n; i++)
    {
-    val = val*10 + v[0];
+    cin>>x[i]>>y[i];
    }
-   dbg(val)
-   ans = min(ans,abs(val - a));
    
-   //go digit by digit
-   ll curr = 0;
-   bool made = true;
-   for (ll i = 0; i < l; i++)
-   {
-    ll dig = s[i]-'0';
-    for(auto d:v){
-        ll temp = curr*10 + d;
-        if(d>dig){
-            //first point of diff is greater so put smaller no ahead
-            for (ll j = i+1; j < l; j++)//we have already chosen till i digit
-            {
-                temp = temp*10 + v[0];
-            }
-            
-            
-        }
-        else{
-            for (ll j = i+1; j < l; j++)//we have already chosen till i digit
-            {
-                temp = temp*10 + v[1];
-            }
-        }
-        ans = min(ans,abs(a - temp));
-    }
-    if(dig!=v[0] && dig!=v[1]){
-        //as no same then we have done those case in above
-        made = false;//could not make it complete
-        break;
-    }
-    curr = curr*10 + dig;
-   }
-   if(made){
-    cout<<0<<endl;
-    return;
-   }
-   cout<<ans<<endl;
+   sort(all(x));
+   sort(all(y));
+   dbg(x,y)
    
+   ll idx1 = (x.size() + 1)/2 -1 ;
+   ll idx2 = (x.size()+2)/2 -1 ;
+   ll xrange = abs(x[idx1] - x[idx2]) +1;
+//    dbg(idx1,idx2,xrange)
+   ll idy1 = (y.size() + 1)/2 -1 ;
+   ll idy2 = (y.size()+2)/2 -1 ;
+   ll yrange = abs(y[idy1] - y[idy2]) +1;
+//    dbg(idy1,idy2,yrange)
+   cout<<xrange*yrange<<endl;
+
    
+
+
+
+   
+
 }
 
 int main() 
@@ -132,4 +90,3 @@ int main()
     } 
     return 0; 
 }
-

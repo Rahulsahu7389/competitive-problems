@@ -89,6 +89,7 @@ int binMultiply(int a, int b, int mod) {//runs in logn
     return res;
 }
 
+
 ll binExp(ll a, ll b,ll mod) {//log^2(n)
     ll res = 1;
     a %= mod;//phle hi mod kr diye

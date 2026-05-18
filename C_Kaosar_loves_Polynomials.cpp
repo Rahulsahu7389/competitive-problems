@@ -1,4 +1,3 @@
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -16,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -36,89 +35,40 @@ void dbg_out(Head H, Tail... T) { _print(H); if(sizeof...(T)) cerr << " | "; dbg
 template<typename T>
 T mod(T a){ return (a<0)? -a : a; }
 
-template<typename T>
-T power(T x,T n){
-  T pro = 1;
-  while(n!=0){
-    if(n%2==1) pro *= x;
-    x *= x;
-    n /= 2;
-  }
-  return pro;
+ll Mod = 1e9 + 7;
+
+// Clean, non-templated modular exponentiation
+ll power(ll x, ll n, ll mod) {
+    ll pro = 1;
+    x %= mod; // Ensure base is within mod bounds
+    if (x < 0) x += mod; // Correct negative bases
+    
+    while (n > 0) {
+        if (n % 2 == 1) {
+            pro = (pro * x) % mod;
+        } 
+        x = (x * x) % mod;
+        n /= 2;
+    }
+    return pro;
 }
 
 void solve(){
    //your code starts from here
-   ll a,n;
-   cin>>a>>n;
-   vector<ll> v(2);
-   cin>>v[0];
-   cin>>v[1];
-   string s = to_string(a);
-   ll l = s.length();
-   //for smaller length use v[1]
-   ll ans = 1e18;
-   if(l>1){
-    ll val = 0;
-    for (ll i = 0; i < l-1; i++)
-    {
-        val = val*10 + v[1];
-    }
-    ans = min(ans,abs(val - a));
-    dbg(val)
-   }
-   //for greater length
-   ll val = 0;
-   if(v[0]==0){
-    val = v[1];
-   }
-   else val = v[0];
-   for (ll i = 1; i < l+1; i++)
+   ll k,n;
+   cin>>k>>n;
+   ll total = 0;
+   for (ll i = 0; i < n+1; i++)
    {
-    val = val*10 + v[0];
+    ll a;
+    cin>>a;
+    total = (total + a)%Mod;
    }
-   dbg(val)
-   ans = min(ans,abs(val - a));
-   
-   //go digit by digit
-   ll curr = 0;
-   bool made = true;
-   for (ll i = 0; i < l; i++)
-   {
-    ll dig = s[i]-'0';
-    for(auto d:v){
-        ll temp = curr*10 + d;
-        if(d>dig){
-            //first point of diff is greater so put smaller no ahead
-            for (ll j = i+1; j < l; j++)//we have already chosen till i digit
-            {
-                temp = temp*10 + v[0];
-            }
-            
-            
-        }
-        else{
-            for (ll j = i+1; j < l; j++)//we have already chosen till i digit
-            {
-                temp = temp*10 + v[1];
-            }
-        }
-        ans = min(ans,abs(a - temp));
-    }
-    if(dig!=v[0] && dig!=v[1]){
-        //as no same then we have done those case in above
-        made = false;//could not make it complete
-        break;
-    }
-    curr = curr*10 + dig;
+   if(total<0){
+    total = (total + Mod)%Mod;
    }
-   if(made){
-    cout<<0<<endl;
-    return;
-   }
+   ll ans = power(total,k,Mod);
    cout<<ans<<endl;
-   
-   
 }
 
 int main() 
@@ -132,4 +82,3 @@ int main()
     } 
     return 0; 
 }
-

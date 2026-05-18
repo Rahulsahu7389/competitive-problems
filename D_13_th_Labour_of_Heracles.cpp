@@ -1,4 +1,3 @@
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -16,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -49,75 +48,67 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll a,n;
-   cin>>a>>n;
-   vector<ll> v(2);
-   cin>>v[0];
-   cin>>v[1];
-   string s = to_string(a);
-   ll l = s.length();
-   //for smaller length use v[1]
-   ll ans = 1e18;
-   if(l>1){
-    ll val = 0;
-    for (ll i = 0; i < l-1; i++)
-    {
-        val = val*10 + v[1];
-    }
-    ans = min(ans,abs(val - a));
-    dbg(val)
-   }
-   //for greater length
-   ll val = 0;
-   if(v[0]==0){
-    val = v[1];
-   }
-   else val = v[0];
-   for (ll i = 1; i < l+1; i++)
+   ll n;
+   cin>>n;
+   vector<ll> wt(n+1);
+   ll total = 0;
+   for (ll i = 1; i <=n; i++)
    {
-    val = val*10 + v[0];
+    cin>>wt[i];
+    total += wt[i];
    }
-   dbg(val)
-   ans = min(ans,abs(val - a));
    
-   //go digit by digit
-   ll curr = 0;
-   bool made = true;
-   for (ll i = 0; i < l; i++)
+   vector<ll> deg(n+1);
+   
+   for (ll i = 0; i < n-1; i++)
    {
-    ll dig = s[i]-'0';
-    for(auto d:v){
-        ll temp = curr*10 + d;
-        if(d>dig){
-            //first point of diff is greater so put smaller no ahead
-            for (ll j = i+1; j < l; j++)//we have already chosen till i digit
-            {
-                temp = temp*10 + v[0];
-            }
-            
-            
-        }
-        else{
-            for (ll j = i+1; j < l; j++)//we have already chosen till i digit
-            {
-                temp = temp*10 + v[1];
-            }
-        }
-        ans = min(ans,abs(a - temp));
-    }
-    if(dig!=v[0] && dig!=v[1]){
-        //as no same then we have done those case in above
-        made = false;//could not make it complete
-        break;
-    }
-    curr = curr*10 + dig;
+    ll a,b;
+    cin>>a>>b;
+    deg[a]++;
+    deg[b]++;
+    
    }
-   if(made){
-    cout<<0<<endl;
-    return;
-   }
-   cout<<ans<<endl;
    
+   ll extra = 0;
+   //now push the edges into priority queue such that you can update and get the max also
+   priority_queue<pair<ll,ll>> q;//wt,node
+   for (ll i = 1; i <=n; i++)
+   {
+    if(deg[i]>1){//if degree is equal to 1 so cant act as bridging vertex for color
+        q.push({wt[i],i});
+
+    }
+   }
+   
+//    dbg(deg)
+   cout<<total<<" ";
+   vector<ll> ans;
+   while (!q.empty())
+   {
+    auto it = q.top();
+    q.pop();
+    ll wei = it.first;
+    ll node = it.second;
+    total += wei;
+    ans.push_back(total);
+    deg[node]--;
+    if(deg[node]>1){
+        q.push({wei,node});//still you can use it
+    }
+   }
+//    dbg("here")
+   for(auto val:ans){
+    cout<<val<<" ";
+   }
+   
+
+   
+   
+   cout<<endl;
+   
+   
+   
+
    
 }
 
@@ -132,4 +123,3 @@ int main()
     } 
     return 0; 
 }
-
