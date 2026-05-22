@@ -23,6 +23,7 @@ template<typename T> void _print(const vector<T> &v) { cerr << "["; for (auto &i
 template<typename T> void _print(const set<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
 template<typename T> void _print(const multiset<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
 template<typename K, typename V> void _print(const map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
+template<typename K, typename V> void _print(const unordered_map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
 
 // Variadic template for multiple args
 void dbg_out() { cerr << "\n"; }
@@ -46,23 +47,67 @@ T power(T x,T n){
   return pro;
 }
 
+
 void solve(){
    //your code starts from here
    ll n;
    cin>>n;
    vector<ll> v(n);
-   ll st = 1e15;
-   ll end = -1e15;
+   unordered_map<ll,ll> mp;
    for (ll i = 0; i < n; i++)
    {
     cin>>v[i];
-    st = min(st,v[i]);
-    end = max(end,v[i]);
+    mp[v[i]]++;//couting the freq
+   }
+   
+   unordered_map<ll,pair<ll,ll>> store;//elem , <no of that elem , no of ops for all elem>
+   for(auto val:mp){
+    ll f = val.first;
+    ll s = val.second;
+    bool repeated = false;
+    vector<ll> path;
+    while (true)
+    {
+      for(auto p:path){
+        if(p == f){
+          repeated = true;
+          break;
+        }
+      }
+      if(repeated) break;
+
+      path.push_back(f);
+      store[f].first += s;
+      store[f].second += s*(path.size()-1);
+      
+      
+      //reached via this path till last one for all elem
+      if(f%2==0){
+        f /= 2;
+      }
+      else{
+        f++;
+      }
+    }
+    
+    
+     
    }
 
-   while(st<=end){
-    
+  //  dbg(mp1)
+  //  dbg(mp2)
+
+   ll ans = 1e15;
+   for(auto val:store){
+    ll f = val.first;
+    ll s = val.second.first;
+    ll t = val.second.second;
+    if(s == n){
+      ans = min(ans,t);
+    }
    }
+   cout<<ans<<endl;
+
 
    
 }
