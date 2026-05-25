@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -46,110 +46,69 @@ T power(T x,T n){
   return pro;
 }
 
+void primeFactorisation(int n){
+    for (int i = 2; i*i <=n; i++)
+    {
+        while(n%i == 0){
+            cout<<i<<endl;
+            n /= i;
+        }
+    }
+    
+    if(n!=1){
+        cout<<n<<endl;
+    }
+}
+
 void solve(){
    //your code starts from here
-   ll n,m,k;
-   cin>>n>>m>>k;
-   
-   vector<ll> a(n);
-   vector<ll> b(m);
+   ll n;
+   cin>>n;
+   vector<ll> a(n),b(n);
    for (ll i = 0; i < n; i++)
    {
     cin>>a[i];
    }
-   for (ll i = 0; i < m; i++)
+   for (ll i = 0; i < n; i++)
    {
     cin>>b[i];
    }
 
-   //calc the factors of k
-   vector<ll> fact;
-   for (ll i = 1; i*i<=k; i++)
-   {
-    if(k%i==0){
-        fact.push_back(i);
-    }
-   }
-
    
-   //now calculate the no of segments
-   vector<ll> sega,segb;
-   ll cnta = 0;
+   //now reduce to coprimes and store them
+
+   map<pair<ll,ll>, ll> mp;
+   ll cnt00 = 0;
    for (ll i = 0; i < n; i++)
    {
-    if(a[i]==0){
-        sega.push_back(cnta);
-        cnta=0;
+    ll x = a[i];
+    ll y = b[i];
+    ll t = 1;
+    
+    if(x == 0 && y == 0){
+        cnt00++;
+        continue;
     }
-    else{
-        cnta++;
-    }
+    else if((x == 0 && y!=0)) continue;
+    if((x<0 && y>0) || (x>0 && y<0)) t *= -1;//handling sign
+    x = abs(x);
+    y = abs(y);
+    ll val = __gcd(x,y);
+    x /= val;
+    y /= val;
+    mp[{t*x,y}]++;
+    
    }
-   if(cnta>0) sega.push_back(cnta);
-   ll cntb = 0;
-   for (ll i = 0; i < m; i++)
-   {
-    if(b[i]==0){
-        segb.push_back(cntb);
-        cntb=0;
-    }
-    else{
-        cntb++;
-    }
-   }
-   if(cntb>0) segb.push_back(cntb);
-   dbg(sega)
-   dbg(segb)
-   map<ll,ll> mpa,mpb;
-   dbg(fact)
-   //for every factor find all
-   for(auto val:sega){
-    for(auto cal:fact){
-        if(cal>val) break;
-        ll temp = k/cal;
-        ll sum1 = val - cal +1;
-        mpa[cal]+= sum1;
-        if(temp!=cal && temp<=val){
-            ll sum2 = val - temp + 1;
-            mpa[temp]+= sum2;
-        }
-    }
-   }
-   for(auto val:segb){
-    for(auto cal:fact){
-        if(cal>val) break;
-        ll temp = k/cal;
-        ll sum1 = val - cal +1;
-        mpb[cal]+= sum1;
-        if(temp!=cal && temp<=val){
-            ll sum2 = val - temp + 1;
-            mpb[temp]+= sum2;
-        }
-    }
-   }
-   dbg(mpa)
-   dbg(mpb)
+//    dbg(mp)
    ll ans = 0;
-   for(auto val:fact){
-    ll tempa = k/val;
-    ll tempb = k/val;
-    if(mpa.count(val)>0 && mpb.count(tempa)>0){
-        dbg(val,mpa[val],mpb[tempa])
-        ans += mpa[val]*mpb[tempa];
-    }
-    if(val != k/val){
-
-        if(mpb.count(val)>0 && mpa.count(tempb)>0){
-            dbg(val,mpb[val],mpa[tempb])
-            ans += mpb[val]*mpa[tempb];
-        }
-    }
+   for(auto val:mp){
+    ans = max(ans,val.second);
    }
-
-   cout<<ans<<endl;
+   
+   cout<<ans+cnt00<<endl;
+   
    
 
-   
 }
 
 int main() 
