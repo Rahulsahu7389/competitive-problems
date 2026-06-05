@@ -1,0 +1,122 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define FOR(a, c) for (int(a) = 0; (a) < (c); (a)++) 
+#define FORLL(a, c) for (long long(a) = 0; (a) < (c); (a)++) 
+#define FORR(a, b, c) for (int(a) = (b); (a) >= (c); (a)--) 
+typedef long long int ll; 
+typedef vector<int> vi; 
+typedef pair<int, int> pi; 
+#define all(a) a.begin(),a.end()
+#define F first 
+#define S second 
+#define pb push_back 
+#define pob pop_back 
+ll MOD = 1e9 + 7;
+
+// ======== DEBUG SYSTEM ========
+bool DEBUG_MODE = false;  // toggle before submission
+
+template<typename T> void _print(const T &x) { cerr << x; }
+template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
+template<typename T> void _print(const vector<T> &v) { cerr << "["; for (auto &i : v) { _print(i); cerr << " "; } cerr << "]"; }
+template<typename T> void _print(const set<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
+template<typename T> void _print(const multiset<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
+template<typename K, typename V> void _print(const map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
+
+// Variadic template for multiple args
+void dbg_out() { cerr << "\n"; }
+template<typename Head, typename... Tail>
+void dbg_out(Head H, Tail... T) { _print(H); if(sizeof...(T)) cerr << " | "; dbg_out(T...); }
+
+#define dbg(...) if(DEBUG_MODE){ cerr << "[" << __LINE__ << "] " << #__VA_ARGS__ << " = "; dbg_out(__VA_ARGS__); }
+
+// ======== UTILITY FUNCTIONS ========
+template<typename T>
+T mod(T a){ return (a<0)? -a : a; }
+
+
+ll Mod = 998244353;
+
+ll power(ll x, ll n, ll mod) {
+    ll pro = 1;
+    x %= mod; // Ensure base is within mod bounds
+    if (x < 0) x += mod; // Correct negative bases
+    
+    while (n > 0) {
+        if (n % 2 == 1) {
+            pro = (pro * x) % mod;
+        } 
+        x = (x * x) % mod;
+        n /= 2;
+    }
+    return pro;
+}
+
+ll inverse(ll a, ll mod){
+    return power(a,mod-2LL,mod);
+}
+
+
+ll ncr(ll n,ll r, ll mod){
+    if(r<0 || r>n) return 0;
+    if(r==0 || r == n) return 1;
+    if(r> n -r) r = n-r;
+    ll num = 1;
+    ll den = 1;
+    for (ll i = 0; i < r; i++)
+    {
+        num = (num*(n-i))%mod;
+        den = (den*(i+1))%mod;
+    }
+    // dbg(num,den)
+    ll inv = inverse(den,mod);
+    return (num*inv)%mod;
+}
+
+
+
+void solve(){
+   //your code starts from here
+   ll n;
+   cin>>n;
+   vector<ll> contri;
+   for (ll i = 0; i < n/3; i++)
+   {
+    map<ll,ll>st;
+    for (ll j = 0; j < 3; j++)
+    {
+        ll a;
+        cin>>a;
+        st[a]++;
+
+    }
+    auto it = st.begin();
+    contri.push_back(it->second);//jitne hai utne freq
+    
+
+   }
+   dbg(contri)
+   ll m = n/3;
+   dbg(m)
+   ll ans = ncr(m,m/2,Mod);
+   dbg(ans)
+   for(auto val:contri){
+    ans = (ans * val)%Mod;
+   }
+//    ans = (ans*2)%Mod;i was overcounting it like combination wale me count ho gya hai color wala
+   cout<<ans<<endl;
+
+}
+
+int main() 
+{ 
+    ios::sync_with_stdio(0); 
+    cin.tie(0); 
+    // ll T; 
+    // cin >> T; 
+    // while (T--) { 
+        solve(); 
+    // } 
+    return 0; 
+}
