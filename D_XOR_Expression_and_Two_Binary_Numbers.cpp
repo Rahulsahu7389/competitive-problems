@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = true;  // toggle before submission
+bool DEBUG_MODE = false;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -48,26 +48,43 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   ll rem = n%12;
-   ll a ;
-   if(rem<10){
-    a = rem;
-   }
-   if(rem ==10){
-    a = 22;
-   }
-   if(rem == 11){
-    a = 11;
-   }
-   ll b = n - a;
-   if(b%12!=0 || b<0){
-    cout<<-1<<endl;
-   }
-   else{
-    cout<<a<<" "<<b<<endl;
-   }
+   ll n,k;
+   cin>>n>>k;
+   string a,b;
+   cin>>a;
+   cin>>b;
+    string c = "";
+    for (ll i = 0; i < n; i++)
+    {
+        if(a[i]==b[i]){
+            c.push_back('0');
+        }
+        else{
+            c.push_back('1');
+        }
+    }
+    dbg(c)
+    ll t = (power(2LL,k)+1);
+    ll times = t/3;
+    ll cnt1a = count(all(a),'1');
+    ll cnt1b = count(all(b),'1');
+    ll cnt1c = count(all(c),'1');
+    dbg(times,cnt1a,cnt1b,cnt1c)
+    ll ans = 0;
+    ll rem = t%3;
+    if(rem == 1){
+        ans += (cnt1a*(n -cnt1a));
+    }
+    else if(rem == 2){
+        ans += (cnt1a*(n -cnt1a));
+        ans += (cnt1b*(n -cnt1b));
+    }
+    
+    ans += (cnt1a*(n -cnt1a))*times;
+    ans += (cnt1b*(n -cnt1b))*times;
+    ans += (cnt1c*(n -cnt1c))*times;
+    cout<<ans<<endl;
+    
 }
 
 int main() 

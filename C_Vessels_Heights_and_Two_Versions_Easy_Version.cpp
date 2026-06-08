@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = true;  // toggle before submission
+bool DEBUG_MODE = false;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -50,24 +50,62 @@ void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   ll rem = n%12;
-   ll a ;
-   if(rem<10){
-    a = rem;
+   vector<ll> v(n);
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>v[i];
    }
-   if(rem ==10){
-    a = 22;
+   for (ll j = 0; j < n; j++)
+   {
+    vector<ll> front(n);
+    vector<ll> last(n);
+    front[j] = 0;
+    last[j] = 0;
+    ll idx = j;//start from idx
+    //left to right
+    for (ll i = 0; i < n-1; i++)
+    {
+        ll id = (idx+i)%n;
+        ll f = v[id];
+        ll maxi = max(front[id],front[(id+1)%n]);
+        if(maxi>f){
+            //out of limit
+            front[(id+1)%n] = maxi;
+        }
+        else{
+            //have option
+            front[(id +1)%n] = v[id];
+        }
+    }
+    dbg(front)
+    for (ll i = 0; i < n-1; i++)
+    {
+        ll id = (idx-i + n)%n;
+        ll prev = (id - 1 + n)%n;
+        ll f = v[prev];
+        ll maxi = max(last[id],last[(prev)]);
+        if(maxi>f){
+            //out of limit
+            last[(prev)] = maxi;
+        }
+        else{
+            //have option
+            last[prev] = f;
+        }
+    }
+    dbg(last)
+    ll ans = 0;
+    for (ll i = 0; i < n; i++)
+    {
+        ans += min(front[i],last[i]);
+    }
+    cout<<ans<<" ";
+    
+    
    }
-   if(rem == 11){
-    a = 11;
-   }
-   ll b = n - a;
-   if(b%12!=0 || b<0){
-    cout<<-1<<endl;
-   }
-   else{
-    cout<<a<<" "<<b<<endl;
-   }
+   cout<<endl;
+   
+   
 }
 
 int main() 
