@@ -46,40 +46,19 @@ T power(T x,T n){
   return pro;
 }
 
-ll dp[1000005];
-ll fun(ll x,vector<ll>&coins,ll n){
-    if(x == 0) return 0;
-    if(dp[x]!=-1)return dp[x];
-    ll val = 1e15;
-    for (ll i = 0; i < n; i++)
-    {
-        if(x>=coins[i]){
-
-            val = min(val,1 + fun(x-coins[i],coins,n));
-        }else break;
-    }
-    return dp[x]=val;
-    
-}
-
 void solve(){
    //your code starts from here
-   ll n,x;
-   cin>>n>>x;
-   vector<ll> coins(n);
+   string s;
+   cin>>s;
+   ll n = s.length();
+   string ans = "";
    for (ll i = 0; i < n; i++)
    {
-    cin>>coins[i];
-   }
-   memset(dp,-1,sizeof(dp));
-   sort(all(coins));
-   ll ans = fun(x,coins,n);
-   if(ans == 1e15){
-    cout<<-1<<endl;
-    return;
+    if(s[i]>='0' && s[i]<='9'){
+        ans += s[i];
+    }
    }
    cout<<ans<<endl;
-
    
 }
 

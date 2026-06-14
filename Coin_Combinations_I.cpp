@@ -12,7 +12,7 @@ typedef pair<int, int> pi;
 #define S second 
 #define pb push_back 
 #define pob pop_back 
-ll MOD = 1e9 + 7;
+const int MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
 bool DEBUG_MODE = true;  // toggle before submission
@@ -46,39 +46,55 @@ T power(T x,T n){
   return pro;
 }
 
-ll dp[1000005];
-ll fun(ll x,vector<ll>&coins,ll n){
-    if(x == 0) return 0;
-    if(dp[x]!=-1)return dp[x];
-    ll val = 1e15;
+int dp[1000005];
+ll fun(ll x,vector<ll>&v , ll n){
+    if(x == 0) return 1;
+    if(dp[x]!=-1){
+        return dp[x];
+    }
+    ll val = 0;
     for (ll i = 0; i < n; i++)
     {
-        if(x>=coins[i]){
+        if(x>=v[i]){
 
-            val = min(val,1 + fun(x-coins[i],coins,n));
-        }else break;
+            val = (val + fun(x-v[i],v,n))%MOD;
+        }
     }
-    return dp[x]=val;
+    return dp[x]=val%MOD;
     
 }
+
 
 void solve(){
    //your code starts from here
    ll n,x;
    cin>>n>>x;
-   vector<ll> coins(n);
+   vector<ll> v(n);
    for (ll i = 0; i < n; i++)
    {
-    cin>>coins[i];
+    cin>>v[i];
    }
-   memset(dp,-1,sizeof(dp));
-   sort(all(coins));
-   ll ans = fun(x,coins,n);
-   if(ans == 1e15){
-    cout<<-1<<endl;
-    return;
+   sort(all(v));
+   memset(dp,0,sizeof(dp));
+   ll ans = 0;
+   dp[0] = 1;
+   for (ll t = 1; t <=x; t++)
+   {
+    
+    
+    ll val = 0;
+    for (ll i = 0; i < n; i++)
+    {
+        if(t>=v[i]){
+
+            val = (val + dp[t-v[i]])%MOD;
+        }
+        else break;
+    }
+    dp[t] = val;
    }
-   cout<<ans<<endl;
+   cout<<dp[x]<<endl;
+   
 
    
 }

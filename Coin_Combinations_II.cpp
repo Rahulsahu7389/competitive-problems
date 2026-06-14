@@ -12,7 +12,7 @@ typedef pair<int, int> pi;
 #define S second 
 #define pb push_back 
 #define pob pop_back 
-ll MOD = 1e9 + 7;
+const int MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
 bool DEBUG_MODE = true;  // toggle before submission
@@ -45,41 +45,60 @@ T power(T x,T n){
   }
   return pro;
 }
-
-ll dp[1000005];
-ll fun(ll x,vector<ll>&coins,ll n){
-    if(x == 0) return 0;
-    if(dp[x]!=-1)return dp[x];
-    ll val = 1e15;
-    for (ll i = 0; i < n; i++)
-    {
-        if(x>=coins[i]){
-
-            val = min(val,1 + fun(x-coins[i],coins,n));
-        }else break;
+int dp[102][1000005];
+ll fun(int i , ll x , vector<ll>&v){
+    if(i==0){
+        if(x%v[i]==0){
+            return 1;
+        }
+        else return 0;
     }
-    return dp[x]=val;
-    
+    ll take = 0;
+    if(v[i]<=x){
+        take = (take + fun(i,x-v[i],v))%MOD;
+    }
+    ll nottake = fun(i-1,x,v);
+    return (take + nottake)%MOD;
 }
-
 void solve(){
    //your code starts from here
+   //this one is of the form 1 take nottake with infinite supply
    ll n,x;
    cin>>n>>x;
-   vector<ll> coins(n);
+   vector<ll> v(n);
    for (ll i = 0; i < n; i++)
    {
-    cin>>coins[i];
+    cin>>v[i];
    }
-   memset(dp,-1,sizeof(dp));
-   sort(all(coins));
-   ll ans = fun(x,coins,n);
-   if(ans == 1e15){
-    cout<<-1<<endl;
-    return;
+   sort(all(v));
+//    ll ans = fun(n-1,x,v);
+//    cout<<ans<<endl;
+   memset(dp,0,sizeof(dp));
+   for (ll i = 0; i <=x; i++)
+   {
+    if(i%v[0]==0){
+        dp[0][i] = 1;
+    }
    }
-   cout<<ans<<endl;
-
+   
+   for (ll i = 1; i < n; i++)
+   {
+    for (ll t = 0; t <=x; t++)
+    {
+        if(t == 0){
+            dp[i][t] = 1;
+            continue;
+        }
+        ll take = 0;
+        ll nottake = dp[i-1][t];
+        if(v[i]<=t){
+            take = (take + dp[i][t-v[i]])%MOD;
+        }
+        dp[i][t] = (take + nottake)%MOD;
+    }
+    
+   }
+   cout<<dp[n-1][x]<<endl;
    
 }
 
