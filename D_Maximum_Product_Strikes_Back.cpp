@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = true;  // toggle before submission
+bool DEBUG_MODE = false;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -50,53 +50,114 @@ void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   vector<ll> v(n);
-   for (ll i = 0; i < n; i++)
+   vector<ll> v(n+1);
+   ll cntz = 0;
+   for (ll i = 1; i <=n; i++)
    {
     cin>>v[i];
+    if(v[i]==0){
+        cntz++;
+    }
    }
-   ll pre = 1;
-   ll suff = 1;
-   ll maxipre = -1e15;
-   ll maxisuff = -1e15;
-   ll szpre = 0;
-   ll szsuff = 0;
-   ll rstpre = 0;
-   ll rstsuff = n-1;
-   for (ll i = 0; i < n; i++)
+   if(cntz==n){
+    cout<<n<<" "<<0<<endl;
+    return;
+   }
+   vector<pair<ll,ll>> pre(n+1);//cnt of twos , no of neg
+   for (ll i = 1; i <=n; i++)
    {
-    if(pre == 0){
-        pre = 1;
-        rstpre = i;
-    }
-    if(suff == 0){
-        suff = 1;
-        rstsuff=n-i-1;
-    }
+    if(v[i] == 0){
+        pre[i] = {0,0};
 
-    pre *= v[i];
-    suff *= v[n-i-1];
-    if(maxipre<pre){
-        maxipre = pre;
-        szpre = i;
     }
-    if(maxisuff<suff){
-        maxisuff = suff;
-        szsuff = i;
-    }
-   }
+    else{
+        if(v[i]<0){
+            pre[i].second = pre[i-1].second + 1;
+        }
+        else pre[i].second = pre[i-1].second;
 
-   if(maxisuff>maxipre){
-    ll left = szsuff - 0;
-    ll right = n -1- rstsuff;
-    cout<<left<<" "<<right<<endl;
+        if(abs(v[i])==2){
+            pre[i].first = pre[i-1].first + 1;
+        }
+        else  pre[i].first = pre[i-1].first;
+    }
    }
-   else{
-    ll left = rstpre;
-    ll right = n -1- szpre;
-    cout<<left<<" "<<right<<endl;
+   vector<pair<ll,ll>> stend,stendneg;
+   ll st = 1;
+   ll end = 1;
+   ll negst = -1;
+   ll negend = -1;
+   dbg(v)
+   for (ll i = 1; i <=n; i++)
+   {
+    if(v[i]==0){
+        if(end>n) continue;
+        
+        stendneg.push_back({negst,negend});
+        stend.push_back({st,end});
+        
+        st = i+1;
+        end = st;
+        negst = -1;
+        negend = -1;
+    }
+    else{
+        if(v[i]<0){
+            if(negst==-1){
+                negst = i;
+            }
+            negend = i;
+        }
+        end = i;
+    }
    }
-   
+//    dbg(st,end)
+   if(end<=n){
+
+       stendneg.push_back({negst,negend});
+       stend.push_back({st,end});
+    }
+    vector<vector<ll>> p;//no of two , st ,end
+   dbg(stend)
+   dbg(stendneg)
+   dbg(pre)
+   for (ll i = 0; i < stend.size(); i++)
+   {
+       ll st1 = stend[i].first;
+       ll end1 = stend[i].second;
+       ll sneg = stendneg[i].first;
+       ll eneg = stendneg[i].second;
+    
+       if(sneg==-1 || (pre[end1].second - pre[st1-1].second)%2==0){
+        //no neg elements
+        dbg("hre",i+1)
+        ll tot2 = pre[end1].first - pre[st1-1].first;
+        p.push_back({tot2,st1,end1});
+       }
+       else{
+        //contains odd neg
+        ll tot2 = pre[end1].first - pre[st1-1].first;
+        ll afterright = tot2 - (pre[end1].first - pre[eneg-1].first);
+        ll afterleft = tot2 - (pre[sneg].first - pre[st1-1].first);
+        if(afterright>afterleft){
+            p.push_back({afterright,st1,eneg-1});
+        }
+        else{
+            p.push_back({afterleft,sneg+1,end1});
+        }
+       }
+    
+   }
+   dbg(p)
+   sort(p.rbegin(),p.rend());
+   auto it = p[0];
+   if(it[0]==0){
+    cout<<n<<" "<<0<<endl;
+    return;
+   }
+   cout<<(it[1]-1)<<" "<<(n - it[2])<<endl;
+
+
 
    
    
