@@ -52,26 +52,18 @@ void solve(){
    cin>>n>>m;
    string s;
    cin>>s;
-   ll i = 0;
-   while(i<n && s[i]<=s[0]){
-    i++;
-   }
-   i--;
-   string temp = s.substr(0,i+1);
-   ll tlen = temp.length();
-   ll time = (m + tlen -1)/tlen;
-   string ans = "";
-   for (ll i = 0; i < time; i++)
+   string ans(m,'z');
+   for (ll len = 1; len <=n; len++)
    {
-    ans += temp;
-   }
-   while(ans.length()>0 && ans.length()>m){
-    ans.pop_back();
+    string t = "";
+    string temp = s.substr(0,len);
+    while(t.length()<m) t += temp;
+    t = t.substr(0,m);
+    ans = min(ans,t);
 
    }
    cout<<ans<<endl;
    
-
 }
 
 int main() 

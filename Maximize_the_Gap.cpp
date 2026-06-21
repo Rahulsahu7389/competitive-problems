@@ -46,67 +46,70 @@ T power(T x,T n){
   return pro;
 }
 
-void dijasktra(vector<vector<vector<ll>>> &adj,vector<ll> &dis){
-    priority_queue<pair<ll,ll> ,vector<pair<ll,ll>> , greater<pair<ll,ll>>> q;//dist,node
-    dis[1] = 0;
-    q.push({0LL,1});
-    
-    while (!q.empty())
-    {
-        auto it = q.top();
-        ll dist = it.first;
-        ll node = it.second;
-        q.pop();
-        if(dist>dis[node]) continue;
-        for(auto val:adj[node]){
-            if(dis[val[0]]>dist + val[1]){
-                dis[val[0]] = dist + val[1];
-                q.push({dis[val[0]],val[0]});
-            }
+ll getidx(ll end,vector<pair<ll,ll>>&p,ll val){
+    ll st = 0;
+    ll ans = -1;
+    while(st<=end){
+        ll m = (st  + end)/2;
+        if(p[m].second<=val){
+            ans = m;
+            st = m + 1;
         }
-
+        else{
+            end = m -1;
+        }
     }
-
-
+    return ans;
 }
 
-
+bool valid(ll mid , vector<pair<ll,ll>>&p,ll k){
+    ll n = p.size();
+    vector<ll> dp(n+1);
+    dp[0] = 1;
+    for (ll i = 1; i < n; i++)
+    {
+        ll valididx = getidx(i-1,p,p[i].first - mid);
+        ll take = 1;
+        if(valididx!=-1){
+            take = max(take,1 +dp[valididx]);
+        }
+        ll nottake = dp[i-1];
+        dp[i] = max(take,nottake);
+    }
+    return (dp[n-1]>=k);
+    
+}
+bool cust(pair<ll,ll>&a , pair<ll,ll>&b){
+    return a.second<b.second;
+}
 void solve(){
    //your code starts from here
-   ll n,m,y;
-   cin>>n>>m>>y;
-   vector<vector<vector<ll>>> adj(n+2);//1 based and one extra for dummy node
-   for (ll i = 0; i < m; i++)
+   ll n,k;
+   cin>>n>>k;
+   vector<pair<ll,ll>> p(n);
+   for (ll i = 0; i < n; i++)
    {
-    ll a,b,c;
-    cin>>a>>b>>c;
-    adj[a].push_back({b,c});
-    adj[b].push_back({a,c});
-
+    cin>>p[i].first>>p[i].second;
    }
-   
-   
-   vector<ll> v(n+1);
-   for (ll i = 1; i <=n; i++)
-   {
-    cin>>v[i];
+   sort(all(p),cust);
+   ll st = 0;
+   ll end = 1e15;
+   ll ans = -1;
+   while(st<=end){
+    ll mid = (st + end)/2;
+    if(valid(mid,p,k)){
+        ans = mid;
+        st = mid + 1;
+    }
+    else{
+        end = mid -1;
+    }
    }
-   for (ll i = 1; i <=n; i++)
-   {
-    adj[i].push_back({n+1,v[i]});
-    adj[n+1].push_back({i,v[i] + y});
+   if(ans == 0){
+    cout<<-1<<endl;
+    return;
    }
-   vector<ll> dis(n+2,1e15);
-   dijasktra(adj,dis);
-   for (ll i = 2; i <=n; i++)
-   {
-    cout<<dis[i]<<" ";
-   }
-   cout<<endl;
-   
-   
-   
-   
+   cout<<ans<<endl;
    
 }
 

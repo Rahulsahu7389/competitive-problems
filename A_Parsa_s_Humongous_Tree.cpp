@@ -46,78 +46,64 @@ T power(T x,T n){
   return pro;
 }
 
-void dijasktra(vector<vector<vector<ll>>> &adj,vector<ll> &dis){
-    priority_queue<pair<ll,ll> ,vector<pair<ll,ll>> , greater<pair<ll,ll>>> q;//dist,node
-    dis[1] = 0;
-    q.push({0LL,1});
+ll dp[100005][2];
+void dfs(ll u, vector<vector<ll>>&adj,vector<int>&vis,vector<pair<ll,ll>>& v){
+    vis[u] = 1;
+    ll sum = 0;
     
-    while (!q.empty())
-    {
-        auto it = q.top();
-        ll dist = it.first;
-        ll node = it.second;
-        q.pop();
-        if(dist>dis[node]) continue;
-        for(auto val:adj[node]){
-            if(dis[val[0]]>dist + val[1]){
-                dis[val[0]] = dist + val[1];
-                q.push({dis[val[0]],val[0]});
-            }
+    ll ans0 = 0;
+    ll ans1 = 0;
+    
+    for(auto val:adj[u]){
+        if(vis[val]==0){
+            dfs(val,adj,vis,v);//do dfs first so that value of child is calculated first
+            ans0 += max((abs(v[u].first - v[val].first) + dp[val][0]),(abs(v[u].first - v[val].second) + dp[val][1]));
+            ans1 += max((abs(v[u].second - v[val].first) + dp[val][0]),(abs(v[u].second - v[val].second) + dp[val][1]));
+
         }
-
     }
-
-
+    dp[u][0] += ans0;
+    dp[u][1] +=ans1;
+    
 }
-
 
 void solve(){
    //your code starts from here
-   ll n,m,y;
-   cin>>n>>m>>y;
-   vector<vector<vector<ll>>> adj(n+2);//1 based and one extra for dummy node
-   for (ll i = 0; i < m; i++)
+   ll n;
+   cin>>n;
+   vector<pair<ll,ll>> v(n+1);
+   for (ll i = 1; i <=n; i++)
    {
-    ll a,b,c;
-    cin>>a>>b>>c;
-    adj[a].push_back({b,c});
-    adj[b].push_back({a,c});
+    cin>>v[i].first>>v[i].second;
+   }
+   vector<vector<ll>> adj(n+1);
+   for (ll i = 0; i < n-1; i++)
+   {
+    ll a,b;
+    cin>>a>>b;
+    adj[a].push_back(b);
+    adj[b].push_back(a);
+   }
+   vector<int> vis(n+1);
+   memset(dp,0,sizeof(dp));
+   dfs(1,adj,vis,v);
+   cout<<max(dp[1][0] , dp[1][1])<<endl;
+   
 
-   }
    
+
    
-   vector<ll> v(n+1);
-   for (ll i = 1; i <=n; i++)
-   {
-    cin>>v[i];
-   }
-   for (ll i = 1; i <=n; i++)
-   {
-    adj[i].push_back({n+1,v[i]});
-    adj[n+1].push_back({i,v[i] + y});
-   }
-   vector<ll> dis(n+2,1e15);
-   dijasktra(adj,dis);
-   for (ll i = 2; i <=n; i++)
-   {
-    cout<<dis[i]<<" ";
-   }
-   cout<<endl;
-   
-   
-   
-   
-   
+
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 }
