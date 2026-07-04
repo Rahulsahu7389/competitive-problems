@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -47,75 +47,21 @@ T power(T x,T n){
 }
 
 void solve(){
-  //your code starts from here
-  ll n;
-  cin>>n;
-  vector<ll> a(n),b(n);
-  for (ll i = 0; i < n; i++)
-  {
-    cin>>a[i];
-  }
-  for (ll i = 0; i < n; i++)
-  {
-    cin>>b[i];
-  }
-  if(n ==1){
-    if(a[0]!=b[0]){
-      cout<<"NO\n";
-    }
-    else{
-      cout<<"YES\n";
-    }
-    return;
-  }
-  ll g = a[n-1];
-  bool inc = false;
-  for (ll i = 1; i < n; i++)
-  {
-    if(a[i-1]%a[i]){
-      inc = true;
-      break;
-    }
-  }
+   //your code starts from here
+   ll n,k;
+   cin>>n>>k;
+   ll ans = 0;
+   ll p = 1;
+   while(n>0){
+    ll times = min(k,n/p);
+    if(times ==0) break;
+    n -= times*p;
 
-  for (ll i = n-2;i>=0;i--)
-  {
-    if(b[i+1]%b[i]){
-      inc = true;
-      break;
-    }
-  }
-  dbg(inc);
-  if(a[n-1]!=b[0]){
-    inc = true;
-  }
-  dbg(inc);
-  for (ll i = 1; i < n; i++)
-  {
-    ll val = __gcd((a[i-1]/a[i]),b[i]/g) ;
-    if(val!=1){
-      inc = true;
-    }
-  }
-  dbg(inc);
-  for (ll i = n-2; i>=0; i--)
-  {
-    ll val = __gcd((b[i+1]/b[i]),a[i]/g) ;
-    if(val!=1){
-      inc = true;
-    }
-  }
-  dbg(inc);
-  if(inc){
-    cout<<"NO\n";
-    return;
-  }
-
-  
-  
-  cout<<"YES\n";
-  
-  
+    ans += times;
+    // dbg(n,times,p)
+    p *= 2;
+   }
+   cout<<ans<<endl;
 }
 
 int main() 

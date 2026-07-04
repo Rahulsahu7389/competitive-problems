@@ -47,75 +47,50 @@ T power(T x,T n){
 }
 
 void solve(){
-  //your code starts from here
-  ll n;
-  cin>>n;
-  vector<ll> a(n),b(n);
-  for (ll i = 0; i < n; i++)
-  {
-    cin>>a[i];
-  }
-  for (ll i = 0; i < n; i++)
-  {
-    cin>>b[i];
-  }
-  if(n ==1){
-    if(a[0]!=b[0]){
-      cout<<"NO\n";
+   //your code starts from here
+   ll n,k;
+   cin>>n>>k;
+   vector<pair<ll,ll>> p(n);
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>p[i].first;
+   }
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>p[i].second;
+   }
+//    sort(p.rbegin(),p.rend());
+   ll ans = 0;
+dbg(p)
+   for (ll i = 0; i < n; i++)
+   {
+    ll val = p[i].first;//making everything equal to this
+    dbg(val,i)
+    vector<ll>temp;
+    for (ll j = 0; j < n; j++)
+    {
+        if(p[j].first>val) temp.push_back(0);
+        else{
+           
+            temp.push_back((val -p[j].first)*p[j].second);
+        }
     }
-    else{
-      cout<<"YES\n";
+    dbg(i,temp)
+    sort(temp.begin(),temp.end());
+    ll cost =0;
+    for (ll j = 0; j <=k; j++)
+    {
+        cost += temp[j];//you want to minimise the subtracted part
     }
-    return;
-  }
-  ll g = a[n-1];
-  bool inc = false;
-  for (ll i = 1; i < n; i++)
-  {
-    if(a[i-1]%a[i]){
-      inc = true;
-      break;
-    }
-  }
+    
+    ans =max(k*val - cost,ans);
+   }
+   cout<<ans<<endl;
+   
+   
 
-  for (ll i = n-2;i>=0;i--)
-  {
-    if(b[i+1]%b[i]){
-      inc = true;
-      break;
-    }
-  }
-  dbg(inc);
-  if(a[n-1]!=b[0]){
-    inc = true;
-  }
-  dbg(inc);
-  for (ll i = 1; i < n; i++)
-  {
-    ll val = __gcd((a[i-1]/a[i]),b[i]/g) ;
-    if(val!=1){
-      inc = true;
-    }
-  }
-  dbg(inc);
-  for (ll i = n-2; i>=0; i--)
-  {
-    ll val = __gcd((b[i+1]/b[i]),a[i]/g) ;
-    if(val!=1){
-      inc = true;
-    }
-  }
-  dbg(inc);
-  if(inc){
-    cout<<"NO\n";
-    return;
-  }
-
-  
-  
-  cout<<"YES\n";
-  
-  
+   
+   
 }
 
 int main() 

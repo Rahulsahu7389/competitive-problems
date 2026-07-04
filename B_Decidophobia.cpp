@@ -15,7 +15,7 @@ typedef pair<int, int> pi;
 ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
-bool DEBUG_MODE = false;  // toggle before submission
+bool DEBUG_MODE = true;  // toggle before submission
 
 template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
@@ -47,75 +47,71 @@ T power(T x,T n){
 }
 
 void solve(){
-  //your code starts from here
-  ll n;
-  cin>>n;
-  vector<ll> a(n),b(n);
-  for (ll i = 0; i < n; i++)
-  {
-    cin>>a[i];
-  }
-  for (ll i = 0; i < n; i++)
-  {
-    cin>>b[i];
-  }
-  if(n ==1){
-    if(a[0]!=b[0]){
-      cout<<"NO\n";
-    }
-    else{
-      cout<<"YES\n";
-    }
-    return;
-  }
-  ll g = a[n-1];
-  bool inc = false;
-  for (ll i = 1; i < n; i++)
-  {
-    if(a[i-1]%a[i]){
-      inc = true;
-      break;
-    }
-  }
+   //your code starts from here
+   ll n,k;
+   cin>>n>>k;
+   vector<ll> v(n);
+   for (ll i = 0; i <n; i++)
+   {
+    cin>>v[i];
+   }
+   vector<ll> temp;
+   int cnt = k;
+   for (int i = n - 1; i >= 0 && cnt>0; i--)
+   {
+    temp.push_back(v[i]);
+    cnt--;
+   }
+   reverse(all(temp));
+   cnt = k;
+   for (ll i = 0; i < n; i++)
+   {
+    temp.push_back(v[i]);
+   }
+   for (ll i = 0; i < k; i++)
+   {
+    temp.push_back(v[i]);
+   }
+//    dbg(temp)
+   ll m = temp.size();
+   vector<ll> pre(m+1),suff(m+1);
+   for (ll i = 1; i <=m; i++)
+   {
+    pre[i] = pre[i-1] + temp[i-1];
+   }
+   for (int i = m - 1; i >= 0; i--)
+   {
+    suff[i] = suff[i+1] + temp[i];
+   }
+//    dbg(pre)
+//    dbg(suff)
+   vector<ll> t;
+   ll idx = k;
+   for (ll i = 0; i <n; i++)
+   {
+    ll id = idx+i;
+    ll left = pre[id] - pre[id-k];
+    ll right = suff[id+1] - suff[id+k+1];
+    ll sum = 2*k*(v[i]) - (left + right);
+    t.push_back(sum);
 
-  for (ll i = n-2;i>=0;i--)
-  {
-    if(b[i+1]%b[i]){
-      inc = true;
-      break;
+   }
+//    dbg(t)
+   ll ans = 0;
+   for(auto val:t){
+    if(val>0){
+        ans += val;
     }
-  }
-  dbg(inc);
-  if(a[n-1]!=b[0]){
-    inc = true;
-  }
-  dbg(inc);
-  for (ll i = 1; i < n; i++)
-  {
-    ll val = __gcd((a[i-1]/a[i]),b[i]/g) ;
-    if(val!=1){
-      inc = true;
-    }
-  }
-  dbg(inc);
-  for (ll i = n-2; i>=0; i--)
-  {
-    ll val = __gcd((b[i+1]/b[i]),a[i]/g) ;
-    if(val!=1){
-      inc = true;
-    }
-  }
-  dbg(inc);
-  if(inc){
-    cout<<"NO\n";
-    return;
-  }
+   }
+   cout<<ans<<endl;
+   
+   
+   
+   
+   
 
-  
-  
-  cout<<"YES\n";
-  
-  
+
+   
 }
 
 int main() 
