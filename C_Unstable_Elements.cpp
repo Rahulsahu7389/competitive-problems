@@ -46,39 +46,50 @@ T power(T x,T n){
   return pro;
 }
 
-ll dp[20][2][5];
-ll fun(ll i ,ll bound ,ll diff,string&s){
-    if(diff>3) return 0;
-    if(i == s.length()){
-        return 1;//as it is a valid number
-    }
-    if(dp[i][bound][diff]!=-1){
-        return dp[i][bound][diff];
-    }
-    
-    ll limit = ((bound == 1)?s[i]-'0':9);
-    ll ans = 0;
-    for(int idx = 0;idx<=limit;idx++){
-        //check if you can take this idx
-        ll newdiff = diff + ((idx !=0)?1:0);
-        ans += fun(i+1,(bound&(s[i]-'0'==idx)),newdiff,s);
-
-    }
-    return dp[i][bound][diff]=ans;
-}
-
 void solve(){
    //your code starts from here
-   ll a,b;
-   cin>>a>>b;
-   string l = to_string(a-1);
-   string r = to_string(b);
-   memset(dp,-1,sizeof(dp));
-   ll rans = fun(0,1,0LL,r);
-   memset(dp,-1,sizeof(dp));
-   ll lans = fun(0,1,0LL,l);
-   cout<<(rans-lans)<<endl;
+   ll n,k;
+   cin>>n>>k;
+   vector<ll> v(n+1);
+   for (ll i = 0; i < n; i++)
+   {
+    ll a;
+    cin>>a;
+    v[a]++;
+   }
+   ll len = n;
+   ll cnt0 = count(all(v),0);
+   ll bp = (n+1- cnt0);
+   ll idx = 0;
+   sort(all(v));
+   while(v[idx]==0){
+    idx++;
+   }
+//    dbg(v)
+//    dbg(bp,len,idx)
+   ll ans = 0;
+   ll erased = 0;
+  while(len>0){
+   
+    ll minlen = len - bp * (v[idx] - erased - 1);
+    if(k >= minlen && (k - minlen)%bp == 0){
+        ans++;
+    }
+    
+    len = len - bp*(v[idx]-erased);
+    erased += v[idx]-erased;
+    int cntpassed = 1;
+    int val = v[idx];
+    idx++;
+    while(idx<=n && v[idx]==val){
+        cntpassed++;
+        idx++;
+    }
+    bp -= cntpassed;
+   }
+   cout<<ans<<endl;
 
+   
 }
 
 int main() 

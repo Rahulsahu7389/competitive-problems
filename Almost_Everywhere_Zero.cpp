@@ -12,7 +12,7 @@ typedef pair<int, int> pi;
 #define S second 
 #define pb push_back 
 #define pob pop_back 
-const int MOD = 1e9 + 7;
+ll MOD = 1e9 + 7;
 
 // ======== DEBUG SYSTEM ========
 bool DEBUG_MODE = true;  // toggle before submission
@@ -46,35 +46,38 @@ T power(T x,T n){
   return pro;
 }
 
-ll dp[10005][2][101];
-ll fun(ll i ,ll bound ,ll rem,ll d,string&s){
+ll fun(ll i ,ll bound,ll diff, ll lz , string &s,ll k){
     if(i == s.length()){
-        if(rem == 0) return 1;//if 000004 so valid number hai
-        else return 0;
+        
+        if(diff==k) return 1;
+        return 0;//valid answer
     }
-    if(dp[i][bound][rem]!=-1){
-        return dp[i][bound][rem];
-    }
-    ll limit = ((bound == 1)?s[i]-'0':9);
+    ll limit = (bound ==1)?s[i]-'0':9;
     ll ans = 0;
-    for(int idx = 0;idx<=limit;idx++){
-        //check if you can take this idx
-        ll newrem = (idx + rem)%d;
-        ans = (ans + fun(i+1,(bound&(s[i]-'0'==idx)),newrem,d,s))%MOD;
-
+    for (ll j = 0; j <=limit; j++)
+    {
+        if(lz==1){
+            ans += fun(i+1,(bound&(s[i]-'0'==j)),diff,lz&(j==0),s,k);
+        }
+        else{
+           
+            if(j!=0 && diff==k) continue;//this can have multiple zeroes once leading zero over
+            
+            ans += fun(i+1,(bound&(s[i]-'0'==j)),diff,0,s,k);
+        }
     }
-    return dp[i][bound][rem]=ans;
+    return ans;
+    
 }
 
 void solve(){
    //your code starts from here
-   string k;
-   cin>>k;
-   ll d;
-   cin>>d;
-   memset(dp,-1,sizeof(dp));
-   ll ans = fun(0,1LL,0LL,d,k);
-   cout<<(ans-1 + MOD)%MOD<<endl;//subtracting the 00000
+   ll n,k;
+   cin>>n>>k;
+   string r = to_string(n);
+   ll ans = fun(0,1,0LL,1,r,k);
+   cout<<ans-1<<endl;
+
 
 }
 
