@@ -46,51 +46,52 @@ T power(T x,T n){
   return pro;
 }
 
-void solve(){
-    ll n,m;
-    cin>>n>>m;
-    string s;
-    cin>>s;
-    s = " "+s;
-    
-    vector<vector<ll>> v(m,vector<ll>(3,0));
-    for (ll i = 0; i < m; i++) {
-        for (ll j = 0; j < 3; j++) {
-            cin>>v[i][j];
-        }
+void rec(int i , ll sum,int end,vector<ll> &arr,vector<ll>&a){
+    if(i ==end){
+        a.push_back(sum);
+        return;
     }
-    
-    vector<ll> p1(n+1, 0);
-    for(int i = 1;i<=n;i++){
-        p1[i] = p1[i-1] + (s[i]==s[i-1]);
-    }
-    // dbg(p1)
-    for(auto &val:v){
-        int  l= val[0];
-        int r = val[1];
-        int k = val[2];
-        ll x = p1[r] - p1[l];
-        // cout<<x<<endl;
-        ll cnt = (x+1)/2;
-        // dbg(cnt)
-        if(cnt<=k){
-            cout<<"YES\n";
-        }
-        else{
-            cout<<"NO\n";
-        }
+    rec(i+1,sum+arr[i],end,arr,a);
+    rec(i+1,sum,end,arr,a);//not taking this
+}
 
-    }
+void solve(){
+   //your code starts from here
+   ll n,x;
+   cin>>n>>x;
+   vector<ll> v(n);
+   for (ll i = 0; i < n; i++)
+   {
+    cin>>v[i];
+   }
+   
+   ll n1 = n/2;
+   ll n2 = n - n1;
+   vector<ll> a,b;
+   rec(0,0LL,n1,v,a);
+   rec(n1,0LL,n,v,b);
+   sort(all(b));
+   ll ans =0;
+   for(auto val:a){
+    if(val>x) continue;
+    ll tar = x -val;
+    auto lb = lower_bound(all(b),tar);
+    auto ub = upper_bound(all(b),tar);
+    ll diff = ub - lb;
+    ans += diff;
+   }
+   cout<<ans<<endl;
+
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    ll T; 
-    cin >> T; 
-    while (T--) { 
+    // ll T; 
+    // cin >> T; 
+    // while (T--) { 
         solve(); 
-    } 
+    // } 
     return 0; 
 }

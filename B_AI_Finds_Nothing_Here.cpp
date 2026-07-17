@@ -12,7 +12,7 @@ typedef pair<int, int> pi;
 #define S second 
 #define pb push_back 
 #define pob pop_back 
-ll MOD = 1e9 + 7;
+const ll MOD = 998244353;
 
 // ======== DEBUG SYSTEM ========
 bool DEBUG_MODE = true;  // toggle before submission
@@ -32,55 +32,37 @@ void dbg_out(Head H, Tail... T) { _print(H); if(sizeof...(T)) cerr << " | "; dbg
 #define dbg(...) if(DEBUG_MODE){ cerr << "[" << __LINE__ << "] " << #__VA_ARGS__ << " = "; dbg_out(__VA_ARGS__); }
 
 // ======== UTILITY FUNCTIONS ========
-template<typename T>
-T mod(T a){ return (a<0)? -a : a; }
+// template<typename T>
+// T mod(T a){ return (a<0)? -a : a; }
 
-template<typename T>
-T power(T x,T n){
-  T pro = 1;
+ll mul(ll a ,ll b,ll mod){
+    return ((a%mod)*(b%mod))%mod;
+}
+ll sub(ll a,ll b,ll mod){
+    return (a - b + mod)%mod;
+}
+ll power(ll x,ll n){
+  ll pro = 1;
   while(n!=0){
-    if(n%2==1) pro *= x;
-    x *= x;
+    if(n%2==1) pro = mul(pro,x,MOD);
+    x = mul(x,x,MOD);
     n /= 2;
   }
   return pro;
 }
 
-void solve(){
-    ll n,m;
-    cin>>n>>m;
-    string s;
-    cin>>s;
-    s = " "+s;
-    
-    vector<vector<ll>> v(m,vector<ll>(3,0));
-    for (ll i = 0; i < m; i++) {
-        for (ll j = 0; j < 3; j++) {
-            cin>>v[i][j];
-        }
-    }
-    
-    vector<ll> p1(n+1, 0);
-    for(int i = 1;i<=n;i++){
-        p1[i] = p1[i-1] + (s[i]==s[i-1]);
-    }
-    // dbg(p1)
-    for(auto &val:v){
-        int  l= val[0];
-        int r = val[1];
-        int k = val[2];
-        ll x = p1[r] - p1[l];
-        // cout<<x<<endl;
-        ll cnt = (x+1)/2;
-        // dbg(cnt)
-        if(cnt<=k){
-            cout<<"YES\n";
-        }
-        else{
-            cout<<"NO\n";
-        }
 
-    }
+
+void solve(){
+   //your code starts from here
+   ll n,m,r,c;
+   cin>>n>>m>>r>>c;
+   ll tot = mul(n,m,MOD-1);
+    ll one = sub(m,sub(c,1LL,MOD-1),MOD-1);
+    ll two = sub(n,sub(r,1LL,MOD-1),MOD-1);
+    ll pro = mul(one,two,MOD-1);
+    ll ans = power(2LL,sub(tot,pro,MOD-1));
+   cout<<ans<<endl;
 }
 
 int main() 

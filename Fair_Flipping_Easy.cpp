@@ -54,24 +54,24 @@ void solve(){
    cin>>s;
    ll cnt0 = count(all(s),'0');
    ll cnt1 = n - cnt0;
-   if(n==1 || cnt0==0 || cnt0==1 || is_sorted(all(s)) || k>cnt0 || k>cnt1){
+   if(k>cnt0 || k>cnt1){
     cout<<s<<endl;
     return;
    }
    
    
-   if(n > 2*k){
-    sort(all(s));
-    cout<<s<<endl;
+   if(cnt0==k && cnt1==k){
+    string flip = s;
+    for(ll i = 0; i < n; i++) {
+        flip[i] = (flip[i] == '0') ? '1' : '0';
+    }
+    
+    cout<<min(s, flip)<<endl;
     return;
    }
     // dbg(pos)
-   string flip = s;
-   for(ll i = 0; i < n; i++) {
-       flip[i] = (flip[i] == '0') ? '1' : '0';
-   }
-   
-   cout<<min(s, flip)<<endl;
+   sort(all(s));
+   cout<<s<<endl;
    
    
 

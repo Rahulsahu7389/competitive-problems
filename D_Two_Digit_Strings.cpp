@@ -47,40 +47,41 @@ T power(T x,T n){
 }
 
 void solve(){
-    ll n,m;
-    cin>>n>>m;
-    string s;
-    cin>>s;
-    s = " "+s;
-    
-    vector<vector<ll>> v(m,vector<ll>(3,0));
-    for (ll i = 0; i < m; i++) {
-        for (ll j = 0; j < 3; j++) {
-            cin>>v[i][j];
-        }
+   //your code starts from here
+   string a,b;
+   cin>>a;
+   cin>>b;
+   ll n1 = a.length();
+   ll n2 = b.length();
+   vector<pair<ll,ll>> pre,pre2;//sum ,len
+   ll suma = 0;
+   ll sumb = 0;
+   for (ll i = 0; i < n1; i++)
+   {
+    ll sum1 = 0;
+    // suma += 
+    for (ll j = i; j < n1; j++)
+    {
+        sum1 += stol(string(1,a[j]));
+        pre.push_back({sum1,j-i+1});
     }
     
-    vector<ll> p1(n+1, 0);
-    for(int i = 1;i<=n;i++){
-        p1[i] = p1[i-1] + (s[i]==s[i-1]);
+   }
+   for (ll i = 0; i < n1; i++)
+   {
+    ll sum1 = 0;
+    for (ll j = i; j < n1; j++)
+    {
+        sum1 += stol(string(1,b[j]));
+        pre2.push_back({sum1,j-i+1});
     }
-    // dbg(p1)
-    for(auto &val:v){
-        int  l= val[0];
-        int r = val[1];
-        int k = val[2];
-        ll x = p1[r] - p1[l];
-        // cout<<x<<endl;
-        ll cnt = (x+1)/2;
-        // dbg(cnt)
-        if(cnt<=k){
-            cout<<"YES\n";
-        }
-        else{
-            cout<<"NO\n";
-        }
-
-    }
+    
+   }
+   sort(all(pre));
+   sort(all(pre2));
+   dbg(pre)
+   dbg(pre2)
+   
 }
 
 int main() 

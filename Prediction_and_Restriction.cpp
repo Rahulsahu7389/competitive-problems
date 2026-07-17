@@ -47,50 +47,55 @@ T power(T x,T n){
 }
 
 void solve(){
-    ll n,m;
-    cin>>n>>m;
-    string s;
-    cin>>s;
-    s = " "+s;
-    
-    vector<vector<ll>> v(m,vector<ll>(3,0));
-    for (ll i = 0; i < m; i++) {
-        for (ll j = 0; j < 3; j++) {
-            cin>>v[i][j];
-        }
+   //your code starts from here
+   ll n,k;
+   cin>>n>>k;
+   ll r,s,p;
+   cin>>r>>s>>p;
+   unordered_map<char,int> mp;
+   mp['r'] = r;
+   mp['s'] = s;
+   mp['p'] = p;
+   string st;
+   cin>>st;
+   queue<char> q;
+   ll ans = 0;
+   for (ll i = 0; i < n; i++)
+   {
+    char c = st[i];
+    char app = c;
+    if(c == 'r') app = 'p';
+    else if(c=='p') app = 's';
+    else if(c == 's') app = 'r';
+    if(q.size()<k){
+        q.push(app);
+        ans += mp[app];
     }
-    
-    vector<ll> p1(n+1, 0);
-    for(int i = 1;i<=n;i++){
-        p1[i] = p1[i-1] + (s[i]==s[i-1]);
-    }
-    // dbg(p1)
-    for(auto &val:v){
-        int  l= val[0];
-        int r = val[1];
-        int k = val[2];
-        ll x = p1[r] - p1[l];
-        // cout<<x<<endl;
-        ll cnt = (x+1)/2;
-        // dbg(cnt)
-        if(cnt<=k){
-            cout<<"YES\n";
+    else{
+        if(q.front()==app){
+            q.push('x');
+            q.pop();
         }
         else{
-            cout<<"NO\n";
+            q.push(app);
+            ans+=mp[app];
+            q.pop();
         }
-
     }
+   }
+   cout<<ans<<endl;
+   
+
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    ll T; 
-    cin >> T; 
-    while (T--) { 
+    // ll T; 
+    // cin >> T; 
+    // while (T--) { 
         solve(); 
-    } 
+    // } 
     return 0; 
 }

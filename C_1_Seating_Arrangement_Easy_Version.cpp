@@ -47,40 +47,82 @@ T power(T x,T n){
 }
 
 void solve(){
-    ll n,m;
-    cin>>n>>m;
-    string s;
-    cin>>s;
-    s = " "+s;
-    
-    vector<vector<ll>> v(m,vector<ll>(3,0));
-    for (ll i = 0; i < m; i++) {
-        for (ll j = 0; j < 3; j++) {
-            cin>>v[i][j];
+   //your code starts from here
+   ll n,x,s;
+   cin>>n>>x>>s;
+   string st;
+   cin>>st;
+   ll ans = 0;
+   for (ll i = 0; i < n; i++)//till ith the prefix is behaving as the introverts
+   {
+    vector<ll> seats(x);
+    int a = 0;
+    int b = 0;
+    for (ll j = 0; j < n; j++)
+    {
+        if(st[j]=='A'){
+            if(j<=i){
+                // behaves as introvert 
+                if(seats[b]==0){
+                    seats[b]++;
+                    continue;
+                }
+                while(b<x-1 && seats[b]>0){
+                    b++;
+                }
+                if(b<x){
+                    seats[b]++;
+                }
+            }
+            else{
+                //behaves as extrovert
+                if(seats[a]<s){
+                    seats[a]++;
+                }
+                else if(seats[a]==s && a<x-1){
+                    a++;
+                    seats[a]++;//not necessary one would be there
+                    
+                }
+
+            }
         }
-    }
-    
-    vector<ll> p1(n+1, 0);
-    for(int i = 1;i<=n;i++){
-        p1[i] = p1[i-1] + (s[i]==s[i-1]);
-    }
-    // dbg(p1)
-    for(auto &val:v){
-        int  l= val[0];
-        int r = val[1];
-        int k = val[2];
-        ll x = p1[r] - p1[l];
-        // cout<<x<<endl;
-        ll cnt = (x+1)/2;
-        // dbg(cnt)
-        if(cnt<=k){
-            cout<<"YES\n";
+        else if(st[j]=='E'){
+            if(seats[a]<s && seats[a]>0){
+                seats[a]++;
+            }
+            else if(seats[a]==s && a<x-1){
+                a++;
+                if(seats[a]>0){//if one available
+                    seats[a]++;
+                }
+            }
         }
         else{
-            cout<<"NO\n";
+            //I
+            if(seats[b]==0){
+                seats[b]++;
+                continue;
+            }
+            while(b<x && seats[b]>0){
+                b++;
+            }
+            if(b<x){
+                seats[b]++;
+            }
         }
-
     }
+    // dbg(i,seats)
+    ll cnt = 0;
+    for(auto val:seats){
+        if(val>0){
+            cnt+=val;
+        }
+    }
+    ans = max(ans,cnt);
+    
+   }
+   cout<<ans<<endl;
 }
 
 int main() 
