@@ -48,92 +48,32 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n,x,s;
-   cin>>n>>x>>s;
-   string st;
-   cin>>st;
-   ll ans = 0;
-   for (ll i = 0; i < n; i++)//till ith the prefix is behaving as the introverts
+   ll n;
+   cin>>n;
+   ll total = 0;
+   ll curr = 0;
+   for (ll i = 0; i < n; i++)
    {
-    vector<ll> seats(x);
-    int a = 0;
-    int b = 0;
-    for (ll j = 0; j < n; j++)
-    {
-        if(st[j]=='A'){
-            if(j<=i){
-                // behaves as introvert 
-                if(seats[b]==0){
-                    seats[b]++;
-                    continue;
-                }
-                while(b<x-1 && seats[b]>0){
-                    b++;
-                }
-                if(seats[b]<s && b<x){
-                    seats[b]++;
-                }
-            }
-            else{
-                //behaves as extrovert
-                // dbg("chla")
-                if(seats[a]<s){
-                    seats[a]++;
-                }
-                else if(seats[a]==s && a<x-1){
-                    a++;
-                    seats[a]++;//not necessary one would be there
-                    
-                }
+    ll a,b;
+    string s;
+    cin>>a>>b>>s;
+    total += b-a;
+    if(s=="take"){
+        curr+= b-a;
+    }
 
-            }
-        }
-        else if(st[j]=='E'){
-            if(seats[a]<s && seats[a]>0){
-                seats[a]++;
-            }
-            else if(seats[a]==s && a<x-1){
-                a++;
-                if(seats[a]<s && seats[a]>0){//if one available
-                    seats[a]++;
-                }
-            }
-        }
-        else{
-            //I
-            if(b<x && seats[b]==0){
-                seats[b]++;
-                continue;
-            }
-            while(b<x && seats[b]>0){
-                b++;
-            }
-            if(seats[b]==0 && b<x){
-                seats[b]++;
-            }
-        }
-    }
-    // dbg(i,seats)
-    ll cnt = 0;
-    for(auto val:seats){
-        if(val>0){
-            cnt+=val;
-        }
-    }
-    ans = max(ans,cnt);
-    
    }
-   cout<<ans<<endl;
+   cout<<total - curr<<endl;
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    ll T; 
-    cin >> T; 
-    while (T--) { 
+    // ll T; 
+    // cin >> T; 
+    // while (T--) { 
         solve(); 
-    } 
+    // } 
     return 0; 
 }

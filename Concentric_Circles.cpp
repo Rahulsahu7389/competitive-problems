@@ -48,82 +48,29 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n,x,s;
-   cin>>n>>x>>s;
-   string st;
-   cin>>st;
-   ll ans = 0;
-   for (ll i = 0; i < n; i++)//till ith the prefix is behaving as the introverts
-   {
-    vector<ll> seats(x);
-    int a = 0;
-    int b = 0;
-    for (ll j = 0; j < n; j++)
-    {
-        if(st[j]=='A'){
-            if(j<=i){
-                // behaves as introvert 
-                if(seats[b]==0){
-                    seats[b]++;
-                    continue;
-                }
-                while(b<x-1 && seats[b]>0){
-                    b++;
-                }
-                if(seats[b]<s && b<x){
-                    seats[b]++;
-                }
-            }
-            else{
-                //behaves as extrovert
-                // dbg("chla")
-                if(seats[a]<s){
-                    seats[a]++;
-                }
-                else if(seats[a]==s && a<x-1){
-                    a++;
-                    seats[a]++;//not necessary one would be there
-                    
-                }
-
-            }
-        }
-        else if(st[j]=='E'){
-            if(seats[a]<s && seats[a]>0){
-                seats[a]++;
-            }
-            else if(seats[a]==s && a<x-1){
-                a++;
-                if(seats[a]<s && seats[a]>0){//if one available
-                    seats[a]++;
-                }
-            }
-        }
-        else{
-            //I
-            if(b<x && seats[b]==0){
-                seats[b]++;
-                continue;
-            }
-            while(b<x && seats[b]>0){
-                b++;
-            }
-            if(seats[b]==0 && b<x){
-                seats[b]++;
-            }
-        }
-    }
-    // dbg(i,seats)
-    ll cnt = 0;
-    for(auto val:seats){
-        if(val>0){
-            cnt+=val;
-        }
-    }
-    ans = max(ans,cnt);
-    
+   ll x1,y1,x2,y2,x3,y3,x4,y4;
+   cin>>x1>>y1>>x2>>y2>>x3>>y3>>x4>>y4;
+   ll knum = (x2*x2 - x1*x1 + y2*y2 - y1*y1)*(x4 - x3) - (x4*x4 - x3*x3 + y4*y4 - y3*y3)*(x2 - x1);
+   ll hnum = (x2*x2 - x1*x1 + y2*y2 - y1*y1)*(y4 - y3) - (x4*x4 - x3*x3 + y4*y4 - y3*y3)*(y2 - y1);
+   ll kden = 2*((y2-y1)*(x4-x3) - (y4 - y3)*(x2-x1));
+   ll hden = 2*((x2-x1)*(y4-y3) - (x4 - x3)*(y2-y1));
+   if(kden ==0 || hden==0){
+    cout<<"No\n";
+    return;
    }
-   cout<<ans<<endl;
+   ll h = hnum/hden;
+   ll k = knum/kden;
+   ll a = (h-x1)*(h-x1) + (k-y1)*(k-y1);
+   ll b = (h-x2)*(h-x2) + (k-y2)*(k-y2);
+   ll d = (h-x3)*(h-x3) + (k-y3)*(k-y3);
+   ll e = (h-x4)*(h-x4) + (k-y4)*(k-y4);
+   if((a==b) && (d == e)){
+    cout<<"Yes\n";
+   }
+   else{
+    cout<<"No\n";
+   }
+
 }
 
 int main() 

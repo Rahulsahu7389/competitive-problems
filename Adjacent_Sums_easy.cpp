@@ -48,92 +48,47 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n,x,s;
-   cin>>n>>x>>s;
-   string st;
-   cin>>st;
-   ll ans = 0;
-   for (ll i = 0; i < n; i++)//till ith the prefix is behaving as the introverts
+   ll n,m;
+   cin>>n>>m;
+   vector<ll> a(n),b(n-1);
+   for (ll i = 0; i < n; i++)
    {
-    vector<ll> seats(x);
-    int a = 0;
-    int b = 0;
-    for (ll j = 0; j < n; j++)
-    {
-        if(st[j]=='A'){
-            if(j<=i){
-                // behaves as introvert 
-                if(seats[b]==0){
-                    seats[b]++;
-                    continue;
-                }
-                while(b<x-1 && seats[b]>0){
-                    b++;
-                }
-                if(seats[b]<s && b<x){
-                    seats[b]++;
-                }
-            }
-            else{
-                //behaves as extrovert
-                // dbg("chla")
-                if(seats[a]<s){
-                    seats[a]++;
-                }
-                else if(seats[a]==s && a<x-1){
-                    a++;
-                    seats[a]++;//not necessary one would be there
-                    
-                }
-
-            }
-        }
-        else if(st[j]=='E'){
-            if(seats[a]<s && seats[a]>0){
-                seats[a]++;
-            }
-            else if(seats[a]==s && a<x-1){
-                a++;
-                if(seats[a]<s && seats[a]>0){//if one available
-                    seats[a]++;
-                }
-            }
-        }
-        else{
-            //I
-            if(b<x && seats[b]==0){
-                seats[b]++;
-                continue;
-            }
-            while(b<x && seats[b]>0){
-                b++;
-            }
-            if(seats[b]==0 && b<x){
-                seats[b]++;
-            }
-        }
-    }
-    // dbg(i,seats)
-    ll cnt = 0;
-    for(auto val:seats){
-        if(val>0){
-            cnt+=val;
-        }
-    }
-    ans = max(ans,cnt);
-    
+    cin>>a[i];
    }
-   cout<<ans<<endl;
+   for (ll i = 0; i < n-1; i++)
+   {
+    cin>>b[i];
+   }
+   auto calc = [&](vector<ll> v, ll cnt){
+       for (int i = 0; i < n-1; i++) {
+           if((v[i] + v[i+1])%2!= b[i]){
+            cnt++;
+            v[i+1]++;
+           }
+       }
+       return cnt;
+   };
+   
+   ll ans1 = calc(a, 0);
+   a[0]++;
+   ll ans2 = calc(a, 1);
+   
+   cout<<min(ans1,ans2)<<endl;
+   
+   
+
+   
+   
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    ll T; 
-    cin >> T; 
-    while (T--) { 
+    // ll T; 
+    // cin >> T; 
+    // while (T--) { 
         solve(); 
-    } 
+    // } 
     return 0; 
 }

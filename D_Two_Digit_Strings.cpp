@@ -46,6 +46,24 @@ T power(T x,T n){
   return pro;
 }
 
+// ll dp[5003][5003];
+// ll fun(int i , int  j , vector<ll> &a , vector<ll> & b , ll n1 ,ll n2){
+//     if(i>n1 || j>n2){
+//         return 0;
+//     }
+//     if(dp[i][j]!=-1){
+//         return dp[i][j];
+//     }
+//     if(a[i]==b[j]){
+//         return 1 + fun(i+1,j+1,a,b,n1,n2);
+//     }
+//     //if doesnt match then either of them is skipped
+//     return dp[i][j]=max(fun(i+1,j,a,b,n1,n2),fun(i,j+1,a,b,n1,n2));
+    
+// }
+
+const int m = 10;
+
 void solve(){
    //your code starts from here
    string a,b;
@@ -53,34 +71,45 @@ void solve(){
    cin>>b;
    ll n1 = a.length();
    ll n2 = b.length();
-   vector<pair<ll,ll>> pre,pre2;//sum ,len
-   ll suma = 0;
-   ll sumb = 0;
-   for (ll i = 0; i < n1; i++)
-   {
-    ll sum1 = 0;
-    // suma += 
-    for (ll j = i; j < n1; j++)
+   vector<ll> pre1(n1+1),pre2(n2+1);
+    for (ll i = 1; i <=n1; i++)
     {
-        sum1 += stol(string(1,a[j]));
-        pre.push_back({sum1,j-i+1});
+        ll val = stol(string(1,a[i-1]));
+        pre1[i] += val;
+        pre1[i] = (pre1[i] + pre1[i-1])%m;
     }
-    
-   }
-   for (ll i = 0; i < n1; i++)
-   {
-    ll sum1 = 0;
-    for (ll j = i; j < n1; j++)
+    for (ll i = 1; i <=n2; i++)
     {
-        sum1 += stol(string(1,b[j]));
-        pre2.push_back({sum1,j-i+1});
+        ll val = stol(string(1,b[i-1]));
+        pre2[i] += val;
+        pre2[i] = (pre2[i] + pre2[i-1])%m;
     }
+    // dbg(pre1,pre2)
+    if(pre1.back()!=pre2.back()){
+        cout<<-1<<endl;
+        return;
+    }
+    vector<vector<ll>>dp(n1+2,vector<ll>(n2+2));
+    ll ans = 0;
+    for(int i = n1;i>=1;i--){
+        for (int j = n2; j >= 1; j--)
+        {
+            if(pre1[i]==pre2[j]){
+                dp[i][j] = 1 + dp[i+1][j+1];
+            }
+            else{
+
+                //if doesnt match then either of them is skipped
+                dp[i][j]=max(dp[i+1][j],dp[i][j+1]);
+            }
+        }
+        
+    }
+    cout<<dp[1][1]<<endl;
+
     
-   }
-   sort(all(pre));
-   sort(all(pre2));
-   dbg(pre)
-   dbg(pre2)
+
+   
    
 }
 
