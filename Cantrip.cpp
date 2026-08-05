@@ -52,62 +52,29 @@ void solve(){
    cin>>n;
    string s;
    cin>>s;
-   s = " "+s;
+
    vector<ll> pre(n+1);
-   vector<pair<ll,ll>> p;
-   
-   for (ll i = 1; i <=n; i++)
-   {
-    if(s[i]=='x') p.push_back({1,i});
-    if(s[i]=='o'){
-        pre[i] += 1;
-    }
+   for(int i = 1;i<=n;i++){
+    if(s[i-1]=='x') pre[i]++;
     pre[i] += pre[i-1];
    }
-   for (ll i = 1; i < p.size(); i++)
-   {
-    p[i].first += p[i-1].first;
-   }
-//    dbg(s)
-//    dbg(pre)
-//    dbg(p)
-   if(p.size()==0){
-    for (ll i = 0; i < n; i++)
-    {
-        cout<<n<<endl;
-    }
-    return;
-    
-   }
-   auto getidx = [&](ll cnto ,ll st,ll cntx){
-    ll l = 0;
-    ll r = p.size()-1;
-    ll va = 1e15;
-    while(l<=r){
-        ll mid = (r+l)/2;
-        if(p[mid].first-cntx>=cnto && p[mid].second>st){
-            r = mid-1;
-            va = p[mid].second;
-        }
-        else l = mid+1;
-    }
-    return va;
-   };
-   
+   vector<ll> ans;
    for (ll i = 1; i <=n; i++)
    {
-    ll cnto = pre[i];
-    ll cntx = i - cnto;
-    ll ans = 0;
-    ll it = getidx(cnto,i,cntx);
-    // dbg(i,cnto,it)
-    if(it==1e15){
-        ans += n;
+    ll tar = i;
+    ll cnto = (i) - (pre[i]);
+    auto idx = lower_bound(all(pre),tar);
+    if(idx==pre.end()){
+
+        ans.push_back(n);
     }
     else{
-        ans += it;
+        ans.push_back((idx - pre.begin()));
     }
-    cout<<ans<<endl;
+
+   }
+   for(auto val:ans){
+    cout<<val<<endl;
    }
    
    
