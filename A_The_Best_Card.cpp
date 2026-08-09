@@ -23,7 +23,6 @@ template<typename T> void _print(const vector<T> &v) { cerr << "["; for (auto &i
 template<typename T> void _print(const set<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
 template<typename T> void _print(const multiset<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
 template<typename K, typename V> void _print(const map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
-template<typename K, typename V> void _print(const unordered_map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
 
 // Variadic template for multiple args
 void dbg_out() { cerr << "\n"; }
@@ -51,58 +50,16 @@ void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   map<ll,ll> mp;
-   map<ll,ll> ans;
-   vector<ll> v(n);
-   ll maxi = -1;
-   for (ll i = 0; i < n; i++)
+   ll m = n+1;
+   for (ll i = 2; i*i<=m; i++)
    {
-    ll a;
-    cin>>a;
-    v[i] =a;
-    maxi = max(maxi,v[i]);
-    mp[a]++;
-   }
-   vector<pair<ll,ll>> p(mp.begin(),mp.end());
-   // dbg(p)
-   
-   if(p[0].first!= 0){
-       cout<<-1<<endl;
-       return;
-   }
-
-   ll sum = 0;
-   ll nmaxi = 0;
-   ll lastt = 0;
-
-   for (ll i = 0; i < p.size()-1; i++)
-   {
-    ll num = p[i+1].first -sum;
-    ll den = p[i].second;
-    // dbg()
-    if(num%den!=0){
-        cout<<-1<<endl;
+    if(m%i==0){
+        cout<<"NO\n";
         return;
     }
-    ll t = num/den;
-    
-    
-    if(i > 0 && t <= lastt){
-        cout<<-1<<endl;
-        return;
-    }
-    lastt = t;
-
-    sum += p[i].second*t;
-    ans[p[i].first] = t;
-    nmaxi = max(t,nmaxi);
    }
-   ans[maxi] = nmaxi+1;
+   cout<<"YES\n";
    
-   for(auto val:v){
-    cout<<ans[val]<<" ";
-   }
-   cout<<endl;
 }
 
 int main() 

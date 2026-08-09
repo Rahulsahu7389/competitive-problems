@@ -21,9 +21,9 @@ template<typename T> void _print(const T &x) { cerr << x; }
 template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
 template<typename T> void _print(const vector<T> &v) { cerr << "["; for (auto &i : v) { _print(i); cerr << " "; } cerr << "]"; }
 template<typename T> void _print(const set<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
+template<typename T> void _print(const unordered_set<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
 template<typename T> void _print(const multiset<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
 template<typename K, typename V> void _print(const map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
-template<typename K, typename V> void _print(const unordered_map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
 
 // Variadic template for multiple args
 void dbg_out() { cerr << "\n"; }
@@ -49,70 +49,55 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   map<ll,ll> mp;
-   map<ll,ll> ans;
-   vector<ll> v(n);
-   ll maxi = -1;
-   for (ll i = 0; i < n; i++)
+   ll n,m;
+   cin>>n>>m;
+   unordered_map<ll,unordered_set<ll>> adj;
+   vector<ll> ind(n+1);
+   for (ll i = 0; i < m; i++)
    {
-    ll a;
-    cin>>a;
-    v[i] =a;
-    maxi = max(maxi,v[i]);
-    mp[a]++;
+    ll a,b;
+    cin>>a>>b;
+    if(adj[a].count(b)==0 && adj[b].count(a)==0){
+        ind[b]++;
+        adj[a].insert(b);
+    }
    }
-   vector<pair<ll,ll>> p(mp.begin(),mp.end());
-   // dbg(p)
-   
-   if(p[0].first!= 0){
-       cout<<-1<<endl;
-       return;
-   }
-
-   ll sum = 0;
-   ll nmaxi = 0;
-   ll lastt = 0;
-
-   for (ll i = 0; i < p.size()-1; i++)
+   ll root = -1;
+   for (ll i = 1; i <=n; i++)
    {
-    ll num = p[i+1].first -sum;
-    ll den = p[i].second;
-    // dbg()
-    if(num%den!=0){
-        cout<<-1<<endl;
-        return;
+    if(ind[i]==0){
+        root = i;
+        break;
     }
-    ll t = num/den;
-    
-    
-    if(i > 0 && t <= lastt){
-        cout<<-1<<endl;
-        return;
-    }
-    lastt = t;
-
-    sum += p[i].second*t;
-    ans[p[i].first] = t;
-    nmaxi = max(t,nmaxi);
    }
-   ans[maxi] = nmaxi+1;
+//    dbg(root)
+//    dbg(adj[root])
+   ll ans = 0;
+   for(auto val:adj){
+    if(val.first == root) continue;
+    if(adj[root].count(val.first)){
+        // dbg(val.first,val.second.size());
+        ll sum = adj[root].size() + val.second.size() +1;
+        if(sum == n) ans++;
+    }
+    else{
+        ll sum = adj[root].size() + val.second.size()+2;
+        if(sum == n) ans++;
+    }
+   }
+   cout<<ans<<endl;
    
-   for(auto val:v){
-    cout<<ans[val]<<" ";
-   }
-   cout<<endl;
+   
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    ll T; 
-    cin >> T; 
-    while (T--) { 
+    // ll T; 
+    // cin >> T; 
+    // while (T--) { 
         solve(); 
-    } 
+    // } 
     return 0; 
 }

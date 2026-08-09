@@ -23,7 +23,6 @@ template<typename T> void _print(const vector<T> &v) { cerr << "["; for (auto &i
 template<typename T> void _print(const set<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
 template<typename T> void _print(const multiset<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
 template<typename K, typename V> void _print(const map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
-template<typename K, typename V> void _print(const unordered_map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
 
 // Variadic template for multiple args
 void dbg_out() { cerr << "\n"; }
@@ -47,62 +46,47 @@ T power(T x,T n){
   return pro;
 }
 
+bool cust(pair<ll,ll> &a ,pair<ll,ll>& b){
+    return a.second<b.second;
+}
+
 void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   map<ll,ll> mp;
-   map<ll,ll> ans;
    vector<ll> v(n);
-   ll maxi = -1;
+   map<ll,ll> mp;
    for (ll i = 0; i < n; i++)
    {
-    ll a;
-    cin>>a;
-    v[i] =a;
-    maxi = max(maxi,v[i]);
-    mp[a]++;
+    cin>>v[i];
+    mp[v[i]]++;
    }
-   vector<pair<ll,ll>> p(mp.begin(),mp.end());
-   // dbg(p)
-   
-   if(p[0].first!= 0){
-       cout<<-1<<endl;
-       return;
+   if(n==1){
+    cout<<v[0]<<endl;
+    return;
    }
-
-   ll sum = 0;
-   ll nmaxi = 0;
-   ll lastt = 0;
-
-   for (ll i = 0; i < p.size()-1; i++)
-   {
-    ll num = p[i+1].first -sum;
-    ll den = p[i].second;
-    // dbg()
-    if(num%den!=0){
-        cout<<-1<<endl;
-        return;
+   vector<pair<ll,ll>> p(all(mp));
+   n = p.size();
+   ll ans =0;
+//    dbg(p)
+   while(true){
+    sort(all(p),cust);
+    // dbg(p)
+    ll right = p[n-1].second;
+    ll left = p[n-2].second;
+    ll mini = min(right,left);
+    if(left ==0 || p.size()==1){
+        ans += min(2LL,p[n-1].second)*p[n-1].first;
+        // dbg("hre")
+        break;
     }
-    ll t = num/den;
-    
-    
-    if(i > 0 && t <= lastt){
-        cout<<-1<<endl;
-        return;
-    }
-    lastt = t;
-
-    sum += p[i].second*t;
-    ans[p[i].first] = t;
-    nmaxi = max(t,nmaxi);
+    ans += mini*(p[n-1].first + p[n-2].first);
+    p[n-1].second -= mini;
+    p[n-2].second -= mini;
+    // dbg(p)
    }
-   ans[maxi] = nmaxi+1;
+   cout<<ans<<endl;
    
-   for(auto val:v){
-    cout<<ans[val]<<" ";
-   }
-   cout<<endl;
 }
 
 int main() 

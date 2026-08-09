@@ -23,7 +23,6 @@ template<typename T> void _print(const vector<T> &v) { cerr << "["; for (auto &i
 template<typename T> void _print(const set<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
 template<typename T> void _print(const multiset<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
 template<typename K, typename V> void _print(const map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
-template<typename K, typename V> void _print(const unordered_map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
 
 // Variadic template for multiple args
 void dbg_out() { cerr << "\n"; }
@@ -51,58 +50,42 @@ void solve(){
    //your code starts from here
    ll n;
    cin>>n;
-   map<ll,ll> mp;
-   map<ll,ll> ans;
    vector<ll> v(n);
-   ll maxi = -1;
    for (ll i = 0; i < n; i++)
    {
-    ll a;
-    cin>>a;
-    v[i] =a;
-    maxi = max(maxi,v[i]);
-    mp[a]++;
+    cin>>v[i];
    }
-   vector<pair<ll,ll>> p(mp.begin(),mp.end());
-   // dbg(p)
-   
-   if(p[0].first!= 0){
-       cout<<-1<<endl;
-       return;
-   }
-
-   ll sum = 0;
-   ll nmaxi = 0;
-   ll lastt = 0;
-
-   for (ll i = 0; i < p.size()-1; i++)
+   multiset<ll> st;
+   for (ll i = 0; i < n; i++)
    {
-    ll num = p[i+1].first -sum;
-    ll den = p[i].second;
-    // dbg()
-    if(num%den!=0){
-        cout<<-1<<endl;
-        return;
-    }
-    ll t = num/den;
-    
-    
-    if(i > 0 && t <= lastt){
-        cout<<-1<<endl;
-        return;
-    }
-    lastt = t;
-
-    sum += p[i].second*t;
-    ans[p[i].first] = t;
-    nmaxi = max(t,nmaxi);
+    st.insert(v[i]);
    }
-   ans[maxi] = nmaxi+1;
-   
-   for(auto val:v){
-    cout<<ans[val]<<" ";
+   ll prev = 0;
+   ll psum = 0;
+   vector<ll> temp;
+   for (ll i = 0; i < n; i++)
+   {
+    ll sum = 1 - prev;
+    auto it = st.lower_bound(sum);
+    if(it==st.end()){
+        cout<<-1<<endl;
+        return;
+    }
+    else{
+        psum += (*it);
+        prev = psum;
+        temp.push_back(psum);
+        st.erase(it);
+    }
+   }
+   for(auto val:temp){
+    cout<<val<<" ";
    }
    cout<<endl;
+   
+   
+   
+
 }
 
 int main() 
