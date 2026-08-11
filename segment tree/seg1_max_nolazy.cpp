@@ -33,6 +33,45 @@ ll querynolazy(ll idx, ll low , ll high , ll l , ll r){
 
 }
 
+class SegmentTree{
+    vector<ll> seg;
+    SegmentTree(ll n){
+        seg.assign(4*n,0);
+    }
+    ll query(ll idx, ll low , ll high , ll l , ll r){
+        if(low>=l && high<=r){//completely lies
+            return seg[idx];//vo node ki value
+        }
+        if(high<l || low>r) return 0;//if does not overlap at all
+        //partial overlap
+        ll mid = (low + high)/2;
+
+        ll left = query(2*idx+1,low,mid,l,r);
+        ll right = query(2*idx+2,mid+1,high,l,r);
+        return (left+right);
+        
+
+    }
+    void pointUpdate(ll idx, ll low , ll high , ll ind,ll val){
+        if(low==high){//leaf node
+            seg[idx] = val;//leaf node me add ho rha
+            return;
+        }
+        ll mid = (low + high)/2;
+        if(ind>=low && ind<=mid){
+            //lies in the left half
+            pointUpdate(2*idx+1,low,mid,ind,val);
+        }
+        else{
+            pointUpdate(2*idx+2,mid+1,high,ind,val);
+        }
+        
+        seg[idx] = seg[2*idx+1] + seg[2*idx+2];
+
+
+    }
+};
+
 void solve(){
     ll n;
     cin>>n;
