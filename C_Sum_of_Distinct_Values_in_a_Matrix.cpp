@@ -46,57 +46,63 @@ T power(T x,T n){
   return pro;
 }
 
-void solve(ll n,ll m,ll x,ll y,vector<ll>&a ,vector<ll>&b){
+ll finds(ll n,ll m ,ll x,ll y, vector<ll> &a ,vector<ll>&b){
+    ll p1 = 0;
+    ll p2 = 0,both = 0;
+    ll ans = 0;
+    while((p1<x || p2<y) && (p1 + p2 -both<n+m)){//both counted twice
+        if(p1==x || (p1-both)>=n){
+            //when we cannot take from a
+            if(p2==y || (p2-both)>=m) break;//cannot take from b also
+            ans += b[p2];
+            p2++;
+        }
+        else if(p2==y || (p2-both)>=m){
+            //when we cannot take from b
+            if(p1==x || (p1-both)>=n) break;//cannot take from a also
+            ans += a[p1];
+            p1++;
+        }
+        else{
+            if(a[p1]==b[p2]){
+                both++;
+                ans += a[p1];
+                p1++;
+                p2++;
+            }
+            else{
+                if(a[p1]>b[p2]){
+                    ans += a[p1];
+                    p1++;
+                }
+                else{
+                    ans += b[p2];
+                    p2++;
+                }
+            }
+        }
+    }
+    return ans;
+}
+
+void solve(){
    //your code starts from here
+   ll n,m,x,y;
+   cin>>n>>m>>x>>y;
+   vector<ll> a(x),b(y);
+   for (ll i = 0; i < x; i++)
+   {
+    cin>>a[i];
+   }
+   for (ll i = 0; i < y; i++)
+   {
+    cin>>b[i];
+   }
+   sort(a.rbegin(),a.rend());
+   sort(b.rbegin(),b.rend());
+   ll ans = max(finds(n-1,m,x,y,a,b),finds(n,m-1,x,y,a,b));
+   cout<<ans<<endl;
    
-
-
-   ll t = x-1;
-   ll z = y-1;
-   set<ll> st;
-   ll aa = n-1;
-   ll bb = m-1;
-   ll ans = 0;
-   while(aa>0 && t>=0){
-    ans += a[t];
-
-    st.insert(a[t--]);
-    aa--;
-
-   }
-   while(bb>0 && z>=0){
-    if(st.count(b[z])==0){
-        ans += b[z];
-        bb--;
-        st.insert(b[z]);
-    }
-    z--;
-   }
-//    dbg(ans)
-
-
-    ll maxi = -1;
-    while(t>=0 && st.count(a[t])>0){
-        t--;
-    }
-    if(t>=0){
-
-        maxi = max(maxi,a[t]);
-    }
-    while(z>=0 && st.count(b[z])>0){
-        z--;
-    }
-    if(z>=0){
-
-        maxi = max(maxi,b[z]);
-    }
-    if(maxi!=-1){
-
-        ans += maxi;
-    }
-    cout<<ans<<endl;
-  
-
    
 }
 
@@ -107,25 +113,7 @@ int main()
     ll T; 
     cin >> T; 
     while (T--) { 
-        ll n,m,x,y;
-        cin>>n>>m>>x>>y;
-        vector<ll> a(x),b(y);
-        for (ll i = 0; i < x; i++)
-        {
-            cin>>a[i];
-        }
-        for (ll i = 0; i < y; i++)
-        {
-            cin>>b[i];
-        }
-        if(x>y){
-
-            solve(m,n,y,x,b,a); 
-        }
-        else{
-
-            solve(n,m,x,y,a,b); 
-        }
+        solve(); 
     } 
     return 0; 
 }
