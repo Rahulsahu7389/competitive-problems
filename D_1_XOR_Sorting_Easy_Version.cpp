@@ -46,34 +46,65 @@ T power(T x,T n){
   return pro;
 }
 
-void solve(){
-   //your code starts from here
-   ll n;
-   cin>>n;
-   vector<ll> v(n);
-   vector<pair<ll,ll>> p(n);// no ,index
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>v[i];
-    p[i] = {v[i],i};
-   }
-   sort(all(v));
-   sort(all(p));
-   for(int i = 1;i<n;i++) p[i].first += p[i-1].first;
-   vector<ll> ans(n);
-   for(auto val:p){
-    int idx = val.second;
-    ll t = val.first;
-    auto id = lower_bound(all(v),t) - v.begin();
-    ans[idx] = max(id-1,0);
+vector<ll> par,sizes;
+ll findpar(ll u){
+    if(u == par[u]) return u;
+    return par[u] = findpar(par[u]);
+}
 
-   }
-   for(auto val:ans){
-    cout<<val<<" ";
-   }
-   cout<<endl;
-   
-   
+void unionBysize(ll u ,ll v){
+    ll ultiu = findpar(u);
+    ll ultiv = findpar(v);
+    if(ultiu == ultiv) return;
+    if(sizes[ultiu]<sizes[ultiv]){
+        sizes[ultiv] += sizes[ultiu];
+        par[ultiu] = ultiv;
+    }
+    else{
+        sizes[ultiu] += sizes[ultiv];
+        par[ultiv] = ultiu;
+    }
+}
+
+void solve() {
+    ll n, q;
+    cin >> n >> q;
+    vector<ll> v(n);
+    bool b = 1;
+    for (ll i = 0; i < n; i++) {
+        cin >> v[i];
+        if(i > 0 && v[i] < v[i-1]) b = 0;
+    }
+    if(b) {
+        cout << 0 << "\n";
+        return;
+    }
+    ll anss = 0;
+    bool ok = 0;
+    for (ll i = 1; i < 21; i++) {
+        ll gap = (1LL << i);
+        bool ans = 1;
+        for (ll j = 0; j + gap < n; j += gap) {
+            ll mx = 0;
+            for (ll k = j; k < j + gap && k < n; k++) {
+                mx = max(mx, v[k]);
+            }
+            ll mn = LLONG_MAX; 
+            for(ll k = j + gap; k < j + 2 * gap && k < n; k++) {
+                mn = min(mn, v[k]);
+            }
+            if(mx > mn) {
+                ans = 0;
+                break;
+            }
+        }
+        if(ans) {
+            ok = 1;
+            anss = (1LL << (i - 1));
+            break;
+        }
+    }
+    if(ok) cout << anss << "\n";
 }
 
 int main() 

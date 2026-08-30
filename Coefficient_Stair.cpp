@@ -46,44 +46,43 @@ T power(T x,T n){
   return pro;
 }
 
+void fun(ll i, ll k,vector<vector<ll>> &ans,vector<ll> &temp,ll n){
+    if(i==n){
+        if(k==0) ans.push_back(temp);
+        return;
+    }
+    // if(k<0) return;
+    for(int j = 0;j<=k;j++){
+        ll sum = k - i*j;
+        temp.push_back(j);
+        fun(i+1,sum,ans,temp,n);
+        temp.pop_back();
+    }
+}
+
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   vector<ll> v(n);
-   vector<pair<ll,ll>> p(n);// no ,index
-   for (ll i = 0; i < n; i++)
-   {
-    cin>>v[i];
-    p[i] = {v[i],i};
+   ll n,k;
+   cin>>n>>k;
+    vector<vector<ll>> ans;
+    vector<ll> temp;
+   fun(1,k,ans,temp,n+1);
+   for(auto &val:ans){
+    for(auto cal:val){
+        cout<<cal<<" ";
+    }
+    cout<<endl;
    }
-   sort(all(v));
-   sort(all(p));
-   for(int i = 1;i<n;i++) p[i].first += p[i-1].first;
-   vector<ll> ans(n);
-   for(auto val:p){
-    int idx = val.second;
-    ll t = val.first;
-    auto id = lower_bound(all(v),t) - v.begin();
-    ans[idx] = max(id-1,0);
-
-   }
-   for(auto val:ans){
-    cout<<val<<" ";
-   }
-   cout<<endl;
-   
-   
 }
 
 int main() 
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    ll T; 
-    cin >> T; 
-    while (T--) { 
+    // ll T; 
+    // cin >> T; 
+    // while (T--) { 
         solve(); 
-    } 
+    // } 
     return 0; 
 }

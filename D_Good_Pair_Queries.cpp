@@ -46,33 +46,49 @@ T power(T x,T n){
   return pro;
 }
 
+bool isok(ll x,ll y, ll z){
+    ll t = min(x,y);
+    ll k = x - t + y - t;
+    return z>=k;
+}
+
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   vector<ll> v(n);
-   vector<pair<ll,ll>> p(n);// no ,index
-   for (ll i = 0; i < n; i++)
+   ll n,q;
+   cin>>n>>q;
+   string a,b;
+   cin>>a;
+   cin>>b;
+   vector<vector<ll>> v(n+1,vector<ll>(3,0));// type 1 ,type 2 , type3 
+   for (ll  i = 0; i < n; i++)
    {
-    cin>>v[i];
-    p[i] = {v[i],i};
+    if(a[i]==b[i]) v[i+1][2]++;
+    else if(a[i]=='0' && b[i]=='1') v[i+1][0]++;
+    else v[i+1][1]++;
    }
-   sort(all(v));
-   sort(all(p));
-   for(int i = 1;i<n;i++) p[i].first += p[i-1].first;
-   vector<ll> ans(n);
-   for(auto val:p){
-    int idx = val.second;
-    ll t = val.first;
-    auto id = lower_bound(all(v),t) - v.begin();
-    ans[idx] = max(id-1,0);
-
+   for (ll i = 1; i <=n; i++)
+   {
+    v[i][0] += v[i-1][0];
+    v[i][1] += v[i-1][1];
+    v[i][2] += v[i-1][2];
    }
-   for(auto val:ans){
-    cout<<val<<" ";
-   }
-   cout<<endl;
    
+   for (ll i = 0; i < q; i++)
+   {
+    ll l,r;
+    cin>>l>>r;
+    ll x = v[r][0] - v[l-1][0];
+    ll y = v[r][1] - v[l-1][1];
+    ll z = v[r][2] - v[l-1][2];
+    if(isok(x,y,z)){
+        cout<<"YES\n";
+    }
+    else{
+        cout<<"NO\n";
+    }
+   }
+   
+
    
 }
 
@@ -87,3 +103,4 @@ int main()
     } 
     return 0; 
 }
+

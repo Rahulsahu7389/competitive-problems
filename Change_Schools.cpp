@@ -48,30 +48,22 @@ T power(T x,T n){
 
 void solve(){
    //your code starts from here
-   ll n;
-   cin>>n;
-   vector<ll> v(n);
-   vector<pair<ll,ll>> p(n);// no ,index
+   ll n,m;
+   cin>>n>>m;
+   vector<ll> v(m+1);
    for (ll i = 0; i < n; i++)
    {
-    cin>>v[i];
-    p[i] = {v[i],i};
+    ll a;
+    cin>>a;
+    v[a]++;
    }
-   sort(all(v));
-   sort(all(p));
-   for(int i = 1;i<n;i++) p[i].first += p[i-1].first;
-   vector<ll> ans(n);
-   for(auto val:p){
-    int idx = val.second;
-    ll t = val.first;
-    auto id = lower_bound(all(v),t) - v.begin();
-    ans[idx] = max(id-1,0);
-
+   ll maxi = *max_element(all(v));
+   ll ans=0;
+   for (ll i = 1; i <=m; i++)
+   {
+    if(v[i]+1>=maxi) ans++;
    }
-   for(auto val:ans){
-    cout<<val<<" ";
-   }
-   cout<<endl;
+   cout<<ans<<endl;
    
    
 }
@@ -80,10 +72,10 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    ll T; 
-    cin >> T; 
-    while (T--) { 
+    // ll T; 
+    // cin >> T; 
+    // while (T--) { 
         solve(); 
-    } 
+    // } 
     return 0; 
 }

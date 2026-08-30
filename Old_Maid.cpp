@@ -51,28 +51,17 @@ void solve(){
    ll n;
    cin>>n;
    vector<ll> v(n);
-   vector<pair<ll,ll>> p(n);// no ,index
-   for (ll i = 0; i < n; i++)
+   for (ll  i = 0; i < n ; i++)
    {
     cin>>v[i];
-    p[i] = {v[i],i};
    }
-   sort(all(v));
-   sort(all(p));
-   for(int i = 1;i<n;i++) p[i].first += p[i-1].first;
-   vector<ll> ans(n);
-   for(auto val:p){
-    int idx = val.second;
-    ll t = val.first;
-    auto id = lower_bound(all(v),t) - v.begin();
-    ans[idx] = max(id-1,0);
-
+   map<ll,ll> mp;
+   for(auto val:v) mp[val]++;
+   ll ans = 0;
+   for(auto val:mp){
+    if(val.second%2!=0) ans += val.first;
    }
-   for(auto val:ans){
-    cout<<val<<" ";
-   }
-   cout<<endl;
-   
+   cout<<ans<<endl;
    
 }
 
@@ -80,10 +69,10 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    ll T; 
-    cin >> T; 
-    while (T--) { 
+    // ll T; 
+    // cin >> T; 
+    // while (T--) { 
         solve(); 
-    } 
+    // } 
     return 0; 
 }
