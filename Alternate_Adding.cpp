@@ -46,29 +46,53 @@ T power(T x,T n){
   return pro;
 }
 
+bool isvalid(ll a, ll b){
+    if(a>0 && b>0 || (a<0 && b<0)) return false;
+    return true;
+}
+
 void solve(){
    //your code starts from here
-   ll n,k;
-   cin>>n>>k;
-   vector<ll> v(n);
-   for (ll  i = 0; i < n ; i++)
+   ll n;
+   cin>>n;
+   vector<ll>v(n);
+   for (ll i = 0; i < n; i++)
    {
     cin>>v[i];
    }
-   unordered_map<ll,ll> mp;
-   mp[0] = 0;
-   ll sum = 0;
-   ll ans = 0;
-   for(auto val:v){
-    sum = (sum + val)%k;
-    if(mp.count(sum)){
-        ans = max(ans,mp[sum]+1);
-
+   vector<ll> mark(n);
+   ll cnt = 0;
+   mark[0] = cnt;
+   for (ll i = 1; i < n; i++)
+   {
+    if(v[i]==0){
+        mark[i] = 2*n;
+        continue;
     }
-    mp[sum] = ans;
+    if(isvalid(v[i-1],v[i])){
+        mark[i] = cnt;
+    }
+    else{
+        mark[i] = ++cnt;
+    }
+   }
+//    dbg(mark)
+   map<ll,set<ll>>  mp;
+   for (ll i = 0; i < n; i++)
+   {
+    mp[mark[i]].insert(llabs(v[i]));
+   }
+   ll ans = 0;
+   for(auto &val:mp){
+    auto &vec = val.second;
+    ll csum = 0;
+    for(auto val:vec){
+        ll t = val -csum;
+        ans += val -csum;
+        csum += t;
+    }
    }
    cout<<ans<<endl;
-   
    
    
    
@@ -78,10 +102,10 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 }

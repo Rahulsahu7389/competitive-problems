@@ -47,30 +47,35 @@ T power(T x,T n){
 }
 
 void solve(){
+
    //your code starts from here
    ll n,k;
    cin>>n>>k;
-   vector<ll> v(n);
-   for (ll  i = 0; i < n ; i++)
+   vector<ll>v(n);
+   for (ll i = 0; i < n; i++)
    {
     cin>>v[i];
    }
-   unordered_map<ll,ll> mp;
-   mp[0] = 0;
+   ll tot = accumulate(all(v),0LL);
+   ll l = 0;
+   ll r = 0;
+   ll ans = 1e18;
    ll sum = 0;
-   ll ans = 0;
-   for(auto val:v){
-    sum = (sum + val)%k;
-    if(mp.count(sum)){
-        ans = max(ans,mp[sum]+1);
-
-    }
-    mp[sum] = ans;
+   while(r<k){
+    sum += v[r];
+    r++;
    }
-   cout<<ans<<endl;
-   
-   
-   
+   ans =min(ans,sum);
+   r--;
+   while(r>=0){
+    sum -= v[r];
+    l = (l-1+n)%n;
+    sum += v[l];
+    ans = min(ans,sum);
+    r--;
+}
+cout<<tot - ans<<endl;
+
    
 }
 
@@ -78,10 +83,10 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 }

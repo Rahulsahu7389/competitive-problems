@@ -45,32 +45,31 @@ T power(T x,T n){
   }
   return pro;
 }
+ll getmsb(ll x) {
+    if (x == 0) return -1; // 0 has no MSB
+    
+    // Total bits (32) minus leading zeros minus 1 for 0-indexed position
+    return 63 - __builtin_clz(x); 
+}
 
 void solve(){
    //your code starts from here
-   ll n,k;
-   cin>>n>>k;
+   ll n;
+   cin>>n;
    vector<ll> v(n);
-   for (ll  i = 0; i < n ; i++)
+   for (ll i = 0; i < n; i++)
    {
     cin>>v[i];
    }
-   unordered_map<ll,ll> mp;
-   mp[0] = 0;
-   ll sum = 0;
-   ll ans = 0;
+   map<ll,ll> mp;
    for(auto val:v){
-    sum = (sum + val)%k;
-    if(mp.count(sum)){
-        ans = max(ans,mp[sum]+1);
-
-    }
-    mp[sum] = ans;
+    mp[getmsb(val)]++;
+   }
+   ll ans=0;
+   for(auto val:mp){
+    ans = max(ans,val.second);
    }
    cout<<ans<<endl;
-   
-   
-   
    
 }
 
@@ -78,10 +77,10 @@ int main()
 { 
     ios::sync_with_stdio(0); 
     cin.tie(0); 
-    // ll T; 
-    // cin >> T; 
-    // while (T--) { 
+    ll T; 
+    cin >> T; 
+    while (T--) { 
         solve(); 
-    // } 
+    } 
     return 0; 
 }

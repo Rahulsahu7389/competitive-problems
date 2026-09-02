@@ -52,12 +52,31 @@ void fun(ll i, ll k,vector<vector<ll>> &ans,vector<ll> &temp,ll n){
         return;
     }
     // if(k<0) return;
-    for(int j = 0;j<=k;j++){
+    for(int j = 0;j<=(k/i);j++){
         ll sum = k - i*j;
         temp.push_back(j);
         fun(i+1,sum,ans,temp,n);
         temp.pop_back();
     }
+}
+
+void fun(ll i ,ll k,vector<vector<ll>> &ans,vector<ll> &temp,ll n){
+    if(i==n){
+        if(k%i==0){
+            temp.push_back(k/i);
+            ans.push_back(temp);
+            temp.pop_back();
+        }
+        return;
+    }
+    for (int j = 0; j*i <=k; j++)
+    {
+        ll sum = k - i*j;
+        temp.push_back(j);
+        fun(i+1,sum,ans,temp,n);
+        temp.pop_back();
+    }
+    
 }
 
 void solve(){
@@ -66,7 +85,7 @@ void solve(){
    cin>>n>>k;
     vector<vector<ll>> ans;
     vector<ll> temp;
-   fun(1,k,ans,temp,n+1);
+   fun(1,k,ans,temp,n);
    for(auto &val:ans){
     for(auto cal:val){
         cout<<cal<<" ";
