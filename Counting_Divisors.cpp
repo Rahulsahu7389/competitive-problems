@@ -1,83 +1,102 @@
-#include "bits/stdc++.h"
+#include <bits/stdc++.h>
 using namespace std;
 
-#define FOR(a, c) for (int(a) = 0; (a) < (c); (a)++)
-#define FORLL(a, c) for (long long(a) = 0; (a) < (c); (a)++)
-#define FORR(a, b, c) for (int(a) = (b); (a) >= (c); (a)--)
-#define INF 1000000000000000003
-typedef long long int ll;
-typedef vector<int> vi;
-typedef pair<int, int> pi;
-#define F first
-#define S second
-#define pb push_back
-#define pob pop_back
-long long modl(ll a)
-{
-  if (a < 0)
-  {
-    return -a;
+#define FOR(a, c) for (int(a) = 0; (a) < (c); (a)++) 
+#define FORLL(a, c) for (long long(a) = 0; (a) < (c); (a)++) 
+#define FORR(a, b, c) for (int(a) = (b); (a) >= (c); (a)--) 
+typedef long long int ll; 
+typedef vector<int> vi; 
+typedef pair<int, int> pi; 
+#define all(a) a.begin(),a.end()
+#define F first 
+#define S second 
+#define pb push_back 
+#define pob pop_back 
+ll MOD = 1e9 + 7;
+
+// ======== DEBUG SYSTEM ========
+bool DEBUG_MODE = true;  // toggle before submission
+
+template<typename T> void _print(const T &x) { cerr << x; }
+template<typename T1, typename T2> void _print(const pair<T1, T2> &p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }
+template<typename T> void _print(const vector<T> &v) { cerr << "["; for (auto &i : v) { _print(i); cerr << " "; } cerr << "]"; }
+template<typename T> void _print(const set<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
+template<typename T> void _print(const multiset<T> &s) { cerr << "{"; for (auto &i : s) { _print(i); cerr << " "; } cerr << "}"; }
+template<typename K, typename V> void _print(const map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
+template<typename K, typename V> void _print(const unordered_map<K, V> &m) { cerr << "{"; for (auto &p : m) { _print(p.first); cerr << "->"; _print(p.second); cerr << " "; } cerr << "}"; }
+
+// Variadic template for multiple args
+void dbg_out() { cerr << "\n"; }
+template<typename Head, typename... Tail>
+void dbg_out(Head H, Tail... T) { _print(H); if(sizeof...(T)) cerr << " | "; dbg_out(T...); }
+
+#define dbg(...) if(DEBUG_MODE){ cerr << "[" << __LINE__ << "] " << #__VA_ARGS__ << " = "; dbg_out(__VA_ARGS__); }
+
+// ======== UTILITY FUNCTIONS ========
+template<typename T>
+T mod(T a){ return (a<0)? -a : a; }
+
+template<typename T>
+T power(T x,T n){
+  T pro = 1;
+  while(n!=0){
+    if(n%2==1) pro *= x;
+    x *= x;
+    n /= 2;
   }
-  return a;
+  return pro;
 }
-
-int modl(int a)
-{
-  if (a < 0)
+const ll maxn= 1e6+5;
+int spf[maxn];
+void precompute(){
+  for (int i = 0; i < maxn; i++)
   {
-    return -a;
+    spf[i] = i;
   }
-  return a;
-}
-
-
-void solve()
-{
-  // your code starts from here
-  ll n;
-  cin >> n;
-  // got tle for root x approach
-  // ll ans = 2;
-  // if(n==1){
-  //   cout<<1<<endl;
-  //   return;
-  // }
-  // for (ll i = 2; i*i <= n; i++)
-  // {
-  //   if(n%i==0){
-  //       if(i == n/i){
-  //           ans++;
-  //       }
-  //       else{
-  //           ans += 2;
-  //       }
-  //   }
-  // }
-  // cout<<ans<<endl;
-
-  // using sieves
-  // cout << v[n] << endl;
-}
-int main()
-{
-  ios::sync_with_stdio(0);
-  cin.tie(0);
-  // v[1] = n;
-  ll T;
-  cin >> T;
-  vector<ll> v(1000001, 0);
-  for (ll i = 1; i <= 1000000; i++)
+  for (int i = 2; i*i<=maxn; i++)
   {
-    for (ll j = i; j <= 1000000; j += i)
-    {
-      v[j]++;
+    if(spf[i]==i){
+      for (int j = i*i; j<maxn; j+=i)
+      {
+        if(spf[j] == j) {
+            spf[j] = i;
+        }
+      }
+      
     }
   }
-  while (T--)
-  {
-    ll n;
-    cin>>n;
-    cout<<v[n]<<endl;
+  
+  
+}
+
+void solve(){
+   //your code starts from here
+  //  dbg(spf[12])
+   ll n;
+   cin>>n;
+   unordered_map<int,int> fact;
+   while(n>1){
+    // dbg(spf[n])
+    fact[spf[n]]++;
+    n /= spf[n];
+   }
+  ll ans = 1;
+  for(auto val:fact){
+    ans *= (val.second+1);
   }
-  return 0;
+  cout<<ans<<endl;
+}
+
+int main() 
+{ 
+    ios::sync_with_stdio(0); 
+    cin.tie(0); 
+    precompute();
+    
+    ll T; 
+    cin >> T; 
+    while (T--) { 
+        solve(); 
+    } 
+    return 0; 
 }
