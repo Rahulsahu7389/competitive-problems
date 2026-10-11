@@ -47,11 +47,51 @@ T power(T x,T n){
 }
 
 pair<ll,ll> get(ll a, ll b,ll c){
-    ll s1 = b -c,s2 = a-c,s3 = b-c;
-    if(s1>0) return {1,2};
+    ll s1 = a-b,s2 = a-c,s3 = b-c;
+    if(s1>0) return {0,1};
     else if(s2>0) return {0,2};
     else if(s3>0) return {0,1};
+    else if(s1==0 && s2==0 && s3==0) return {-2,-2};
     return {-1,-1};
+}
+
+ll getsum(ll i ,vector<vector<ll>> &v){
+    return v[i][0]+v[i][1]+v[i][2];
+}
+
+bool check(long long mid, const vector<vector<ll>>& v, ll k) {
+    long long req = 0;
+    int n = v.size();
+    
+    for (int i = 0; i < n; i++) {
+        ll a = v[i][0];
+        ll b = v[i][1];
+        ll c = v[i][2];
+        ll sum = a+b+c;
+        // If this lab already meets the required minimum sum, skip
+        if (sum >= mid) continue;
+
+        long long diff = mid - sum;
+
+        // If any strict greater-than relation exists, we can increase the sum directly
+        if (a > b || a > c || b > c) {
+            req += diff;
+        } else {
+            // Otherwise, a <= b <= c. We are locked.
+            if (a == b && b == c) {
+                return false; // Impossible to break out if all are equal
+            }
+            
+            // To break out, we either decrease b until it is strictly less than a,
+            // or decrease c until it is strictly less than b. We take the cheaper one.
+            long long extra_ops = 2LL * min(b - a + 1, c - b + 1);
+            req += diff + extra_ops;
+        }
+
+        if (req > k) return false;
+    }
+    
+    return true; 
 }
 
 void solve(){
@@ -63,74 +103,29 @@ void solve(){
    {
     cin>>v[i][0]>>v[i][1]>>v[i][2];
    }
-   if(n==1){
-    ll sum = v[0][0] + v[0][1] + v[0][2];
-    pair<ll,ll> p = get(v[0][0] , v[0][1] , v[0][2]);
-    if(p.first==-1){
-        cout<<sum<<endl;
-        return;
+
+   ll l = 1e18;
+   for (ll i = 0; i < n; i++)
+   {
+    ll sum = getsum(i,v);
+    l = min(l,sum);
+   }
+   ll r = l+k;
+   ll ans = l;
+//    dbg(l,r)
+   while(l<=r){
+    ll mid = (r+l)/2;
+    bool ok = check(mid,v,k);
+    // dbg(mid,ok)
+    if(ok){
+        ans = mid;
+        l = mid+1;
     }
     else{
-        cout<<sum+k<<endl;return;
+        r = mid-1;
     }
-   }
-   priority_queue<pair<ll,ll>,vector<pair<ll,ll>> , greater<pair<ll,ll>>> q;
-   for (ll i = 0; i < n; i++)
-   {
-    ll sum = v[i][0] + v[i][1] + v[i][2];
-    q.push({sum,i});
-   }
-
-   bool flag = false;
-
-   while(k>0){
-    auto tp = q.top();
-    q.pop();
-    int idx = tp.second;
-    ll sum = v[idx][0] + v[idx][1] + v[idx][2];
-    pair<ll,ll> p = get(v[idx][0] , v[idx][1] , v[idx][2]);
-    if(p.first==-1 || k<=0) break;
-    auto stop = q.top();
-    ll val = stop.first;
-    ll t = llabs(sum - val);
-    if(t==0){
-        flag = true;
-        break;
-    }
-    ll s = min(t,k);
-    k -=s ;
-    ll c = 3 - p.first - p.second;
-    v[idx][c] += s;
-    sum += s;
-    q.push({sum,idx});
-    // dbg("here")
-   }
-   
-   ll x = (k/n);
-   ll rem = k%n;
-   //dekho ki sb me kr skte yaa nhi
-   bool ok = true;
-   for (ll i = 0; i < n; i++)
-   {
-    auto p = get(v[i][0],v[i][1],v[i][2]);
-    if(p.first==-1){
-        ok = false;
-    }
-   }
-   if(ok==false){
-    cout<<q.top().first<<endl;
-    return;
-   }
-   ll ans = 1e18;
-   for (ll i = 0; i < n; i++)
-   {
-    ll sum = v[i][0]+v[i][1]+v[i][2]+x;
-    ans = min(sum,ans);
    }
    cout<<ans<<endl;
-   
-
-   
    
    
 }
