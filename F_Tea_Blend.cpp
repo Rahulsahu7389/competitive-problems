@@ -96,7 +96,7 @@ void solve(){
    {
     cin>>v[i];
    }
-   unordered_map<int,int> cnt;
+   unordered_map<ll,int> cnt;
    for (ll  i = 0; i < n; i++)
    {
     ll val = v[i];
@@ -116,11 +116,11 @@ void solve(){
    }
 
    ll ans = 0;
-   unordered_set<int> st;
+   unordered_set<ll> st;
    ll p = 1; // Declare p outside the loop to maintain its state
 
     for (int i = 0; i < n; i++) {
-        int val = v[i];
+        ll val = v[i];
         while(val > 1) {
             ll x = spf[val];
             if (st.count(x)) {
