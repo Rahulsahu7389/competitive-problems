@@ -76,7 +76,7 @@ ll querywithlazy(ll idx, ll low , ll high , ll l , ll r){
     if(l<=low && high<=r){
         return seg[idx];
     }
-    
+     
     ll mid = (low + high)/2;
     ll left = querywithlazy(2*idx+1,low,mid,l,r);
     ll right = querywithlazy(2*idx+2,mid+1,high,l,r);
