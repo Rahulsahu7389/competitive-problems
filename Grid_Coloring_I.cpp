@@ -50,51 +50,45 @@ void solve(){
    //your code starts from here
    ll n,m;
    cin>>n>>m;
-   vector<char> v = {'A','B','C','D'};
-   int row[] = {-1,0,0,0};
-   int col[] ={0,1,0,-1};
-   vector<string> ans(n);
+   vector<string> v(n);
    for (ll  i = 0; i < n ; i++)
    {
-    cin>>ans[i];
+    cin>>v[i];
    }
+   vector<char> chr = {'A','B','C','D'};
    for (ll  i = 0; i < n ; i++)
    {
     for (ll  j  = 0; j  < m ; j ++)
     {
         unordered_set<char> st;
-        st.insert(ans[i][j]);
-        for (int k = 0; k < 4 ; k++)
-        {
-            int x = i+row[k];
-            int y = j+col[k];
-            if(x>=0 && x<n && y>=0 && y<m){
-                st.insert(ans[x][y]);
-            }
+        //current
+        st.insert(v[i][j]);
+        //left
+        if(j>0){
+            st.insert(v[i][j-1]);
         }
-        bool ok = true;
-        for(auto val:v){
+        if(i>0){
+            st.insert(v[i-1][j]);
+        }
+        char g = '.';
+        for(auto val:chr){
             if(st.count(val)==0){
-                ans[i][j] = val;
-                ok = false;
+                g = val;
                 break;
             }
         }
-        if(ok){
-            dbg(i,j)
-            cout<<"IMPOSSIBLE\n";
-        }
-        
+        // if(g=='.'){
+        //     cout<<"IMPOSSIBLE\n";return;
+        // }
+        v[i][j] = g;
     }
     
    }
-//    dbg(ans)
-   for(auto val:ans){
+   for(auto &val:v){
     cout<<val<<endl;
    }
    
    
-
 }
 
 int main() 
