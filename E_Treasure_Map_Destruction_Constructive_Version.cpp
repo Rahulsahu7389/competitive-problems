@@ -51,95 +51,87 @@ void solve(){
    ll n;
    cin>>n;
    vector<ll> v(n);
-   ll cntneg = 0;
-   for (ll i = 0; i < n; i++)
+   for (ll  i = 0; i < n ; i++)
    {
     cin>>v[i];
-    if(v[i] ==-1) cntneg++;
    }
-   bool flag = true;
-   string ans(n,'0');
-   for (ll i = 0; i < n; i++)
+   vector<ll> diff(n+1);
+   for (ll  i = 0; i < n; i++)
    {
-    if(v[i]==0){
-        ans[i] = '1';
-        continue;
+    if(v[i]==0 || v[i]==-1) continue;
+    int left = i-v[i];
+    int right = i +v[i];
+    bool f1 = false,f2 = false;
+    if(left>=0 && v[left]!=0 && v[left]!=-1){
+        // dbg(i)
+        f1 = true;//it should have been the 0
+        // return;
     }
-    else if(v[i]==-1) continue;
-    int left = i- v[i];
-    int right = i+v[i];
-    if(left>=0){
-        if(v[left]==-1){
-            ans[i] = '1';
-        }
-        else{
-            if(v[left]!=0){
-                cout<<-1<<endl;
-                return;
-            }
-        }
+    if(right<n && v[right]!=0 && v[right]!=-1){
+        // dbg(i)
+        // cout<<-1<<endl;//it should have been the 0
+        f2 = true;
+        // return;
     }
-    if(right<n){
-        if(v[right]==-1){
-            ans[i] = '1';
-        }
-        else{
-            if(v[right]!=0){
-                cout<<-1<<endl;
-                return;
-            }
-        }
+    if(f1==true && f2 == true){
+        cout<<-1<<endl;return;
     }
+    left = max(0LL,i-v[i]+1);
+    right = min(n-1,i+v[i]-1);
+    diff[left] +=1;
+    diff[right+1] -=1;
+
    }
-   if(cntneg == 0){
-    cout<<ans<<endl;
-    return;
+   
+   for(int i = 1;i<n;i++){
+    diff[i] += diff[i-1];
    }
-   if(cntneg==n){
-    string t(n,'0');
-    t[0] = '1';
-    cout<<t<<endl;
-    return;
+//    dbg(diff)
+   vector<ll> ans(n,-1);
+   for (ll  i = 0; i < n ; i++)
+   {
+    if(diff[i]==0){
+        ans[i] = 1;
+    }
    }
 //    dbg(ans)
-   vector<ll> pre(n,-2),suff(n,-2);
-   int cnt = -1;
-   for (ll i = 0; i < n; i++)
+   for (ll  i = 0; i < n ; i++)
    {
-    if(cnt == -1 && ans[i]!='1') continue;
-    if(ans[i]=='1'){
-       cnt = 0;
-       pre[i] = cnt;
+    if(v[i]==-1 || diff[i]==0) continue;
+    if(v[i]==0 && diff[i]>0){
+        cout<<-1<<endl;
+        return;
     }
-    else{
-        cnt++;
-        pre[i] =cnt;
+    int left = i-v[i];
+    int right = i +v[i];
+    bool flag1 = false, flag2 = false;
+    if(left>=0 && diff[left]>0){
+        // dbg(diff[left],i)
+        flag1 = true;
+    }
+    else if(left<0) flag1 = true;
+    
+    if(right<n && diff[right]>0){
+        // dbg(2,i)
+        flag2 = true;
+    }
+    else if(right>=n) flag2 = true;
+    // dbg(flag1,flag2,i)
+    if(flag1==true && flag2==true){
+        // dbg(2,i)
+        cout<<-1<<endl;return;
     }
    }
-   cnt = -1;
-   for (ll i = n-1;i>=0;i--)
-   {
-    if(cnt == -1 && ans[i]!='1') continue;
-    if(ans[i]=='1'){
-       cnt = 0;
-       pre[i] = cnt;
-    }
-    else{
-        cnt++;
-        pre[i] = cnt;
-    }
+   for(int i = 0;i<n;i++){
+    if(ans[i]==-1) ans[i] =0;
    }
-   for (ll i = 0; i < n; i++)
-   {
-    if(pre[i]==-2 || suff[i]==-2) continue;
-    else{
-        if(pre[i]!=suff[i]){
-            cout<<-1<<endl;
-            return;
-        }
-    }
+   for(auto val:ans){
+    cout<<val;
    }
-   cout<<ans<<endl;
+   
+   cout<<endl;
+   
+   
    
    
    
